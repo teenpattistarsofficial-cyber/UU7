@@ -1,0 +1,65 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+
+const selectClassName =
+  "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
+
+type PageDefaults = {
+  title?: string;
+  slug?: string;
+  content?: unknown;
+  status?: string;
+  template?: string;
+};
+
+export function PageForm({
+  action,
+  defaultValues,
+}: {
+  action: (formData: FormData) => void;
+  defaultValues?: PageDefaults;
+}) {
+  const contentText = typeof defaultValues?.content === "string" ? defaultValues.content : "";
+
+  return (
+    <form action={action} className="max-w-2xl space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="title">Title</Label>
+        <Input id="title" name="title" required defaultValue={defaultValues?.title} />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="slug">Slug</Label>
+        <Input id="slug" name="slug" placeholder="auto-generated if left blank" defaultValue={defaultValues?.slug} />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="template">Template</Label>
+          <select id="template" name="template" defaultValue={defaultValues?.template ?? "default"} className={selectClassName}>
+            <option value="default">Default</option>
+            <option value="about">About</option>
+            <option value="contact">Contact</option>
+            <option value="legal">Legal</option>
+          </select>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="status">Status</Label>
+          <select id="status" name="status" defaultValue={defaultValues?.status ?? "draft"} className={selectClassName}>
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+            <option value="archived">Archived</option>
+          </select>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="content">Content</Label>
+        <p className="text-xs text-muted-foreground">
+          Plain text for now — the rich text editor lands in Phase 2.
+        </p>
+        <Textarea id="content" name="content" rows={12} defaultValue={contentText} />
+      </div>
+      <Button type="submit">Save</Button>
+    </form>
+  );
+}
