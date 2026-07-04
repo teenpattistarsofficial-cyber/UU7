@@ -1,20 +1,35 @@
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
-import { posts, authors } from "@/lib/db/schema";
+import { posts, authors, seoMeta } from "@/lib/db/schema";
+import { buildMetadata } from "@/lib/seo/metadata";
+import { renderContentHtml } from "@/lib/editor/render";
+import { toTiptapDoc } from "@/lib/editor/doc";
 
-// Bare article render for Phase 1 — the full AEO/GEO template (Quick Answer,
-// Key Takeaways, ToC, Stats Tables, FAQ, schema, etc.) is built in Phase 5
-// once Tiptap content and the SEO field set exist.
+// Bare article render for Phase 1/2 — the full AEO/GEO template (Quick
+// Answer, Key Takeaways, ToC, Stats Tables, FAQ, schema, etc.) is built in
+// Phase 5. SEO fields (Module 1/4) already drive real <head> metadata below.
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ category: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { category, slug } = await params;
   const post = await db.query.posts.findFirst({ where: eq(posts.slug, slug) });
-  return { title: post?.title ?? "Post" };
+  if (!post) return { title: "Post" };
+
+  const seo = await db.query.seoMeta.findFirst({
+    where: and(eq(seoMeta.entityType, "post"), eq(seoMeta.entityId, post.id)),
+  });
+
+  return buildMetadata({
+    seo,
+    fallbackTitle: post.title,
+    fallbackDescription: post.excerpt,
+    fallbackImage: post.featuredImageUrl,
+    path: `/${category}/${slug}`,
+  });
 }
 
 export default async function ArticlePage({
@@ -30,7 +45,7 @@ export default async function ArticlePage({
     ? await db.query.authors.findFirst({ where: eq(authors.id, post.authorId) })
     : null;
 
-  const contentText = typeof post.content === "string" ? post.content : "";
+  const html = renderContentHtml(toTiptapDoc(post.content));
 
   return (
     <article className="mx-auto max-w-2xl px-4 py-12">
@@ -42,7 +57,12 @@ export default async function ArticlePage({
         )}
         {post.readingTimeMinutes && <span> · {post.readingTimeMinutes} min read</span>}
       </div>
-      <div className="whitespace-pre-wrap leading-7">{contentText}</div>
+      <div
+        className="prose prose-neutral max-w-none dark:prose-invert"
+        // Safe: content is authored exclusively by authenticated admin/editor
+        // roles through the Tiptap editor, never from public user input.
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </article>
   );
 }

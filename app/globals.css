@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -39,6 +40,8 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand: var(--brand);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -117,6 +120,79 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Admin-only theme: solid white/dark cards (no glass/blur), neutral
+   near-black/near-white primary buttons, and uu7stars.com's brand orange
+   (#f97316 / Tailwind orange-500, pulled from its theme-color meta tag and
+   CSS) reserved as a sparing accent — nav active state, focus rings, small
+   brand marks — rather than the dominant button color. Scoped to
+   `.admin-theme` so none of this leaks into the public site's own tokens.
+   The `--sidebar*` tokens are intentionally identical in both light and
+   dark (see `.admin-theme.dark` below, which does not redefine them) — the
+   sidebar is a fixed dark rail so it's always visually distinct from the
+   content area, whichever mode that's in. */
+.admin-theme {
+  --background: oklch(0.98 0.002 260);
+  --foreground: oklch(0.16 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0 0);
+  --primary: oklch(0.16 0 0);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.18 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.5 0 0);
+  --accent: oklch(0.98 0.016 73.684); /* orange-50 */
+  --accent-foreground: oklch(0.47 0.157 37.304); /* orange-800 */
+  --destructive: oklch(0.58 0.22 27);
+  --border: oklch(0 0 0 / 9%);
+  --input: oklch(0 0 0 / 10%);
+  --ring: oklch(0.705 0.213 47.604 / 45%); /* orange-500 focus ring */
+
+  --sidebar: oklch(0.145 0 0);
+  --sidebar-foreground: oklch(0.92 0 0);
+  --sidebar-primary: oklch(0.705 0.213 47.604);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.705 0.213 47.604 / 15%);
+  --sidebar-accent-foreground: oklch(0.837 0.128 66.29); /* orange-300 */
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.705 0.213 47.604 / 40%);
+
+  /* The one deliberate exception to "orange is a sparing accent, not a
+     button fill": a few high-emphasis moments (editor Save, live SEO score)
+     use the raw brand orange as a solid fill on explicit request. Kept as
+     its own token, identical in light/dark, rather than repurposing
+     --primary — so it doesn't quietly change what every other button on
+     the site looks like. */
+  --brand: oklch(0.705 0.213 47.604);
+  --brand-foreground: oklch(1 0 0);
+}
+
+.admin-theme.dark {
+  /* Noticeably lighter than the fixed --sidebar (oklch 0.145) — otherwise
+     the sidebar and content area blend together in dark mode, defeating
+     the "sidebar must always be visually distinct" requirement. */
+  --background: oklch(0.21 0 0);
+  --foreground: oklch(0.96 0 0);
+  --card: oklch(0.27 0 0);
+  --card-foreground: oklch(0.96 0 0);
+  --popover: oklch(0.27 0 0);
+  --popover-foreground: oklch(0.96 0 0);
+  --primary: oklch(0.92 0 0);
+  --primary-foreground: oklch(0.15 0 0);
+  --secondary: oklch(1 0 0 / 8%);
+  --secondary-foreground: oklch(0.96 0 0);
+  --muted: oklch(1 0 0 / 6%);
+  --muted-foreground: oklch(0.68 0 0);
+  --accent: oklch(0.705 0.213 47.604 / 16%); /* orange-500 @ low opacity */
+  --accent-foreground: oklch(0.837 0.128 66.29); /* orange-300 */
+  --destructive: oklch(0.7 0.19 25);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.705 0.213 47.604 / 45%);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -127,4 +203,41 @@
   html {
     @apply font-sans;
   }
+}
+
+/* @tiptap/extension-placeholder sets a data-placeholder attribute but
+   renders no visible text itself — this is the documented CSS it expects
+   the consuming app to provide. */
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: var(--muted-foreground);
+}
+
+/* Tailwind Typography's default table style is deliberately minimal
+   (row dividers only, no column lines) — fine for reading an article, but
+   while actively building a table in the editor a writer needs to see the
+   actual grid. Scoped to `.tiptap` so the public article body keeps the
+   plainer reading-first look. */
+.tiptap table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+}
+.tiptap th,
+.tiptap td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.6rem;
+  vertical-align: top;
+  position: relative;
+}
+.tiptap th {
+  background-color: var(--muted);
+  font-weight: 600;
+  text-align: left;
+}
+.tiptap .selectedCell {
+  background-color: var(--accent);
 }

@@ -9,10 +9,5 @@ export default async function NewPostPage() {
     db.select().from(categories),
   ]);
 
-  return (
-    <div>
-      <h1 className="mb-6 text-2xl font-semibold">New post</h1>
-      <PostForm action={createPost} authors={authorRows} categories={categoryRows} />
-    </div>
-  );
+  return <PostForm action={createPost} authors={authorRows} categories={categoryRows} />;
 }

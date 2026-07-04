@@ -2,20 +2,23 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
 import { authClient } from "@/lib/auth/client";
+
+const fieldLabelClassName = "text-xs font-semibold tracking-wide text-muted-foreground uppercase";
+const fieldInputClassName = "h-11 rounded-xl border-input bg-muted px-3.5 text-sm";
 
 export function LoginForm({ next }: { next: string }) {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError(null);
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
@@ -26,31 +29,61 @@ export function LoginForm({ next }: { next: string }) {
 
     setLoading(false);
     if (signInError) {
-      setError(signInError.message ?? "Invalid email or password");
+      toast.error(signInError.message ?? "Invalid email or password");
       return;
     }
+    toast.success("Signed in successfully");
     router.push(next);
     router.refresh();
   }
 
   return (
-    <Card>
-      <CardContent className="pt-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" required autoComplete="email" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" name="password" type="password" required autoComplete="current-password" />
-          </div>
-          {error && <p className="text-sm text-destructive">{error}</p>}
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Signing in…" : "Sign in"}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="email" className={fieldLabelClassName}>
+          Email address
+        </Label>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autoComplete="email"
+          placeholder="admin@uu7.io"
+          className={fieldInputClassName}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="password" className={fieldLabelClassName}>
+          Password
+        </Label>
+        <div className="relative">
+          <Input
+            id="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            required
+            autoComplete="current-password"
+            className={`${fieldInputClassName} pr-10`}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((v) => !v)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
+            {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+          </button>
+        </div>
+      </div>
+      <Button
+        type="submit"
+        className="h-11 w-full gap-1.5 rounded-xl text-sm font-semibold"
+        disabled={loading}
+      >
+        {loading ? "Signing in…" : "Sign In"}
+        {!loading && <ArrowRight className="size-4" />}
+      </Button>
+    </form>
   );
 }
