@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { useEditor, EditorContent, type JSONContent } from "@tiptap/react";
 import { generateHTML, generateJSON } from "@tiptap/html";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -34,13 +34,18 @@ import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { MediaPicker } from "@/components/admin/media-picker";
 
-export function TiptapEditor({
-  content,
-  onChange,
-}: {
-  content: unknown;
-  onChange: (json: JSONContent) => void;
-}) {
+export type TiptapEditorHandle = {
+  /** Inserts a link at the cursor — wraps the current selection if there is
+   * one, otherwise inserts `text` as new content with the link mark
+   * applied. Used by the Internal Linking Assistant to drop in a suggested
+   * post + anchor text without the writer leaving the sidebar. */
+  insertLink: (url: string, text: string) => void;
+};
+
+export const TiptapEditor = forwardRef<
+  TiptapEditorHandle,
+  { content: unknown; onChange: (json: JSONContent) => void }
+>(function TiptapEditor({ content, onChange }, ref) {
   const [mode, setMode] = useState<"visual" | "code">("visual");
   const [htmlSource, setHtmlSource] = useState("");
   const [imagePickerOpen, setImagePickerOpen] = useState(false);
@@ -60,6 +65,33 @@ export function TiptapEditor({
     },
     onUpdate: ({ editor }) => onChange(editor.getJSON()),
   });
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      insertLink: (url, text) => {
+        if (!editor) return;
+        const { from, to, $from } = editor.state.selection;
+        if (from === to) {
+          // Without this, inserting right after existing text (e.g. the end
+          // of a sentence) runs the new link straight into it with no
+          // space — "enjoy.Complete Guide..." instead of "enjoy. Complete
+          // Guide...".
+          const charBefore = $from.nodeBefore?.isText ? $from.nodeBefore.text?.slice(-1) : undefined;
+          const needsLeadingSpace = Boolean(charBefore && !/\s/.test(charBefore));
+          let chain = editor.chain().focus();
+          if (needsLeadingSpace) chain = chain.insertContent(" ");
+          chain
+            .insertContent({ type: "text", text, marks: [{ type: "link", attrs: { href: url } }] })
+            .insertContent(" ")
+            .run();
+        } else {
+          editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+        }
+      },
+    }),
+    [editor],
+  );
 
   if (!editor) return null;
 
@@ -111,7 +143,7 @@ export function TiptapEditor({
       />
     </div>
   );
-}
+});
 
 function Toolbar({
   editor,

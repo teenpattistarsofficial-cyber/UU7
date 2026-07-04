@@ -83,6 +83,16 @@ export function getSeoChecklist({ title, slug, content, seo, featuredImageUrl }:
     },
     { key: "hasHeading", label: "Content has at least one heading", passed: hasHeading(content) },
     {
+      key: "singleH1",
+      label: "Only one H1 on the page (the post title) — no H1s in the body",
+      passed: hasNoH1InBody(content),
+    },
+    {
+      key: "headingHierarchy",
+      label: "Headings follow a proper H2 → H3 → H4 hierarchy (no skipped levels)",
+      passed: hasProperHeadingHierarchy(content),
+    },
+    {
       key: "wordCount",
       label: `Content is at least ${MIN_WORD_COUNT} words (currently ${wordCount})`,
       passed: wordCount >= MIN_WORD_COUNT,
@@ -110,14 +120,42 @@ export function computeSeoScore(args: ChecklistArgs): number {
 }
 
 function hasHeading(doc: JSONContent | null | undefined): boolean {
-  if (!doc) return false;
-  let found = false;
+  return collectHeadingLevels(doc).length > 0;
+}
+
+function collectHeadingLevels(doc: JSONContent | null | undefined): number[] {
+  const levels: number[] = [];
+  if (!doc) return levels;
   function walk(node: JSONContent) {
-    if (node.type === "heading") found = true;
+    if (node.type === "heading" && typeof node.attrs?.level === "number") levels.push(node.attrs.level);
     node.content?.forEach(walk);
   }
   walk(doc);
-  return found;
+  return levels;
+}
+
+// Guards against a heading landing at H1 despite the editor's H2-H4 cap
+// (e.g. imported/legacy content) — the post title is the page's only H1,
+// so any H1 inside the body would create a second one. Exported so the
+// publish gate (lib/actions/posts.ts) can hard-block on it, not just show
+// it as a checklist item.
+export function hasNoH1InBody(doc: JSONContent | null | undefined): boolean {
+  return !collectHeadingLevels(doc).some((level) => level === 1);
+}
+
+// Module 7 (Heading Structure Validator) — checks the body's headings never
+// skip a level on the way down. The page's title is the implicit H1 "root"
+// (level 1) that the first body heading nests under, so a body that opens
+// with an H3 (skipping H2) is flagged exactly like an H2 followed directly
+// by an H4 later on. Going back up to a shallower level is always fine —
+// only skipping deeper is a violation.
+export function hasProperHeadingHierarchy(doc: JSONContent | null | undefined): boolean {
+  let previous = 1;
+  for (const level of collectHeadingLevels(doc)) {
+    if (level > previous + 1) return false;
+    previous = level;
+  }
+  return true;
 }
 
 // The site's own host, used to tell an internal link (to uu7.io) apart from

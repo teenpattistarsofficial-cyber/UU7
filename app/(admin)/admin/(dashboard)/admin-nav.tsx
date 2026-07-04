@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, StickyNote, FolderTree, Users, Image as ImageIcon, HelpCircle } from "lucide-react";
+import { LayoutDashboard, FileText, StickyNote, FolderTree, Users, Image as ImageIcon, HelpCircle, ArrowRightLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const OVERVIEW_ITEMS = [{ href: "/admin", label: "Dashboard", icon: LayoutDashboard }];
@@ -14,6 +14,8 @@ const CONTENT_ITEMS = [
   { href: "/admin/authors", label: "Authors", icon: Users },
   { href: "/admin/media", label: "Media Library", icon: ImageIcon },
 ];
+
+const TOOLS_ITEMS = [{ href: "/admin/redirects", label: "Redirects", icon: ArrowRightLeft }];
 
 // Not built yet — FAQ Builder is Phase 4 per the implementation plan. Shown
 // greyed-out/non-clickable so the sidebar previews the roadmap honestly
@@ -59,6 +61,11 @@ export function AdminNav() {
             Soon
           </span>
         </div>
+      ))}
+
+      <NavSectionLabel>Tools</NavSectionLabel>
+      {TOOLS_ITEMS.map((item) => (
+        <NavLink key={item.href} {...item} active={isActive(item.href)} />
       ))}
     </nav>
   );
