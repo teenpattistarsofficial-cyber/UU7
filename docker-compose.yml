@@ -1,0 +1,88 @@
+# First deploy on a fresh VPS:
+#   1. docker compose up -d postgres
+#   2. docker compose --profile tools run --rm migrate
+#   3. docker compose up -d app nginx   # HTTP-only nginx config, no certs yet
+#   4. docker compose --profile tools run --rm certbot certonly --webroot \
+#        -w /var/www/certbot -d uu7.io -d www.uu7.io \
+#        --email you@example.com --agree-tos --no-eff-email
+#   5. Uncomment the HTTPS server block in nginx/conf.d/default.conf, and
+#      change the port-80 block to redirect to https instead of proxying.
+#   6. docker compose exec nginx nginx -s reload
+#
+# Every later deploy: rebuild + `docker compose --profile tools run --rm
+# migrate` (only if a new migration was generated) + `docker compose up -d`.
+#
+# Cert renewal after the above is just scripts/deploy/renew-cert.sh — put
+# that on the systemd timer in scripts/deploy/uu7-renew-cert.timer.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-uu7}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-uu7}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # Intentionally not published to the host — only the `app` service on
+    # this compose network can reach it.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-uu7}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env.production
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-uu7}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-uu7}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/public/uploads
+    # Not published to the host either — nginx is the only public ingress.
+
+  nginx:
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - certbot_webroot:/var/www/certbot
+      - certbot_certs:/etc/letsencrypt
+
+  # Both below are gated behind the "tools" profile so `docker compose up`
+  # never starts them — they're one-shot commands invoked explicitly
+  # per the bootstrap steps above (docker compose --profile tools run --rm ...).
+  certbot:
+    image: certbot/certbot
+    profiles: ["tools"]
+    volumes:
+      - certbot_webroot:/var/www/certbot
+      - certbot_certs:/etc/letsencrypt
+
+  migrate:
+    build:
+      context: .
+      target: migrate
+    profiles: ["tools"]
+    env_file: .env.production
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-uu7}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-uu7}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  uploads:
+  certbot_webroot:
+  certbot_certs:

@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { authors } from "@/lib/db/schema";
 import { requireRole } from "@/lib/auth/guards";
 import { slugify } from "@/lib/seo/slugify";
+import { invalidatePublicPaths } from "@/lib/cache/invalidate-public-paths";
 
 function parseAuthorForm(formData: FormData) {
   const displayName = String(formData.get("displayName") ?? "").trim();
@@ -42,23 +43,38 @@ function parseAuthorForm(formData: FormData) {
 
 export async function createAuthor(formData: FormData) {
   await requireRole("editor");
-  await db.insert(authors).values(parseAuthorForm(formData));
+  const values = parseAuthorForm(formData);
+  await db.insert(authors).values(values);
   revalidatePath("/admin/authors");
+  invalidatePublicPaths(["/authors"]);
   redirect("/admin/authors");
 }
 
 export async function updateAuthor(id: string, formData: FormData) {
   await requireRole("editor");
+  const values = parseAuthorForm(formData);
+  const existing = await db.query.authors.findFirst({ where: eq(authors.id, id) });
+
   await db
     .update(authors)
-    .set({ ...parseAuthorForm(formData), updatedAt: new Date() })
+    .set({ ...values, updatedAt: new Date() })
     .where(eq(authors.id, id));
+
   revalidatePath("/admin/authors");
+  const paths = ["/authors", `/authors/${values.slug}`];
+  if (existing && existing.slug !== values.slug) paths.push(`/authors/${existing.slug}`);
+  invalidatePublicPaths(paths);
+  // Not fanned out to every post by this author — the AuthorBox embedded
+  // there will pick up the change on its own hourly ISR ceiling instead.
   redirect("/admin/authors");
 }
 
 export async function deleteAuthor(id: string) {
   await requireRole("editor");
+  const existing = await db.query.authors.findFirst({ where: eq(authors.id, id) });
   await db.delete(authors).where(eq(authors.id, id));
   revalidatePath("/admin/authors");
+  const paths = ["/authors"];
+  if (existing) paths.push(`/authors/${existing.slug}`);
+  invalidatePublicPaths(paths);
 }

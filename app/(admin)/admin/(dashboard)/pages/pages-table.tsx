@@ -149,16 +149,23 @@ export function PagesTable({ rows }: { rows: PageRow[] }) {
                 </TableCell>
                 <TableCell className="px-4 py-3">
                   <div className="flex justify-end gap-1">
-                    {/* Generic CMS pages have no public rendering route yet
-                        (Phase 1 only wired hardcoded static routes like
-                        /about) — always disabled rather than linking to a
-                        page that would 404. */}
-                    <span
-                      className="flex size-8 items-center justify-center text-muted-foreground/30"
-                      title="Public page rendering isn't built yet"
-                    >
-                      <Eye className="size-4" />
-                    </span>
+                    {page.status === "published" ? (
+                      <Link
+                        href={`/${page.slug}`}
+                        target="_blank"
+                        className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                        title="View on site"
+                      >
+                        <Eye className="size-4" />
+                      </Link>
+                    ) : (
+                      <span
+                        className="flex size-8 items-center justify-center text-muted-foreground/30"
+                        title="Not published yet"
+                      >
+                        <Eye className="size-4" />
+                      </span>
+                    )}
                     <Link
                       href={`/admin/pages/${page.id}/edit`}
                       className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"

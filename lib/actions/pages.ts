@@ -8,6 +8,7 @@ import { pages, pageTemplateEnum, postStatusEnum, seoMeta } from "@/lib/db/schem
 import { requireRole } from "@/lib/auth/guards";
 import { slugify } from "@/lib/seo/slugify";
 import { toTiptapDoc } from "@/lib/editor/doc";
+import { invalidatePublicPaths } from "@/lib/cache/invalidate-public-paths";
 
 function parsePageForm(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
@@ -53,38 +54,58 @@ async function upsertSeoMeta(entityId: string, formData: FormData) {
     });
 }
 
+// Pages render either at their own literal route (about/contact/
+// responsible-gaming/editorial-policy) or, for any other slug, through the
+// [category] route's page fallback — revalidating both "/${slug}" and
+// "/sitemap.xml" covers either case with one call.
+function revalidatePublicPagePaths(slug: string) {
+  invalidatePublicPaths([`/${slug}`, "/sitemap.xml"]);
+}
+
 export async function createPage(formData: FormData) {
   await requireRole("editor");
-  const [{ id }] = await db.insert(pages).values(parsePageForm(formData)).returning({ id: pages.id });
+  const values = parsePageForm(formData);
+  const [{ id }] = await db.insert(pages).values(values).returning({ id: pages.id });
   await upsertSeoMeta(id, formData);
   revalidatePath("/admin/pages");
+  revalidatePublicPagePaths(values.slug);
   redirect("/admin/pages");
 }
 
 export async function updatePage(id: string, formData: FormData) {
   await requireRole("editor");
+  const values = parsePageForm(formData);
+  const existing = await db.query.pages.findFirst({ where: eq(pages.id, id) });
+
   await db
     .update(pages)
-    .set({ ...parsePageForm(formData), updatedAt: new Date() })
+    .set({ ...values, updatedAt: new Date() })
     .where(eq(pages.id, id));
   await upsertSeoMeta(id, formData);
+
   revalidatePath("/admin/pages");
+  revalidatePublicPagePaths(values.slug);
+  if (existing && existing.slug !== values.slug) revalidatePublicPagePaths(existing.slug);
   redirect("/admin/pages");
 }
 
 export async function deletePage(id: string) {
   await requireRole("editor");
+  const existing = await db.query.pages.findFirst({ where: eq(pages.id, id) });
   await db.delete(pages).where(eq(pages.id, id));
   await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "page"), eq(seoMeta.entityId, id)));
   revalidatePath("/admin/pages");
+  if (existing) revalidatePublicPagePaths(existing.slug);
 }
 
 export async function bulkDeletePages(ids: string[]) {
   await requireRole("editor");
   if (ids.length === 0) return;
+  const targets = await db.query.pages.findMany({ where: inArray(pages.id, ids) });
   await db.delete(pages).where(inArray(pages.id, ids));
   await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "page"), inArray(seoMeta.entityId, ids)));
   revalidatePath("/admin/pages");
+  for (const page of targets) revalidatePublicPagePaths(page.slug);
 }
 
 export async function bulkSetPageStatus(
@@ -93,6 +114,8 @@ export async function bulkSetPageStatus(
 ) {
   await requireRole("editor");
   if (ids.length === 0) return;
+  const targets = await db.query.pages.findMany({ where: inArray(pages.id, ids) });
   await db.update(pages).set({ status, updatedAt: new Date() }).where(inArray(pages.id, ids));
   revalidatePath("/admin/pages");
+  for (const page of targets) revalidatePublicPagePaths(page.slug);
 }

@@ -1,0 +1,8 @@
+[Unit]
+Description=uu7.io nightly database backup
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/uu7
+EnvironmentFile=/opt/uu7/.env.production
+ExecStart=/opt/uu7/scripts/deploy/backup-db.sh

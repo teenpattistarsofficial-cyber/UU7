@@ -30,6 +30,7 @@ const organizationSchema = buildOrganizationSchema({
   url: SITE_URL,
   logoUrl: `${SITE_URL}${encodeURI("/UU7.io logo.webp")}`,
   description: "Game guides, betting guides, bonus breakdowns, tutorials, and gaming statistics.",
+  areaServed: "India",
 });
 const websiteSchema = buildWebsiteSchema({ name: "UU7", url: SITE_URL });
 

@@ -9,6 +9,10 @@ import { buildPersonSchema } from "@/lib/seo/jsonld";
 import { SITE_URL } from "@/lib/site";
 import { JsonLd } from "@/components/article/json-ld";
 
+// Safety-net ISR ceiling — lib/actions/authors.ts already revalidates this
+// exact path on mutations; this is the fallback if one is missed.
+export const revalidate = 3600;
+
 export async function generateMetadata({
   params,
 }: {

@@ -1,14 +1,30 @@
 import type { Metadata } from "next";
+import { getPublishedPageBySlug } from "@/lib/pages/get-page";
+import { buildMetadata } from "@/lib/seo/metadata";
+import { CmsPageBody } from "@/components/site/cms-page";
 
-export const metadata: Metadata = { title: "Responsible Gaming" };
+const SLUG = "responsible-gaming";
+const FALLBACK_TITLE = "Responsible Gaming";
 
-export default function ResponsibleGamingPage() {
-  return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="mb-4 text-3xl font-semibold">Responsible Gaming</h1>
-      <p className="text-muted-foreground">
-        Safe play guidelines, age restrictions, and risk awareness content will be published here.
-      </p>
-    </div>
-  );
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const result = await getPublishedPageBySlug(SLUG);
+  if (!result) return { title: FALLBACK_TITLE };
+  return buildMetadata({ seo: result.seo, fallbackTitle: result.page.title, path: `/${SLUG}` });
+}
+
+export default async function ResponsibleGamingPage() {
+  const result = await getPublishedPageBySlug(SLUG);
+  if (!result) {
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-12">
+        <h1 className="mb-4 text-3xl font-semibold">{FALLBACK_TITLE}</h1>
+        <p className="text-muted-foreground">
+          Safe play guidelines, age restrictions, and risk awareness content will be published here.
+        </p>
+      </div>
+    );
+  }
+  return <CmsPageBody title={result.page.title} content={result.page.content} />;
 }

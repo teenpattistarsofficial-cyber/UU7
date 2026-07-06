@@ -37,6 +37,10 @@ import { AuthorBox } from "@/components/article/author-box";
 import { SourceCitations } from "@/components/article/source-citations";
 import { JsonLd } from "@/components/article/json-ld";
 
+// Safety-net ISR ceiling — lib/actions/posts.ts already revalidates this
+// exact path on publish/edit/delete; this is the fallback if one is missed.
+export const revalidate = 3600;
+
 // Full AEO/GEO article template (Phase 5): Quick Answer, AI Summary, ToC,
 // body content, Stats Tables, CTAs, FAQ, Author box, Related Posts, Source
 // Citations, and the combined JSON-LD graph. Everything except the manually

@@ -84,6 +84,14 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Public-site brand accent — same uu7stars.com orange used sparingly in
+     the admin theme (see the .admin-theme comment below), now also
+     available globally for the public site's own brand moments (hero,
+     header hover states) without touching --primary, which every existing
+     button/CTA block on the site already relies on staying neutral. */
+  --brand: oklch(0.705 0.213 47.604);
+  --brand-foreground: oklch(1 0 0);
 }
 
 .dark {
@@ -118,18 +126,26 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Same brand orange as :root — identical in both modes, matching how the
+     admin theme already treats this exact color (see .admin-theme below). */
+  --brand: oklch(0.705 0.213 47.604);
+  --brand-foreground: oklch(1 0 0);
 }
 
 /* Admin-only theme: solid white/dark cards (no glass/blur), neutral
    near-black/near-white primary buttons, and uu7stars.com's brand orange
    (#f97316 / Tailwind orange-500, pulled from its theme-color meta tag and
    CSS) reserved as a sparing accent — nav active state, focus rings, small
-   brand marks — rather than the dominant button color. Scoped to
-   `.admin-theme` so none of this leaks into the public site's own tokens.
-   The `--sidebar*` tokens are intentionally identical in both light and
-   dark (see `.admin-theme.dark` below, which does not redefine them) — the
-   sidebar is a fixed dark rail so it's always visually distinct from the
-   content area, whichever mode that's in. */
+   brand marks — rather than the dominant button color. Everything here
+   except `--brand`/`--brand-foreground` (now global, see :root/.dark above)
+   is scoped to `.admin-theme` so it doesn't leak into the public site's own
+   tokens — --primary/--accent/etc. below are admin-specific values, distinct
+   from the neutral public-site versions every existing public button/CTA
+   relies on. The `--sidebar*` tokens are intentionally identical in both
+   light and dark (see `.admin-theme.dark` below, which does not redefine
+   them) — the sidebar is a fixed dark rail so it's always visually distinct
+   from the content area, whichever mode that's in. */
 .admin-theme {
   --background: oklch(0.98 0.002 260);
   --foreground: oklch(0.16 0 0);
@@ -202,6 +218,21 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Slow autonomous "Ken Burns" drift for the hero image
+   (components/home/hero-visual.tsx) — always running, independent of the
+   mouse-tilt and scroll-parallax effects on that same image, which are
+   JS-driven transforms on separate wrapping layers so the two systems never
+   fight over one element's `transform` property. */
+@keyframes hero-zoom {
+  0%,
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.06) translate(-1%, -1%);
   }
 }
 

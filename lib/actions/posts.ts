@@ -19,6 +19,7 @@ import {
   postCtas,
   postStatsTables,
   media,
+  categories,
 } from "@/lib/db/schema";
 import { requireRole } from "@/lib/auth/guards";
 import { slugify } from "@/lib/seo/slugify";
@@ -26,6 +27,7 @@ import { estimateReadingTimeMinutes } from "@/lib/seo/reading-time";
 import { hasNoH1InBody, hasProperHeadingHierarchy } from "@/lib/seo/score";
 import { extractText } from "@/lib/editor/text";
 import { toTiptapDoc } from "@/lib/editor/doc";
+import { invalidatePublicPaths } from "@/lib/cache/invalidate-public-paths";
 
 // Module 7/9 hard gate — these two checks (plus missing alt text on an
 // uploaded featured image) block publishing outright rather than just
@@ -46,6 +48,24 @@ async function getPublishBlockers(content: JSONContent, featuredImageUrl: string
   }
 
   return blockers;
+}
+
+async function getCategorySlug(categoryId: string | null): Promise<string | null> {
+  if (!categoryId) return null;
+  const category = await db.query.categories.findFirst({ where: eq(categories.id, categoryId) });
+  return category?.slug ?? null;
+}
+
+// The public site reads posts straight from the DB with no fetch/tag-based
+// caching in play — Next's Full Route Cache is still eligible to freeze
+// these pages, so a publish/edit/delete needs to explicitly invalidate
+// every public path that could show stale content, not just the /admin
+// list. (Each page also carries its own `export const revalidate` ceiling
+// as a defense-in-depth fallback in case a path is ever missed here.)
+function revalidatePublicPostPaths(categorySlug: string | null, slug: string) {
+  const paths = ["/", "/sitemap.xml"];
+  if (categorySlug) paths.push(`/${categorySlug}`, `/${categorySlug}/${slug}`);
+  invalidatePublicPaths(paths);
 }
 
 function parsePostForm(formData: FormData) {
@@ -229,6 +249,7 @@ export async function createPost(formData: FormData) {
   await syncPostStatsTables(id, formData);
 
   revalidatePath("/admin/posts");
+  revalidatePublicPostPaths(await getCategorySlug(values.categoryId), values.slug);
   redirect("/admin/posts");
 }
 
@@ -260,22 +281,34 @@ export async function updatePost(id: string, formData: FormData) {
   await syncPostStatsTables(id, formData);
 
   revalidatePath("/admin/posts");
+  revalidatePublicPostPaths(await getCategorySlug(values.categoryId), values.slug);
+  // Slug/category changed — the old public URL is now orphaned but may
+  // still be sitting in the route cache serving stale "still exists" HTML.
+  if (existing && (existing.slug !== values.slug || existing.categoryId !== values.categoryId)) {
+    revalidatePublicPostPaths(await getCategorySlug(existing.categoryId), existing.slug);
+  }
   redirect("/admin/posts");
 }
 
 export async function deletePost(id: string) {
   await requireRole("editor");
+  const existing = await db.query.posts.findFirst({ where: eq(posts.id, id) });
   await db.delete(posts).where(eq(posts.id, id));
   await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "post"), eq(seoMeta.entityId, id)));
   revalidatePath("/admin/posts");
+  if (existing) revalidatePublicPostPaths(await getCategorySlug(existing.categoryId), existing.slug);
 }
 
 export async function bulkDeletePosts(ids: string[]) {
   await requireRole("editor");
   if (ids.length === 0) return;
+  const targets = await db.query.posts.findMany({ where: inArray(posts.id, ids) });
   await db.delete(posts).where(inArray(posts.id, ids));
   await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "post"), inArray(seoMeta.entityId, ids)));
   revalidatePath("/admin/posts");
+  for (const post of targets) {
+    revalidatePublicPostPaths(await getCategorySlug(post.categoryId), post.slug);
+  }
 }
 
 export async function bulkSetPostStatus(
@@ -285,8 +318,8 @@ export async function bulkSetPostStatus(
   await requireRole("editor");
   if (ids.length === 0) return;
 
+  const targets = await db.query.posts.findMany({ where: inArray(posts.id, ids) });
   if (status === "published") {
-    const targets = await db.query.posts.findMany({ where: inArray(posts.id, ids) });
     for (const post of targets) {
       const blockers = await getPublishBlockers(toTiptapDoc(post.content), post.featuredImageUrl);
       if (blockers.length > 0) {
@@ -300,4 +333,7 @@ export async function bulkSetPostStatus(
     .set({ status, updatedAt: new Date(), ...(status === "published" ? { publishedAt: new Date() } : {}) })
     .where(inArray(posts.id, ids));
   revalidatePath("/admin/posts");
+  for (const post of targets) {
+    revalidatePublicPostPaths(await getCategorySlug(post.categoryId), post.slug);
+  }
 }

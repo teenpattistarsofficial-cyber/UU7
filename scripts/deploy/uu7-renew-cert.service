@@ -1,0 +1,7 @@
+[Unit]
+Description=Renew uu7.io TLS certificate and reload nginx
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/uu7
+ExecStart=/opt/uu7/scripts/deploy/renew-cert.sh

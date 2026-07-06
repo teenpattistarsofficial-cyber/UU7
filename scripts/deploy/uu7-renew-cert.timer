@@ -1,0 +1,10 @@
+[Unit]
+Description=Check uu7.io TLS certificate for renewal twice daily
+
+[Timer]
+OnCalendar=*-*-* 00,12:00:00
+Persistent=true
+RandomizedDelaySec=1h
+
+[Install]
+WantedBy=timers.target

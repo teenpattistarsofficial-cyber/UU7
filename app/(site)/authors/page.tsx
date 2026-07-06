@@ -4,6 +4,12 @@ import { db } from "@/lib/db";
 
 export const metadata: Metadata = { title: "Authors" };
 
+// This route has no params, so without `force-dynamic` Next would try to
+// statically prerender it (including at `next build` time, requiring a
+// live DATABASE_URL in the Docker build). lib/actions/authors.ts already
+// revalidates this path on mutations for immediacy.
+export const dynamic = "force-dynamic";
+
 export default async function AuthorsDirectoryPage() {
   const rows = await db.query.authors.findMany({ orderBy: (a, { asc }) => asc(a.displayName) });
 

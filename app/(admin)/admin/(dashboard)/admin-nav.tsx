@@ -2,7 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, StickyNote, FolderTree, Users, Image as ImageIcon, HelpCircle, ArrowRightLeft } from "lucide-react";
+import {
+  LayoutDashboard,
+  FileText,
+  StickyNote,
+  FolderTree,
+  Users,
+  Image as ImageIcon,
+  HelpCircle,
+  ArrowRightLeft,
+  BarChart3,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const OVERVIEW_ITEMS = [{ href: "/admin", label: "Dashboard", icon: LayoutDashboard }];
@@ -14,6 +24,8 @@ const CONTENT_ITEMS = [
   { href: "/admin/authors", label: "Authors", icon: Users },
   { href: "/admin/media", label: "Media Library", icon: ImageIcon },
 ];
+
+const REPORTS_ITEMS = [{ href: "/admin/analytics", label: "Analytics", icon: BarChart3 }];
 
 const TOOLS_ITEMS = [{ href: "/admin/redirects", label: "Redirects", icon: ArrowRightLeft }];
 
@@ -61,6 +73,11 @@ export function AdminNav() {
             Soon
           </span>
         </div>
+      ))}
+
+      <NavSectionLabel>Reports</NavSectionLabel>
+      {REPORTS_ITEMS.map((item) => (
+        <NavLink key={item.href} {...item} active={isActive(item.href)} />
       ))}
 
       <NavSectionLabel>Tools</NavSectionLabel>

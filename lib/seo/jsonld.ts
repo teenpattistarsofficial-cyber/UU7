@@ -91,11 +91,17 @@ export function buildOrganizationSchema({
   url,
   logoUrl,
   description,
+  areaServed,
 }: {
   name: string;
   url: string;
   logoUrl?: string | null;
   description?: string | null;
+  /** ISO 3166-1 alpha-2 country code (e.g. "IN") — a content/geo signal for
+   * crawlers and AI systems, distinct from Search Console's own country
+   * targeting setting, which is a separate, account-level configuration
+   * step (see docs/seo-content-strategy-plan.md). */
+  areaServed?: string | null;
 }) {
   return {
     "@type": "Organization",
@@ -103,6 +109,7 @@ export function buildOrganizationSchema({
     url,
     logo: logoUrl || undefined,
     description: description || undefined,
+    areaServed: areaServed ? { "@type": "Country", name: areaServed } : undefined,
   };
 }
 

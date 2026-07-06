@@ -1,31 +1,55 @@
 import Link from "next/link";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { categories, posts } from "@/lib/db/schema";
+import { getPublishedPageBySlug } from "@/lib/pages/get-page";
+import { buildMetadata } from "@/lib/seo/metadata";
+import { CmsPageBody } from "@/components/site/cms-page";
+
+// Safety-net ISR ceiling — lib/actions/posts.ts and lib/actions/categories.ts
+// already revalidate this path on relevant mutations; this is the fallback.
+export const revalidate = 3600;
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ category: string }>;
 }): Promise<Metadata> {
-  const { category: categorySlug } = await params;
-  const category = await db.query.categories.findFirst({ where: eq(categories.slug, categorySlug) });
-  return { title: category?.name ?? "Category" };
+  const { category: slug } = await params;
+  const category = await db.query.categories.findFirst({ where: eq(categories.slug, slug) });
+  if (category) return { title: category.name };
+
+  // A category and a CMS page share this same single-segment URL space
+  // (categories own the four hardcoded slugs — about/contact/
+  // responsible-gaming/editorial-policy — via their own literal routes,
+  // which Next resolves before ever reaching this dynamic one; this branch
+  // only ever sees custom page slugs).
+  const pageResult = await getPublishedPageBySlug(slug);
+  if (pageResult) {
+    return buildMetadata({ seo: pageResult.seo, fallbackTitle: pageResult.page.title, path: `/${slug}` });
+  }
+
+  return { title: "Not found" };
 }
 
-export default async function CategoryArchivePage({
+export default async function CategoryOrPageRoute({
   params,
 }: {
   params: Promise<{ category: string }>;
 }) {
-  const { category: categorySlug } = await params;
-  const category = await db.query.categories.findFirst({ where: eq(categories.slug, categorySlug) });
-  if (!category) notFound();
+  const { category: slug } = await params;
+  const category = await db.query.categories.findFirst({ where: eq(categories.slug, slug) });
+
+  if (!category) {
+    const pageResult = await getPublishedPageBySlug(slug);
+    if (!pageResult) notFound();
+    return <CmsPageBody title={pageResult.page.title} content={pageResult.page.content} />;
+  }
 
   const categoryPosts = await db.query.posts.findMany({
-    where: eq(posts.categoryId, category.id),
+    where: and(eq(posts.categoryId, category.id), eq(posts.status, "published")),
     orderBy: (p, { desc }) => desc(p.publishedAt),
   });
 

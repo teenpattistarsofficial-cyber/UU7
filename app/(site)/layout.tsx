@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/layout/header";
 import { SiteFooter } from "@/components/layout/footer";
+import { AskAiWidget } from "@/components/ask-ai/chat-widget";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,6 +8,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <SiteHeader />
       <div className="flex-1">{children}</div>
       <SiteFooter />
+      <AskAiWidget />
     </div>
   );
 }
