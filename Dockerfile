@@ -13,7 +13,7 @@ WORKDIR /app
 # doesn't change, independent of source-code edits ----
 FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --trust-lockfile --ignore-scripts
 
 # ---- builder: compile the Next.js app ----
 FROM base AS builder
@@ -25,7 +25,7 @@ COPY . .
 # live database connection — see the comments on those files. If this build
 # ever fails demanding a live DB, that means a new route regressed that
 # invariant, not that this Dockerfile is missing a secret.
-RUN pnpm build
+RUN npx next build
 
 # ---- migrate: one-off container for `drizzle-kit migrate` against the
 # production DB. Not started by `docker compose up` — run explicitly
@@ -34,7 +34,7 @@ RUN pnpm build
 # already has the full source tree and devDependencies (drizzle-kit isn't
 # in the pruned `standalone` output the runner stage uses). ----
 FROM builder AS migrate
-CMD ["pnpm", "db:migrate"]
+CMD ["npx", "drizzle-kit", "migrate"]
 
 # ---- runner: minimal runtime image ----
 FROM base AS runner

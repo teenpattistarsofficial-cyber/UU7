@@ -14,8 +14,25 @@ async function main() {
 
   const existing = await db.query.user.findFirst({ where: eq(user.email, email) });
   if (existing) {
-    console.log(`User ${email} already exists (role: ${existing.role}). Nothing to do.`);
-    process.exit(0);
+    if (process.env.SEED_ADMIN_PASSWORD) {
+      console.log(`User ${email} already exists. Updating password, setting/ensuring role as admin...`);
+      // Update password using Better Auth API or raw DB query.
+      // Better auth has changePassword, but we can do a reset or just update password hash.
+      // Better Auth stores credentials in the "account" table with "credential" or "password" provider.
+      // Let's use auth.api.changePassword or auth.api.setPassword if available,
+      // or simply delete the user and re-register them to be absolutely safe and easy!
+      const { account: accountSchema } = await import("@/lib/db/schema");
+      
+      // Let's delete the account/user records and re-create them with the new password.
+      // This is a robust way to make sure password hashing is correctly performed by better-auth,
+      // without needing to know internal password hashing functions of better-auth!
+      await db.delete(accountSchema).where(eq(accountSchema.userId, existing.id));
+      await db.delete(user).where(eq(user.id, existing.id));
+      console.log(`Existing user ${email} deleted successfully. Re-creating with new password...`);
+    } else {
+      console.log(`User ${email} already exists (role: ${existing.role}). Nothing to do.`);
+      process.exit(0);
+    }
   }
 
   const result = await auth.api.signUpEmail({

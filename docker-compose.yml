@@ -23,6 +23,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-uu7}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB:-uu7}
+    ports:
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     # Intentionally not published to the host — only the `app` service on
@@ -42,6 +44,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    # If deploying on an aaPanel / cPanel server (which occupied ports 80/443),
+    # uncomment the `ports` block below to expose Next.js to localhost:3006
+    # so aaPanel's built-in Nginx can reverse-proxy to it.
+    ports:
+      - "127.0.0.1:3006:3000"
     volumes:
       - uploads:/app/public/uploads
     # Not published to the host either — nginx is the only public ingress.
@@ -77,6 +84,7 @@ services:
     env_file: .env.production
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER:-uu7}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-uu7}
+    entrypoint: ["npx", "drizzle-kit", "migrate"]
     depends_on:
       postgres:
         condition: service_healthy
