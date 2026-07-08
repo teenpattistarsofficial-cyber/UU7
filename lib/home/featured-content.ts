@@ -1,7 +1,8 @@
 import "server-only";
-import { and, eq, inArray } from "drizzle-orm";
+import { and, desc, eq, inArray } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { posts, categories, postFaqs } from "@/lib/db/schema";
+import { POST_SUMMARY_COLUMNS, toPostSummary, type PostSummary } from "@/lib/posts/post-summary";
 
 // Curated pillar posts for the homepage's Featured Guides / Popular Games
 // sections — a plain hardcoded list of slugs rather than a `featured` DB
@@ -29,22 +30,16 @@ const POPULAR_GAME_SLUGS = [
   "live-casino-guide",
 ];
 
-export type FeaturedPost = {
-  id: string;
-  title: string;
-  excerpt: string | null;
-  url: string;
-};
+// Re-exported under this homepage-specific name since every home/*
+// component already imports `FeaturedPost` from here — the underlying
+// shape (lib/posts/post-summary.ts) is shared more broadly now (category
+// listing, related posts, author articles), but renaming every existing
+// import for a cosmetic reason isn't worth the churn.
+export type { PostSummary as FeaturedPost } from "@/lib/posts/post-summary";
 
 async function loadPublishedPillars(slugs: string[]) {
   const rows = await db
-    .select({
-      id: posts.id,
-      title: posts.title,
-      excerpt: posts.excerpt,
-      slug: posts.slug,
-      categorySlug: categories.slug,
-    })
+    .select(POST_SUMMARY_COLUMNS)
     .from(posts)
     .leftJoin(categories, eq(posts.categoryId, categories.id))
     .where(and(inArray(posts.slug, slugs), eq(posts.status, "published")));
@@ -55,17 +50,35 @@ async function loadPublishedPillars(slugs: string[]) {
   // already apply to posts without a category).
   return slugs
     .map((slug) => bySlug.get(slug))
-    .filter((r): r is NonNullable<typeof r> & { categorySlug: string } => Boolean(r?.categorySlug));
+    .filter((r): r is NonNullable<typeof r> & { categorySlug: string; categoryName: string } =>
+      Boolean(r?.categorySlug),
+    );
 }
 
-export async function getFeaturedGuides(): Promise<FeaturedPost[]> {
+export async function getFeaturedGuides(): Promise<PostSummary[]> {
   const rows = await loadPublishedPillars(FEATURED_PILLAR_SLUGS);
-  return rows.map((r) => ({ id: r.id, title: r.title, excerpt: r.excerpt, url: `/${r.categorySlug}/${r.slug}` }));
+  return rows.map(toPostSummary);
 }
 
-export async function getPopularGames(): Promise<FeaturedPost[]> {
+export async function getPopularGames(): Promise<PostSummary[]> {
   const rows = await loadPublishedPillars(POPULAR_GAME_SLUGS);
-  return rows.map((r) => ({ id: r.id, title: r.title, excerpt: r.excerpt, url: `/${r.categorySlug}/${r.slug}` }));
+  return rows.map(toPostSummary);
+}
+
+/** Most-recently-published posts site-wide, regardless of pillar-curation
+ * status — unlike the two functions above, this isn't limited to the
+ * hand-picked slug lists, so it's what actually reflects "we just shipped
+ * this" on the homepage. */
+export async function getLatestPosts(limit = 6): Promise<PostSummary[]> {
+  const rows = await db
+    .select(POST_SUMMARY_COLUMNS)
+    .from(posts)
+    .leftJoin(categories, eq(posts.categoryId, categories.id))
+    .where(eq(posts.status, "published"))
+    .orderBy(desc(posts.publishedAt))
+    .limit(limit);
+
+  return rows.filter((r): r is typeof r & { categorySlug: string; categoryName: string } => Boolean(r.categorySlug)).map(toPostSummary);
 }
 
 /** Pulls FAQ entries straight from whichever featured pillars are actually

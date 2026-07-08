@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { Info } from "lucide-react";
 import { getPublishedPageBySlug } from "@/lib/pages/get-page";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { CmsPageBody } from "@/components/site/cms-page";
+import { PagePlaceholder } from "@/components/site/page-placeholder";
 
 const SLUG = "about";
 const FALLBACK_TITLE = "About UU7";
@@ -24,13 +26,15 @@ export default async function AboutPage() {
   const result = await getPublishedPageBySlug(SLUG);
   if (!result) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12">
-        <h1 className="mb-4 text-3xl font-semibold">{FALLBACK_TITLE}</h1>
-        <p className="text-muted-foreground">
-          Our mission, educational purpose, and editorial methodology will be published here.
-        </p>
-      </div>
+      <PagePlaceholder
+        eyebrow="Who we are"
+        icon={Info}
+        title={FALLBACK_TITLE}
+        description="Our mission, educational purpose, and editorial methodology will be published here."
+      />
     );
   }
-  return <CmsPageBody title={result.page.title} content={result.page.content} />;
+  return (
+    <CmsPageBody title={result.page.title} content={result.page.content} eyebrow="Who we are" icon={Info} showCta />
+  );
 }

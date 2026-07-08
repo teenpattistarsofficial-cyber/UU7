@@ -50,6 +50,13 @@
       "when": 1783329100669,
       "tag": "0006_outstanding_james_howlett",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1783419836344,
+      "tag": "0007_skinny_obadiah_stane",
+      "breakpoints": true
     }
   ]
 }

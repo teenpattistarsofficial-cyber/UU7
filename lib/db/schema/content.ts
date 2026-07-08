@@ -68,6 +68,11 @@ export const pages = pgTable("pages", {
   content: jsonb("content"),
   status: postStatusEnum("status").notNull().default("draft"),
   template: pageTemplateEnum("template").notNull().default("default"),
+  // Soft-delete: non-null means "in Trash". A separate column from `status`
+  // (rather than a 5th enum value) since a trashed page still needs to
+  // remember what it was before deletion — e.g. restoring a page that was
+  // `published` should bring it back `published`, not reset to `draft`.
+  deletedAt: timestamp("deleted_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -89,6 +94,10 @@ export const posts = pgTable("posts", {
   // Plain URL for now — becomes a `media` FK in Phase 3.
   featuredImageUrl: text("featured_image_url"),
   readingTimeMinutes: integer("reading_time_minutes"),
+  // Soft-delete: non-null means "in Trash" — see the matching column on
+  // `pages` above for why this is a separate nullable timestamp rather than
+  // a status value.
+  deletedAt: timestamp("deleted_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

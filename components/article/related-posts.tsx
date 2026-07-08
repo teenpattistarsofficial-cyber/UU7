@@ -1,26 +1,24 @@
-import Link from "next/link";
+import type { PostSummary } from "@/lib/posts/post-summary";
+import { PostCard } from "@/components/home/post-card";
 
 /** Module 8's public surface — manual pins if the editor set any, otherwise
  * the same in-process scoring heuristic used by the Internal Linking
- * Assistant (see lib/seo/related.ts), computed by the caller either way. */
-export function RelatedPosts({ posts }: { posts: { title: string; url: string }[] }) {
+ * Assistant (see lib/seo/related.ts). The caller (the article page) does
+ * the scoring/pin resolution and a second query for full card data
+ * (lib/posts/post-summary.ts) — this component just renders the same
+ * `PostCard` grid the homepage uses, instead of the plain title-only links
+ * it used to be. */
+export function RelatedPosts({ posts }: { posts: PostSummary[] }) {
   if (posts.length === 0) return null;
 
   return (
     <section className="mt-10 border-t border-border pt-8">
       <h2 className="mb-4 text-xl font-semibold">Related Reading</h2>
-      <ul className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-2">
         {posts.map((post) => (
-          <li key={post.url}>
-            <Link
-              href={post.url}
-              className="block rounded-lg border border-border p-3 text-sm font-medium hover:border-foreground/30 hover:bg-muted/50"
-            >
-              {post.title}
-            </Link>
-          </li>
+          <PostCard key={post.id} post={post} />
         ))}
-      </ul>
+      </div>
     </section>
   );
 }

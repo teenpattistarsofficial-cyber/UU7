@@ -290,11 +290,15 @@ export async function updatePost(id: string, formData: FormData) {
   redirect("/admin/posts");
 }
 
+// Soft-delete — moves the post to Trash rather than removing it, so an
+// accidental delete (the whole reason this replaced a hard `db.delete`) is
+// recoverable. The row (and its FAQs/CTAs/stats-tables/SEO meta, none of
+// which were ever touched by this function) stays intact; only the public
+// site treats it as gone, via `revalidatePublicPostPaths`.
 export async function deletePost(id: string) {
   await requireRole("editor");
   const existing = await db.query.posts.findFirst({ where: eq(posts.id, id) });
-  await db.delete(posts).where(eq(posts.id, id));
-  await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "post"), eq(seoMeta.entityId, id)));
+  await db.update(posts).set({ deletedAt: new Date() }).where(eq(posts.id, id));
   revalidatePath("/admin/posts");
   if (existing) revalidatePublicPostPaths(await getCategorySlug(existing.categoryId), existing.slug);
 }
@@ -303,12 +307,48 @@ export async function bulkDeletePosts(ids: string[]) {
   await requireRole("editor");
   if (ids.length === 0) return;
   const targets = await db.query.posts.findMany({ where: inArray(posts.id, ids) });
-  await db.delete(posts).where(inArray(posts.id, ids));
-  await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "post"), inArray(seoMeta.entityId, ids)));
+  await db.update(posts).set({ deletedAt: new Date() }).where(inArray(posts.id, ids));
   revalidatePath("/admin/posts");
   for (const post of targets) {
     revalidatePublicPostPaths(await getCategorySlug(post.categoryId), post.slug);
   }
+}
+
+export async function restorePost(id: string) {
+  await requireRole("editor");
+  const existing = await db.query.posts.findFirst({ where: eq(posts.id, id) });
+  await db.update(posts).set({ deletedAt: null }).where(eq(posts.id, id));
+  revalidatePath("/admin/posts");
+  if (existing) revalidatePublicPostPaths(await getCategorySlug(existing.categoryId), existing.slug);
+}
+
+export async function bulkRestorePosts(ids: string[]) {
+  await requireRole("editor");
+  if (ids.length === 0) return;
+  const targets = await db.query.posts.findMany({ where: inArray(posts.id, ids) });
+  await db.update(posts).set({ deletedAt: null }).where(inArray(posts.id, ids));
+  revalidatePath("/admin/posts");
+  for (const post of targets) {
+    revalidatePublicPostPaths(await getCategorySlug(post.categoryId), post.slug);
+  }
+}
+
+// The actual, irreversible `db.delete` — gated at "admin" rather than
+// "editor" (every other action in this file) since there's no more Trash
+// safety net past this point. Only reachable from the Trash tab.
+export async function permanentlyDeletePost(id: string) {
+  await requireRole("admin");
+  await db.delete(posts).where(eq(posts.id, id));
+  await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "post"), eq(seoMeta.entityId, id)));
+  revalidatePath("/admin/posts");
+}
+
+export async function bulkPermanentlyDeletePosts(ids: string[]) {
+  await requireRole("admin");
+  if (ids.length === 0) return;
+  await db.delete(posts).where(inArray(posts.id, ids));
+  await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "post"), inArray(seoMeta.entityId, ids)));
+  revalidatePath("/admin/posts");
 }
 
 export async function bulkSetPostStatus(

@@ -221,18 +221,49 @@
   }
 }
 
-/* Slow autonomous "Ken Burns" drift for the hero image
-   (components/home/hero-visual.tsx) — always running, independent of the
-   mouse-tilt and scroll-parallax effects on that same image, which are
-   JS-driven transforms on separate wrapping layers so the two systems never
-   fight over one element's `transform` property. */
-@keyframes hero-zoom {
-  0%,
-  100% {
-    transform: scale(1) translate(0, 0);
+/* Staggered entrance animation for the hero (components/home/hero.tsx):
+   headline lines blur-rise in one after another, then the search bar and
+   supporting copy fade up — each element sets its own animation-delay
+   inline so the sequence reads top-to-bottom. */
+@keyframes hero-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(12px);
   }
-  50% {
-    transform: scale(1.06) translate(-1%, -1%);
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+@keyframes hero-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-anim {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-reveal {
+  animation-name: hero-reveal;
+  animation-duration: 1.1s;
+}
+.hero-fade {
+  animation-name: hero-fade-up;
+  animation-duration: 1s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim {
+    animation: none;
+    opacity: 1;
   }
 }
 

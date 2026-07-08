@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { Mail } from "lucide-react";
 import { getPublishedPageBySlug } from "@/lib/pages/get-page";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { CmsPageBody } from "@/components/site/cms-page";
+import { PagePlaceholder } from "@/components/site/page-placeholder";
 
 const SLUG = "contact";
 const FALLBACK_TITLE = "Contact";
@@ -18,11 +20,13 @@ export default async function ContactPage() {
   const result = await getPublishedPageBySlug(SLUG);
   if (!result) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12">
-        <h1 className="mb-4 text-3xl font-semibold">{FALLBACK_TITLE}</h1>
-        <p className="text-muted-foreground">A contact form lands here in a later phase.</p>
-      </div>
+      <PagePlaceholder
+        eyebrow="Get in touch"
+        icon={Mail}
+        title={FALLBACK_TITLE}
+        description="A contact form lands here in a later phase."
+      />
     );
   }
-  return <CmsPageBody title={result.page.title} content={result.page.content} />;
+  return <CmsPageBody title={result.page.title} content={result.page.content} eyebrow="Get in touch" icon={Mail} />;
 }

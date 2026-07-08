@@ -18,6 +18,7 @@ const STATUS_TABS = [
   { value: "draft", label: "Draft", icon: STATUS_ICONS.draft },
   { value: "scheduled", label: "Scheduled", icon: STATUS_ICONS.scheduled },
   { value: "archived", label: "Archived", icon: STATUS_ICONS.archived },
+  { value: "trash", label: "Trash", icon: STATUS_ICONS.trash },
 ];
 
 const RANGE_OPTIONS = [
@@ -52,19 +53,23 @@ export default async function PostsPage({
     tagsByPostId.set(row.postId, [...(tagsByPostId.get(row.postId) ?? []), row.name]);
   }
 
+  const live = allPosts.filter((p) => !p.deletedAt);
+  const trashed = allPosts.filter((p) => p.deletedAt);
+
   const counts = {
-    all: allPosts.length,
-    published: allPosts.filter((p) => p.status === "published").length,
-    draft: allPosts.filter((p) => p.status === "draft").length,
-    scheduled: allPosts.filter((p) => p.status === "scheduled").length,
-    archived: allPosts.filter((p) => p.status === "archived").length,
+    all: live.length,
+    published: live.filter((p) => p.status === "published").length,
+    draft: live.filter((p) => p.status === "draft").length,
+    scheduled: live.filter((p) => p.status === "scheduled").length,
+    archived: live.filter((p) => p.status === "archived").length,
+    trash: trashed.length,
   };
 
   const cutoff = RANGE_DAYS[range] ? Date.now() - RANGE_DAYS[range] * 24 * 60 * 60 * 1000 : null;
   const needle = q.trim().toLowerCase();
 
-  const rows: PostRow[] = allPosts
-    .filter((p) => status === "all" || p.status === status)
+  const rows: PostRow[] = (status === "trash" ? trashed : live)
+    .filter((p) => status === "trash" || status === "all" || p.status === status)
     .filter((p) => !cutoff || p.updatedAt.getTime() >= cutoff)
     .filter((p) => {
       if (!needle) return true;
@@ -77,6 +82,7 @@ export default async function PostsPage({
       title: p.title,
       slug: p.slug,
       status: p.status,
+      deletedAt: p.deletedAt,
       featuredImageUrl: p.featuredImageUrl,
       categoryName: p.categoryId ? (categoryById.get(p.categoryId)?.name ?? null) : null,
       categorySlug: p.categoryId ? (categoryById.get(p.categoryId)?.slug ?? null) : null,
@@ -104,8 +110,12 @@ export default async function PostsPage({
     <div>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">All Posts</h1>
-          <p className="mt-1 text-muted-foreground">Manage, edit, or delete your blog content.</p>
+          <h1 className="text-3xl font-bold">{status === "trash" ? "Trash" : "All Posts"}</h1>
+          <p className="mt-1 text-muted-foreground">
+            {status === "trash"
+              ? "Posts moved to Trash — restore them or delete permanently."
+              : "Manage, edit, or delete your blog content."}
+          </p>
         </div>
         <Link href="/admin/posts/new" className={cn(buttonVariants({ size: "lg" }), "gap-1.5 rounded-full")}>
           <Plus className="size-4" />
@@ -152,7 +162,7 @@ export default async function PostsPage({
         </form>
       </div>
 
-      <PostsTable rows={rows} />
+      <PostsTable rows={rows} isTrashView={status === "trash"} />
     </div>
   );
 }

@@ -1,6 +1,9 @@
 import { eq, and } from "drizzle-orm";
 import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 import type { Metadata } from "next";
+import { Clock } from "lucide-react";
 import { db } from "@/lib/db";
 import {
   posts,
@@ -21,11 +24,15 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { buildFaqSchema, buildArticleSchema, buildBreadcrumbSchema, buildPersonSchema } from "@/lib/seo/jsonld";
 import { getPublishedPostCandidates } from "@/lib/seo/related-candidates";
 import { scoreRelatedPosts } from "@/lib/seo/related";
+import { getPostSummariesByIds } from "@/lib/posts/post-summary";
+import { getCategoryMeta } from "@/lib/site-categories";
 import { renderContentHtml } from "@/lib/editor/render";
 import { toTiptapDoc } from "@/lib/editor/doc";
 import { extractHeadings, injectHeadingIds } from "@/lib/editor/toc";
 import { extractCitations } from "@/lib/editor/citations";
 import { SITE_URL } from "@/lib/site";
+import { AuthorAvatar } from "@/components/site/author-avatar";
+import { Breadcrumb } from "@/components/site/breadcrumb";
 import { QuickAnswerBlock } from "@/components/article/quick-answer-block";
 import { AiSummaryBlock } from "@/components/article/ai-summary-block";
 import { TableOfContents } from "@/components/article/table-of-contents";
@@ -112,19 +119,21 @@ export default async function ArticlePage({
 
   // Manual pins if the editor set any; otherwise the same scoring
   // heuristic the Internal Linking Assistant uses, computed live off the
-  // published set rather than a precomputed table.
+  // published set rather than a precomputed table. Only the ids are taken
+  // from this pass — full card data (image/excerpt/reading time) for the
+  // final short list comes from a second, cheap query below, so the
+  // candidate-scoring query itself doesn't need to carry that payload for
+  // every published post on the site.
   const candidates = await getPublishedPostCandidates(post.id);
-  const relatedPosts =
+  const relatedPostIds =
     relatedPins.length > 0
-      ? relatedPins
-          .map((pin) => candidates.find((c) => c.id === pin.relatedPostId))
-          .filter((c): c is NonNullable<typeof c> => Boolean(c))
-          .map((c) => ({ title: c.title, url: `/${c.categorySlug}/${c.slug}` }))
+      ? relatedPins.map((pin) => pin.relatedPostId).filter((id) => candidates.some((c) => c.id === id))
       : scoreRelatedPosts(
           { id: post.id, title: post.title, categoryId: post.categoryId, tagNames: currentTagRows.map((t) => t.name) },
           candidates,
           3,
-        ).map((c) => ({ title: c.title, url: `/${c.categorySlug}/${c.slug}` }));
+        ).map((c) => c.id);
+  const relatedPosts = await getPostSummariesByIds(relatedPostIds);
 
   const faqs = faqRows.map((f) => ({ question: f.question, answer: f.answer }));
   const postDoc = toTiptapDoc(post.content);
@@ -164,51 +173,117 @@ export default async function ArticlePage({
       : [{ name: "Home", url: SITE_URL }, { name: post.title, url: articleUrl }],
   );
 
+  const category_ = category ? getCategoryMeta(category.slug, category.name) : null;
+  const CategoryIcon = category_?.icon;
+
   return (
-    <article className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="mb-2 text-3xl font-semibold">{post.title}</h1>
-      <div className="mb-8 text-sm text-muted-foreground">
-        {author && <span>{author.displayName}</span>}
-        {post.publishedAt && (
-          <span> · {new Date(post.publishedAt).toLocaleDateString()}</span>
-        )}
-        {post.readingTimeMinutes && <span> · {post.readingTimeMinutes} min read</span>}
-      </div>
-
-      <QuickAnswerBlock text={quickAnswerRow?.text ?? ""} />
-      <AiSummaryBlock summary={aiSummaryRow?.summary ?? ""} takeaways={keyTakeawayRows.map((k) => k.text)} />
-      <TableOfContents headings={headings} />
-
-      <div
-        className="prose prose-neutral max-w-none dark:prose-invert"
-        // Safe: content is authored exclusively by authenticated admin/editor
-        // roles through the Tiptap editor, never from public user input.
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-
-      {statsTableRows.map((t) => (
-        <StatsTable key={t.id} title={t.title} columns={t.columns} rows={t.rows} />
-      ))}
-
-      {ctaRows.map((c) => (
-        <CtaBlock key={c.id} heading={c.heading} description={c.description} buttonText={c.buttonText} buttonUrl={c.buttonUrl} />
-      ))}
-
-      <FaqSection faqs={faqs} />
-      {author && (
-        <AuthorBox
-          displayName={author.displayName}
-          slug={author.slug}
-          avatarUrl={author.avatarUrl}
-          roleTitle={author.roleTitle}
-          bio={author.bio}
-          expertiseTags={author.expertiseTags}
-          socialLinks={author.socialLinks}
+    <article>
+      <div className="mx-auto max-w-3xl px-4 py-10 sm:py-12">
+        <Breadcrumb
+          items={[
+            { label: "Home", href: "/" },
+            ...(category_ ? [{ label: category_.label, href: `/${category_.slug}` }] : []),
+            { label: post.title },
+          ]}
         />
-      )}
-      <RelatedPosts posts={relatedPosts} />
-      <SourceCitations citations={citations} />
-      <JsonLd blocks={[articleSchema, breadcrumbSchema, personSchema, buildFaqSchema(faqs)]} />
+
+        {category_ && (
+          <Link
+            href={`/${category_.slug}`}
+            className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-brand/10 px-3 py-1 text-xs font-medium text-brand"
+          >
+            {CategoryIcon && <CategoryIcon className="size-3.5" />}
+            {category_.label}
+          </Link>
+        )}
+
+        <h1 className="font-heading text-3xl font-bold tracking-tight text-balance sm:text-4xl">{post.title}</h1>
+
+        <div className="mt-4 mb-8 flex items-center gap-2.5 text-sm text-muted-foreground">
+          {author && (
+            <>
+              <AuthorAvatar displayName={author.displayName} avatarUrl={author.avatarUrl} size="size-8" />
+              <Link href={`/authors/${author.slug}`} className="font-medium text-foreground hover:text-brand">
+                {author.displayName}
+              </Link>
+              <span aria-hidden>·</span>
+            </>
+          )}
+          {post.publishedAt && <span>{new Date(post.publishedAt).toLocaleDateString()}</span>}
+          {post.readingTimeMinutes && (
+            <span className="inline-flex items-center gap-1">
+              <Clock className="size-3.5" />
+              {post.readingTimeMinutes} min read
+            </span>
+          )}
+        </div>
+
+        {/* Sized to the reading column, not full-bleed — a full-viewport
+           banner (edge to edge, above the breadcrumb/title) made the
+           image render far larger than the text it's illustrating,
+           especially with a portrait or otherwise unpredictable source
+           photo (e.g. this dataset's placeholder image, cropped to a wide
+           16:7 banner, exaggerating a close-up into something illegible).
+           Posts without one skip this entirely, same as before. */}
+        {post.featuredImageUrl && (
+          <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-muted">
+            <Image
+              src={post.featuredImageUrl}
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-cover"
+            />
+          </div>
+        )}
+
+        <QuickAnswerBlock text={quickAnswerRow?.text ?? ""} />
+        <AiSummaryBlock summary={aiSummaryRow?.summary ?? ""} takeaways={keyTakeawayRows.map((k) => k.text)} />
+        <TableOfContents headings={headings} />
+
+        <div
+          // `prose-img:w-full` because the Tiptap image extension emits a
+          // bare `<img src alt>` with no width/height — Typography's own
+          // default only caps images at the column width (`max-width:100%`),
+          // it doesn't scale a *smaller* source image up to fill it, so an
+          // upload narrower than the content column (a portrait photo, say)
+          // renders at its native pixel width instead of spanning the
+          // column like the cover image above it does. `aspect-video` +
+          // `object-cover` pins that stretched width to a fixed 16:9 box
+          // (cropping, not squashing) — width alone made a portrait source
+          // grow proportionally *taller* as it stretched wider, since
+          // nothing was constraining the other dimension.
+          className="prose prose-neutral max-w-none prose-headings:font-heading prose-a:text-brand prose-a:no-underline prose-a:hover:underline prose-img:aspect-video prose-img:w-full prose-img:rounded-xl prose-img:object-cover dark:prose-invert"
+          // Safe: content is authored exclusively by authenticated admin/editor
+          // roles through the Tiptap editor, never from public user input.
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+
+        {statsTableRows.map((t) => (
+          <StatsTable key={t.id} title={t.title} columns={t.columns} rows={t.rows} />
+        ))}
+
+        {ctaRows.map((c) => (
+          <CtaBlock key={c.id} heading={c.heading} description={c.description} buttonText={c.buttonText} buttonUrl={c.buttonUrl} />
+        ))}
+
+        <FaqSection faqs={faqs} />
+        {author && (
+          <AuthorBox
+            displayName={author.displayName}
+            slug={author.slug}
+            avatarUrl={author.avatarUrl}
+            roleTitle={author.roleTitle}
+            bio={author.bio}
+            expertiseTags={author.expertiseTags}
+            socialLinks={author.socialLinks}
+          />
+        )}
+        <RelatedPosts posts={relatedPosts} />
+        <SourceCitations citations={citations} />
+        <JsonLd blocks={[articleSchema, breadcrumbSchema, personSchema, buildFaqSchema(faqs)]} />
+      </div>
     </article>
   );
 }

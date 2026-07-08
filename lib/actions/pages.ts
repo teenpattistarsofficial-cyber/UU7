@@ -89,11 +89,12 @@ export async function updatePage(id: string, formData: FormData) {
   redirect("/admin/pages");
 }
 
+// Soft-delete — moves the page to Trash rather than removing it; see the
+// matching comment on `deletePost` in lib/actions/posts.ts.
 export async function deletePage(id: string) {
   await requireRole("editor");
   const existing = await db.query.pages.findFirst({ where: eq(pages.id, id) });
-  await db.delete(pages).where(eq(pages.id, id));
-  await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "page"), eq(seoMeta.entityId, id)));
+  await db.update(pages).set({ deletedAt: new Date() }).where(eq(pages.id, id));
   revalidatePath("/admin/pages");
   if (existing) revalidatePublicPagePaths(existing.slug);
 }
@@ -102,10 +103,44 @@ export async function bulkDeletePages(ids: string[]) {
   await requireRole("editor");
   if (ids.length === 0) return;
   const targets = await db.query.pages.findMany({ where: inArray(pages.id, ids) });
+  await db.update(pages).set({ deletedAt: new Date() }).where(inArray(pages.id, ids));
+  revalidatePath("/admin/pages");
+  for (const page of targets) revalidatePublicPagePaths(page.slug);
+}
+
+export async function restorePage(id: string) {
+  await requireRole("editor");
+  const existing = await db.query.pages.findFirst({ where: eq(pages.id, id) });
+  await db.update(pages).set({ deletedAt: null }).where(eq(pages.id, id));
+  revalidatePath("/admin/pages");
+  if (existing) revalidatePublicPagePaths(existing.slug);
+}
+
+export async function bulkRestorePages(ids: string[]) {
+  await requireRole("editor");
+  if (ids.length === 0) return;
+  const targets = await db.query.pages.findMany({ where: inArray(pages.id, ids) });
+  await db.update(pages).set({ deletedAt: null }).where(inArray(pages.id, ids));
+  revalidatePath("/admin/pages");
+  for (const page of targets) revalidatePublicPagePaths(page.slug);
+}
+
+// The actual, irreversible `db.delete` — gated at "admin" rather than
+// "editor" (every other action in this file), since there's no more Trash
+// safety net past this point. Only reachable from the Trash tab.
+export async function permanentlyDeletePage(id: string) {
+  await requireRole("admin");
+  await db.delete(pages).where(eq(pages.id, id));
+  await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "page"), eq(seoMeta.entityId, id)));
+  revalidatePath("/admin/pages");
+}
+
+export async function bulkPermanentlyDeletePages(ids: string[]) {
+  await requireRole("admin");
+  if (ids.length === 0) return;
   await db.delete(pages).where(inArray(pages.id, ids));
   await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "page"), inArray(seoMeta.entityId, ids)));
   revalidatePath("/admin/pages");
-  for (const page of targets) revalidatePublicPagePaths(page.slug);
 }
 
 export async function bulkSetPageStatus(

@@ -94,15 +94,24 @@ export function AskAiWidget() {
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {open ? (
-        <div className="flex h-[28rem] w-80 flex-col overflow-hidden rounded-lg border border-border bg-background shadow-xl">
-          <div className="flex items-center justify-between border-b border-border px-3 py-2">
-            <span className="text-sm font-semibold">Ask-AI</span>
-            <Button variant="ghost" size="icon-sm" onClick={() => setOpen(false)} aria-label="Close Ask-AI">
-              <X className="size-4" />
+        <div
+          // `w-[calc(100vw-2rem)]` below `sm` instead of a fixed `w-96` —
+          // this panel is anchored via `right-4` only (no `left`), so a
+          // fixed width wider than "viewport minus that right offset" runs
+          // off the left edge of the screen instead of centering itself;
+          // on a 390px phone `w-96` (384px) did exactly that, clipping the
+          // panel ~10px past x=0. `max-h-[85vh]` is the same idea for
+          // height, for short/landscape phones.
+          className="flex h-[36rem] max-h-[85vh] w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-border bg-background shadow-xl sm:w-[28rem]"
+        >
+          <div className="flex items-center justify-between border-b border-border px-4 py-3">
+            <span className="text-base font-semibold">Ask-AI</span>
+            <Button variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label="Close Ask-AI">
+              <X className="size-5" />
             </Button>
           </div>
 
-          <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto px-3 py-3 text-sm">
+          <div ref={listRef} className="flex-1 space-y-4 overflow-y-auto px-4 py-4 text-base">
             {messages.length === 0 && (
               <p className="text-muted-foreground">Ask a question about content on this site.</p>
             )}
@@ -111,14 +120,14 @@ export function AskAiWidget() {
                 <div
                   className={
                     m.role === "user"
-                      ? "inline-block rounded-lg bg-primary px-3 py-1.5 text-primary-foreground"
-                      : "inline-block rounded-lg bg-muted px-3 py-1.5 text-foreground"
+                      ? "inline-block rounded-lg bg-primary px-4 py-2 text-primary-foreground"
+                      : "inline-block rounded-lg bg-muted px-4 py-2 text-foreground"
                   }
                 >
                   {m.text || (m.pending ? "…" : "")}
                 </div>
                 {m.sources && m.sources.length > 0 && (
-                  <ul className="mt-1 space-y-0.5 text-xs text-muted-foreground">
+                  <ul className="mt-1.5 space-y-1 text-sm text-muted-foreground">
                     {m.sources.map((s) => (
                       <li key={s.url}>
                         <a href={s.url} className="underline hover:text-foreground">
@@ -132,22 +141,27 @@ export function AskAiWidget() {
             ))}
           </div>
 
-          <form onSubmit={handleSubmit} className="flex gap-2 border-t border-border p-2">
+          <form onSubmit={handleSubmit} className="flex gap-2 border-t border-border p-3">
             <Input
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="Ask a question…"
               disabled={sending}
-              className="flex-1"
+              className="h-11 flex-1 text-base"
             />
-            <Button type="submit" size="icon" disabled={sending || !question.trim()} aria-label="Send">
-              <Send className="size-4" />
+            <Button type="submit" size="icon-lg" disabled={sending || !question.trim()} aria-label="Send">
+              <Send className="size-5" />
             </Button>
           </form>
         </div>
       ) : (
-        <Button size="icon-lg" className="rounded-full shadow-lg" onClick={() => setOpen(true)} aria-label="Open Ask-AI">
-          <MessageCircle className="size-5" />
+        <Button
+          size="icon-lg"
+          className="size-16 rounded-full shadow-lg"
+          onClick={() => setOpen(true)}
+          aria-label="Open Ask-AI"
+        >
+          <MessageCircle className="size-7" />
         </Button>
       )}
     </div>

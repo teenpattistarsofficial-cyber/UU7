@@ -4,19 +4,29 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
-import { Eye, Pencil, Trash2, User, ImageOff } from "lucide-react";
+import { Eye, Pencil, Trash2, RotateCcw, User, ImageOff } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FormSelect } from "@/components/admin/form-select";
 import { SeoScoreBadge, StatusBadge } from "@/components/admin/list-badges";
-import { bulkDeletePosts, bulkSetPostStatus, deletePost } from "@/lib/actions/posts";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import {
+  bulkDeletePosts,
+  bulkPermanentlyDeletePosts,
+  bulkRestorePosts,
+  bulkSetPostStatus,
+  deletePost,
+  permanentlyDeletePost,
+  restorePost,
+} from "@/lib/actions/posts";
 
 export type PostRow = {
   id: string;
   title: string;
   slug: string;
   status: string;
+  deletedAt: Date | null;
   featuredImageUrl: string | null;
   categoryName: string | null;
   categorySlug: string | null;
@@ -29,14 +39,22 @@ const BULK_ACTIONS = [
   { value: "publish", label: "Publish" },
   { value: "draft", label: "Move to draft" },
   { value: "archive", label: "Archive" },
-  { value: "delete", label: "Delete" },
+  { value: "delete", label: "Move to trash" },
 ];
 
-export function PostsTable({ rows }: { rows: PostRow[] }) {
+const TRASH_BULK_ACTIONS = [
+  { value: "restore", label: "Restore" },
+  { value: "delete-permanently", label: "Delete permanently" },
+];
+
+export function PostsTable({ rows, isTrashView = false }: { rows: PostRow[]; isTrashView?: boolean }) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [bulkAction, setBulkAction] = useState("");
   const [pending, startTransition] = useTransition();
+  const [bulkConfirmOpen, setBulkConfirmOpen] = useState(false);
+  const [permanentDeleteTarget, setPermanentDeleteTarget] = useState<string | null>(null);
 
+  const actionOptions = isTrashView ? TRASH_BULK_ACTIONS : BULK_ACTIONS;
   const allSelected = rows.length > 0 && selected.size === rows.length;
 
   function toggleAll() {
@@ -51,13 +69,17 @@ export function PostsTable({ rows }: { rows: PostRow[] }) {
     });
   }
 
-  function applyBulkAction() {
+  function runBulkAction() {
     if (!bulkAction || selected.size === 0) return;
     const ids = [...selected];
     startTransition(async () => {
       try {
         if (bulkAction === "delete") {
           await bulkDeletePosts(ids);
+        } else if (bulkAction === "restore") {
+          await bulkRestorePosts(ids);
+        } else if (bulkAction === "delete-permanently") {
+          await bulkPermanentlyDeletePosts(ids);
         } else if (bulkAction === "publish") {
           await bulkSetPostStatus(ids, "published");
         } else if (bulkAction === "draft") {
@@ -65,22 +87,55 @@ export function PostsTable({ rows }: { rows: PostRow[] }) {
         } else if (bulkAction === "archive") {
           await bulkSetPostStatus(ids, "archived");
         }
-        toast.success(`Applied "${BULK_ACTIONS.find((a) => a.value === bulkAction)?.label}" to ${ids.length} post(s)`);
+        toast.success(`Applied "${actionOptions.find((a) => a.value === bulkAction)?.label}" to ${ids.length} post(s)`);
         setSelected(new Set());
         setBulkAction("");
+        setBulkConfirmOpen(false);
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "Bulk action failed");
       }
     });
   }
 
+  function applyBulkAction() {
+    if (!bulkAction || selected.size === 0) return;
+    if (bulkAction === "delete-permanently") {
+      setBulkConfirmOpen(true);
+      return;
+    }
+    runBulkAction();
+  }
+
   async function handleSingleDelete(id: string) {
     try {
       await deletePost(id);
-      toast.success("Post deleted");
+      toast.success("Post moved to trash");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to delete post");
+      toast.error(err instanceof Error ? err.message : "Failed to move post to trash");
     }
+  }
+
+  async function handleRestore(id: string) {
+    try {
+      await restorePost(id);
+      toast.success("Post restored");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to restore post");
+    }
+  }
+
+  function handlePermanentDelete() {
+    if (!permanentDeleteTarget) return;
+    const id = permanentDeleteTarget;
+    startTransition(async () => {
+      try {
+        await permanentlyDeletePost(id);
+        toast.success("Post permanently deleted");
+        setPermanentDeleteTarget(null);
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Failed to delete post");
+      }
+    });
   }
 
   return (
@@ -91,7 +146,7 @@ export function PostsTable({ rows }: { rows: PostRow[] }) {
             value={bulkAction || "none"}
             onValueChange={(v) => setBulkAction(v === "none" ? "" : v)}
             placeholder="Bulk actions"
-            options={[{ value: "none", label: "Bulk actions" }, ...BULK_ACTIONS]}
+            options={[{ value: "none", label: "Bulk actions" }, ...actionOptions]}
             triggerClassName="rounded-none border-0 shadow-none focus-visible:ring-0"
           />
         </div>
@@ -103,6 +158,26 @@ export function PostsTable({ rows }: { rows: PostRow[] }) {
           {pending ? "Applying…" : `Apply${selected.size ? ` (${selected.size})` : ""}`}
         </Button>
       </div>
+
+      <ConfirmDialog
+        open={bulkConfirmOpen}
+        onOpenChange={setBulkConfirmOpen}
+        title="Delete posts permanently?"
+        description={`This will permanently delete ${selected.size} post(s). This cannot be undone.`}
+        confirmLabel="Delete permanently"
+        pending={pending}
+        onConfirm={runBulkAction}
+      />
+
+      <ConfirmDialog
+        open={permanentDeleteTarget !== null}
+        onOpenChange={(open) => !open && setPermanentDeleteTarget(null)}
+        title="Delete post permanently?"
+        description="This will permanently delete this post and its SEO metadata. This cannot be undone."
+        confirmLabel="Delete permanently"
+        pending={pending}
+        onConfirm={handlePermanentDelete}
+      />
 
       <div className="overflow-hidden rounded-xl border border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.08)]">
         <Table>
@@ -161,6 +236,11 @@ export function PostsTable({ rows }: { rows: PostRow[] }) {
                         <User className="size-3" />
                         {post.authorName ?? "Unassigned"}
                       </div>
+                      {post.deletedAt && (
+                        <div className="mt-0.5 text-xs text-muted-foreground">
+                          Deleted {post.deletedAt.toLocaleDateString()}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </TableCell>
@@ -188,42 +268,65 @@ export function PostsTable({ rows }: { rows: PostRow[] }) {
                 </TableCell>
                 <TableCell className="px-4 py-3">
                   <div className="flex justify-end gap-1">
-                    {post.status === "published" && post.categorySlug ? (
-                      <Link
-                        href={`/${post.categorySlug}/${post.slug}`}
-                        target="_blank"
-                        className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                        title="View on site"
-                      >
-                        <Eye className="size-4" />
-                      </Link>
+                    {isTrashView ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleRestore(post.id)}
+                          className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                          title="Restore"
+                        >
+                          <RotateCcw className="size-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPermanentDeleteTarget(post.id)}
+                          className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                          title="Delete permanently"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      </>
                     ) : (
-                      <span
-                        className="flex size-8 items-center justify-center text-muted-foreground/30"
-                        title={
-                          post.status !== "published"
-                            ? "Not published yet"
-                            : "Assign a category to view on site — the public URL is /category/slug"
-                        }
-                      >
-                        <Eye className="size-4" />
-                      </span>
+                      <>
+                        {post.status === "published" && post.categorySlug ? (
+                          <Link
+                            href={`/${post.categorySlug}/${post.slug}`}
+                            target="_blank"
+                            className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                            title="View on site"
+                          >
+                            <Eye className="size-4" />
+                          </Link>
+                        ) : (
+                          <span
+                            className="flex size-8 items-center justify-center text-muted-foreground/30"
+                            title={
+                              post.status !== "published"
+                                ? "Not published yet"
+                                : "Assign a category to view on site — the public URL is /category/slug"
+                            }
+                          >
+                            <Eye className="size-4" />
+                          </span>
+                        )}
+                        <Link
+                          href={`/admin/posts/${post.id}/edit`}
+                          className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                          title="Edit"
+                        >
+                          <Pencil className="size-4" />
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => handleSingleDelete(post.id)}
+                          className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                          title="Move to trash"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      </>
                     )}
-                    <Link
-                      href={`/admin/posts/${post.id}/edit`}
-                      className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                      title="Edit"
-                    >
-                      <Pencil className="size-4" />
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => handleSingleDelete(post.id)}
-                      className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                      title="Delete"
-                    >
-                      <Trash2 className="size-4" />
-                    </button>
                   </div>
                 </TableCell>
               </TableRow>

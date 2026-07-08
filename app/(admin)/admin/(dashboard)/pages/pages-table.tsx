@@ -3,12 +3,21 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Eye, Pencil, Trash2, StickyNote } from "lucide-react";
+import { Eye, Pencil, Trash2, RotateCcw, StickyNote } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { FormSelect } from "@/components/admin/form-select";
 import { SeoScoreBadge, StatusBadge } from "@/components/admin/list-badges";
-import { bulkDeletePages, bulkSetPageStatus, deletePage } from "@/lib/actions/pages";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
+import {
+  bulkDeletePages,
+  bulkPermanentlyDeletePages,
+  bulkRestorePages,
+  bulkSetPageStatus,
+  deletePage,
+  permanentlyDeletePage,
+  restorePage,
+} from "@/lib/actions/pages";
 
 export type PageRow = {
   id: string;
@@ -16,6 +25,7 @@ export type PageRow = {
   slug: string;
   status: string;
   template: string;
+  deletedAt: Date | null;
   seoScore: number;
 };
 
@@ -23,14 +33,22 @@ const BULK_ACTIONS = [
   { value: "publish", label: "Publish" },
   { value: "draft", label: "Move to draft" },
   { value: "archive", label: "Archive" },
-  { value: "delete", label: "Delete" },
+  { value: "delete", label: "Move to trash" },
 ];
 
-export function PagesTable({ rows }: { rows: PageRow[] }) {
+const TRASH_BULK_ACTIONS = [
+  { value: "restore", label: "Restore" },
+  { value: "delete-permanently", label: "Delete permanently" },
+];
+
+export function PagesTable({ rows, isTrashView = false }: { rows: PageRow[]; isTrashView?: boolean }) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [bulkAction, setBulkAction] = useState("");
   const [pending, startTransition] = useTransition();
+  const [bulkConfirmOpen, setBulkConfirmOpen] = useState(false);
+  const [permanentDeleteTarget, setPermanentDeleteTarget] = useState<string | null>(null);
 
+  const actionOptions = isTrashView ? TRASH_BULK_ACTIONS : BULK_ACTIONS;
   const allSelected = rows.length > 0 && selected.size === rows.length;
 
   function toggleAll() {
@@ -45,13 +63,17 @@ export function PagesTable({ rows }: { rows: PageRow[] }) {
     });
   }
 
-  function applyBulkAction() {
+  function runBulkAction() {
     if (!bulkAction || selected.size === 0) return;
     const ids = [...selected];
     startTransition(async () => {
       try {
         if (bulkAction === "delete") {
           await bulkDeletePages(ids);
+        } else if (bulkAction === "restore") {
+          await bulkRestorePages(ids);
+        } else if (bulkAction === "delete-permanently") {
+          await bulkPermanentlyDeletePages(ids);
         } else if (bulkAction === "publish") {
           await bulkSetPageStatus(ids, "published");
         } else if (bulkAction === "draft") {
@@ -59,22 +81,55 @@ export function PagesTable({ rows }: { rows: PageRow[] }) {
         } else if (bulkAction === "archive") {
           await bulkSetPageStatus(ids, "archived");
         }
-        toast.success(`Applied "${BULK_ACTIONS.find((a) => a.value === bulkAction)?.label}" to ${ids.length} page(s)`);
+        toast.success(`Applied "${actionOptions.find((a) => a.value === bulkAction)?.label}" to ${ids.length} page(s)`);
         setSelected(new Set());
         setBulkAction("");
+        setBulkConfirmOpen(false);
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "Bulk action failed");
       }
     });
   }
 
+  function applyBulkAction() {
+    if (!bulkAction || selected.size === 0) return;
+    if (bulkAction === "delete-permanently") {
+      setBulkConfirmOpen(true);
+      return;
+    }
+    runBulkAction();
+  }
+
   async function handleSingleDelete(id: string) {
     try {
       await deletePage(id);
-      toast.success("Page deleted");
+      toast.success("Page moved to trash");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to delete page");
+      toast.error(err instanceof Error ? err.message : "Failed to move page to trash");
     }
+  }
+
+  async function handleRestore(id: string) {
+    try {
+      await restorePage(id);
+      toast.success("Page restored");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to restore page");
+    }
+  }
+
+  function handlePermanentDelete() {
+    if (!permanentDeleteTarget) return;
+    const id = permanentDeleteTarget;
+    startTransition(async () => {
+      try {
+        await permanentlyDeletePage(id);
+        toast.success("Page permanently deleted");
+        setPermanentDeleteTarget(null);
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Failed to delete page");
+      }
+    });
   }
 
   return (
@@ -85,7 +140,7 @@ export function PagesTable({ rows }: { rows: PageRow[] }) {
             value={bulkAction || "none"}
             onValueChange={(v) => setBulkAction(v === "none" ? "" : v)}
             placeholder="Bulk actions"
-            options={[{ value: "none", label: "Bulk actions" }, ...BULK_ACTIONS]}
+            options={[{ value: "none", label: "Bulk actions" }, ...actionOptions]}
             triggerClassName="rounded-none border-0 shadow-none focus-visible:ring-0"
           />
         </div>
@@ -97,6 +152,26 @@ export function PagesTable({ rows }: { rows: PageRow[] }) {
           {pending ? "Applying…" : `Apply${selected.size ? ` (${selected.size})` : ""}`}
         </Button>
       </div>
+
+      <ConfirmDialog
+        open={bulkConfirmOpen}
+        onOpenChange={setBulkConfirmOpen}
+        title="Delete pages permanently?"
+        description={`This will permanently delete ${selected.size} page(s). This cannot be undone.`}
+        confirmLabel="Delete permanently"
+        pending={pending}
+        onConfirm={runBulkAction}
+      />
+
+      <ConfirmDialog
+        open={permanentDeleteTarget !== null}
+        onOpenChange={(open) => !open && setPermanentDeleteTarget(null)}
+        title="Delete page permanently?"
+        description="This will permanently delete this page and its SEO metadata. This cannot be undone."
+        confirmLabel="Delete permanently"
+        pending={pending}
+        onConfirm={handlePermanentDelete}
+      />
 
       <div className="overflow-hidden rounded-xl border border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.08)]">
         <Table>
@@ -135,8 +210,15 @@ export function PagesTable({ rows }: { rows: PageRow[] }) {
                     <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
                       <StickyNote className="size-4 text-muted-foreground" />
                     </div>
-                    <div className="max-w-[280px] truncate font-medium" title={page.title}>
-                      {page.title}
+                    <div className="min-w-0">
+                      <div className="max-w-[280px] truncate font-medium" title={page.title}>
+                        {page.title}
+                      </div>
+                      {page.deletedAt && (
+                        <div className="mt-0.5 text-xs text-muted-foreground">
+                          Deleted {page.deletedAt.toLocaleDateString()}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </TableCell>
@@ -149,38 +231,61 @@ export function PagesTable({ rows }: { rows: PageRow[] }) {
                 </TableCell>
                 <TableCell className="px-4 py-3">
                   <div className="flex justify-end gap-1">
-                    {page.status === "published" ? (
-                      <Link
-                        href={`/${page.slug}`}
-                        target="_blank"
-                        className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                        title="View on site"
-                      >
-                        <Eye className="size-4" />
-                      </Link>
+                    {isTrashView ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleRestore(page.id)}
+                          className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                          title="Restore"
+                        >
+                          <RotateCcw className="size-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPermanentDeleteTarget(page.id)}
+                          className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                          title="Delete permanently"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      </>
                     ) : (
-                      <span
-                        className="flex size-8 items-center justify-center text-muted-foreground/30"
-                        title="Not published yet"
-                      >
-                        <Eye className="size-4" />
-                      </span>
+                      <>
+                        {page.status === "published" ? (
+                          <Link
+                            href={`/${page.slug}`}
+                            target="_blank"
+                            className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                            title="View on site"
+                          >
+                            <Eye className="size-4" />
+                          </Link>
+                        ) : (
+                          <span
+                            className="flex size-8 items-center justify-center text-muted-foreground/30"
+                            title="Not published yet"
+                          >
+                            <Eye className="size-4" />
+                          </span>
+                        )}
+                        <Link
+                          href={`/admin/pages/${page.id}/edit`}
+                          className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                          title="Edit"
+                        >
+                          <Pencil className="size-4" />
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => handleSingleDelete(page.id)}
+                          className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                          title="Move to trash"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      </>
                     )}
-                    <Link
-                      href={`/admin/pages/${page.id}/edit`}
-                      className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                      title="Edit"
-                    >
-                      <Pencil className="size-4" />
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => handleSingleDelete(page.id)}
-                      className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                      title="Delete"
-                    >
-                      <Trash2 className="size-4" />
-                    </button>
                   </div>
                 </TableCell>
               </TableRow>
