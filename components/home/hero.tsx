@@ -78,13 +78,15 @@ export function Hero() {
   return (
     <section
       id="site-hero"
-      // -mt/pt must match the header's real rendered height (88px: a 64px
-      // logo plus header's own py-3) or the hero's pull-up under-shoots and
-      // leaves a sliver of plain body background peeking through the
-      // transparent header at the very top of the page — this exact gap
-      // reappeared after the logo grew from 48px to 64px because this value
-      // was still sized for the old, shorter header.
-      className="relative -mt-[88px] overflow-hidden pt-[88px]"
+      // -mt/pt must match the header's real rendered height or the hero's
+      // pull-up under-shoots and leaves a sliver of plain body background
+      // peeking through the transparent header at the very top of the page
+      // — this exact gap has reappeared more than once after the header's
+      // logo size or padding changed and this value wasn't updated to
+      // match. Two tiers because the header's own padding is responsive
+      // (py-1.5 below `sm`, py-2 from `sm` up) while the 80px logo stays
+      // fixed: 92px below `sm` (80 + 2*6px), 96px from `sm` up (80 + 2*8px).
+      className="relative -mt-[92px] overflow-hidden pt-[92px] sm:-mt-[96px] sm:pt-[96px]"
       style={{
         background:
           "radial-gradient(circle at top center, #F76103 0%, #E44A02 35%, #C94102 65%, #B73601 100%)",
@@ -111,7 +113,14 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[max(700px,100dvh)] max-w-4xl flex-col items-center px-4 pt-16 text-center sm:pt-24">
+      {/* Below `sm` (phones), a flat `600px` floor instead of the
+         full-viewport `max(700px,100dvh)` used from `sm` up — the text+
+         search content only naturally needs ~330px, so forcing the section
+         to fill the entire phone screen (often 800px+) just added a long
+         stretch of nothing-but-image scroll distance before the next
+         section, which read as the hero being too long. `sm` and up are
+         unchanged. */}
+      <div className="relative z-10 mx-auto flex min-h-[600px] max-w-4xl flex-col items-center px-4 pt-16 text-center sm:min-h-[max(700px,100dvh)] sm:pt-24">
         <div className="xl:hidden">
           <p
             className="hero-anim hero-fade mb-3 text-xs font-medium tracking-[0.25em] text-white/70 uppercase sm:text-sm [@media(max-height:500px)]:mb-1 [@media(max-height:500px)]:text-[10px]"

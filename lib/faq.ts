@@ -1,5 +1,5 @@
 import "server-only";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { posts, categories, postFaqs } from "@/lib/db/schema";
 import { getCategoryMeta } from "@/lib/site-categories";
@@ -35,7 +35,10 @@ export async function getAllFaqsByCategory(): Promise<FaqGroup[]> {
     .from(postFaqs)
     .innerJoin(posts, eq(postFaqs.postId, posts.id))
     .leftJoin(categories, eq(posts.categoryId, categories.id))
-    .where(eq(posts.status, "published"))
+    // `deletedAt` is separate from `status` — a trashed post keeps its
+    // prior status, so this must be checked explicitly or a trashed post's
+    // FAQs keep showing up here.
+    .where(and(eq(posts.status, "published"), isNull(posts.deletedAt)))
     .orderBy(postFaqs.position);
 
   const groups = new Map<string, FaqGroup>();

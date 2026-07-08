@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
@@ -60,7 +60,9 @@ export default async function CategoryOrPageRoute({
       readingTimeMinutes: posts.readingTimeMinutes,
     })
     .from(posts)
-    .where(and(eq(posts.categoryId, category.id), eq(posts.status, "published")))
+    // `deletedAt` is separate from `status` — a trashed post keeps its
+    // prior status, so it must be excluded explicitly here too.
+    .where(and(eq(posts.categoryId, category.id), eq(posts.status, "published"), isNull(posts.deletedAt)))
     .orderBy(desc(posts.publishedAt));
 
   // The whole listing is one category, so every card can reuse its

@@ -1,4 +1,4 @@
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, isNull } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Globe, Link2 } from "lucide-react";
@@ -56,7 +56,9 @@ export default async function AuthorProfilePage({
         readingTimeMinutes: posts.readingTimeMinutes,
       })
       .from(posts)
-      .where(and(eq(posts.authorId, author.id), eq(posts.status, "published")))
+      // `deletedAt` is separate from `status` — a trashed post keeps its
+      // prior status, so it must be excluded explicitly here too.
+      .where(and(eq(posts.authorId, author.id), eq(posts.status, "published"), isNull(posts.deletedAt)))
       .orderBy(desc(posts.publishedAt)),
     db.select().from(categories),
   ]);

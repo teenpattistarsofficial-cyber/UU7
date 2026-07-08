@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { posts, categories, authors, pages } from "@/lib/db/schema";
 import { SITE_URL } from "@/lib/site";
@@ -24,11 +24,14 @@ const CANONICAL_PAGE_SLUGS = new Set(["about", "contact", "editorial-policy", "r
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // `deletedAt` is separate from `status` — a trashed post/page keeps its
+  // prior status, so both must be excluded explicitly or a trashed page's
+  // now-404ing URL stays listed here, telling Google to crawl a dead link.
   const [publishedPosts, allCategories, allAuthors, publishedPages] = await Promise.all([
-    db.select().from(posts).where(eq(posts.status, "published")),
+    db.select().from(posts).where(and(eq(posts.status, "published"), isNull(posts.deletedAt))),
     db.select().from(categories),
     db.select().from(authors),
-    db.select().from(pages).where(eq(pages.status, "published")),
+    db.select().from(pages).where(and(eq(pages.status, "published"), isNull(pages.deletedAt))),
   ]);
 
   const categorySlugById = new Map(allCategories.map((c) => [c.id, c.slug]));

@@ -118,9 +118,9 @@ export function SiteHeader() {
           scrolled && "border-b border-white/15 bg-white/10 shadow-sm backdrop-blur-xl backdrop-saturate-150",
         )}
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-3">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-1.5 sm:py-2">
           <Link href="/" className="flex items-center" aria-label="UU7 home">
-            <Image src="/UU7.io logo.webp" alt="UU7" width={64} height={64} className="rounded-md" priority />
+            <Image src="/UU7.io logo.webp" alt="UU7" width={80} height={80} className="rounded-md" priority />
           </Link>
           <nav
             className={cn(
@@ -184,7 +184,7 @@ export function SiteHeader() {
                  accessible name, so it's kept but visually hidden rather
                  than removed outright. */}
               <DialogTitle className="sr-only">Menu</DialogTitle>
-              <Image src="/UU7.io logo.webp" alt="UU7" width={56} height={56} className="rounded-md" />
+              <Image src="/UU7.io logo.webp" alt="UU7" width={72} height={72} className="rounded-md" />
               <Button
                 type="button"
                 variant="ghost"

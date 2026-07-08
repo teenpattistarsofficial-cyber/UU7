@@ -1,5 +1,5 @@
 import "server-only";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { posts, categories, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs } from "@/lib/db/schema";
 import { toTiptapDoc } from "@/lib/editor/doc";
@@ -13,7 +13,12 @@ import { chunkPost, type AiChunk } from "@/lib/ai/chunk";
  * pgvector/embeddings).
  */
 export async function loadAllChunks(): Promise<AiChunk[]> {
-  const published = await db.query.posts.findMany({ where: eq(posts.status, "published") });
+  // `deletedAt` is separate from `status` — a trashed post keeps its prior
+  // status, so it must be excluded explicitly or Ask-AI keeps citing a
+  // post that's supposed to be gone.
+  const published = await db.query.posts.findMany({
+    where: and(eq(posts.status, "published"), isNull(posts.deletedAt)),
+  });
 
   const chunksByPost = await Promise.all(
     published.map(async (post) => {

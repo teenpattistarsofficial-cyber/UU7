@@ -62,7 +62,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { category, slug } = await params;
   const post = await db.query.posts.findFirst({ where: eq(posts.slug, slug) });
-  if (!post) return { title: "Post" };
+  if (!post || post.status !== "published" || post.deletedAt) return { title: "Post" };
 
   const seo = await db.query.seoMeta.findFirst({
     where: and(eq(seoMeta.entityType, "post"), eq(seoMeta.entityId, post.id)),
@@ -84,7 +84,12 @@ export default async function ArticlePage({
 }) {
   const { category: categorySlug, slug } = await params;
   const post = await db.query.posts.findFirst({ where: eq(posts.slug, slug) });
-  if (!post || post.status !== "published") notFound();
+  // `deletedAt` is a separate soft-delete flag from `status` (see the schema
+  // comment on posts.deletedAt) — a trashed post keeps whatever `status` it
+  // had before being trashed, so checking `status !== "published"` alone
+  // isn't enough to keep a trashed-but-still-"published" post off its own
+  // URL.
+  if (!post || post.status !== "published" || post.deletedAt) notFound();
 
   const [
     author,

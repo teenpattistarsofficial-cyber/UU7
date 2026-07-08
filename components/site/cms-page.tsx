@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { renderContentHtml } from "@/lib/editor/render";
 import { toTiptapDoc } from "@/lib/editor/doc";
@@ -26,12 +27,14 @@ export function CmsPageBody({
   eyebrow,
   icon: Icon,
   showCta = false,
+  children,
 }: {
   title: string;
   content: unknown;
   eyebrow?: string;
   icon?: LucideIcon;
   showCta?: boolean;
+  children?: ReactNode;
 }) {
   const html = renderContentHtml(toTiptapDoc(content));
 
@@ -53,6 +56,8 @@ export function CmsPageBody({
         // admin/editor roles through the Tiptap editor.
         dangerouslySetInnerHTML={{ __html: html }}
       />
+
+      {children}
 
       {showCta && (
         <div className="mt-10">

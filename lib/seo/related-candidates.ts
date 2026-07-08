@@ -1,5 +1,5 @@
 import "server-only";
-import { eq, ne, and } from "drizzle-orm";
+import { eq, ne, and, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { posts, categories, tags, postTags } from "@/lib/db/schema";
 import type { CandidatePost } from "@/lib/seo/related";
@@ -17,10 +17,13 @@ export async function getPublishedPostCandidates(excludePostId?: string): Promis
     db
       .select({ id: posts.id, title: posts.title, slug: posts.slug, categoryId: posts.categoryId })
       .from(posts)
+      // `deletedAt` is separate from `status` — a trashed post keeps its
+      // prior status, so both the public related-posts fallback and the
+      // admin's internal-link suggestions need this excluded explicitly.
       .where(
         excludePostId
-          ? and(eq(posts.status, "published"), ne(posts.id, excludePostId))
-          : eq(posts.status, "published"),
+          ? and(eq(posts.status, "published"), isNull(posts.deletedAt), ne(posts.id, excludePostId))
+          : and(eq(posts.status, "published"), isNull(posts.deletedAt)),
       ),
     db.select().from(categories),
     db.select({ postId: postTags.postId, name: tags.name }).from(postTags).innerJoin(tags, eq(postTags.tagId, tags.id)),

@@ -1,5 +1,5 @@
 import "server-only";
-import { eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { posts, categories } from "@/lib/db/schema";
 
@@ -69,7 +69,10 @@ export async function getPostSummariesByIds(ids: string[]): Promise<PostSummary[
     .select(POST_SUMMARY_COLUMNS)
     .from(posts)
     .leftJoin(categories, eq(posts.categoryId, categories.id))
-    .where(inArray(posts.id, ids));
+    // Defensive, not just relying on callers to have already filtered
+    // trashed posts out of `ids` — a manually pinned related-post id could
+    // point at a post that's since been trashed.
+    .where(and(inArray(posts.id, ids), isNull(posts.deletedAt)));
 
   const byId = new Map(rows.map((r) => [r.id, r]));
   return ids

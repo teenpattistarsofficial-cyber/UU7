@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { posts, categories } from "@/lib/db/schema";
 import { SITE_URL } from "@/lib/site";
@@ -8,8 +8,10 @@ import { SITE_URL } from "@/lib/site";
 // auto-generated index (informal llmstxt.org format) rather than a
 // hand-curated one with its own admin UI.
 export async function GET() {
+  // `deletedAt` is separate from `status` — a trashed post keeps its prior
+  // status, so it must be excluded explicitly here too.
   const [publishedPosts, allCategories] = await Promise.all([
-    db.select().from(posts).where(eq(posts.status, "published")),
+    db.select().from(posts).where(and(eq(posts.status, "published"), isNull(posts.deletedAt))),
     db.select().from(categories),
   ]);
   const categorySlugById = new Map(allCategories.map((c) => [c.id, c.slug]));

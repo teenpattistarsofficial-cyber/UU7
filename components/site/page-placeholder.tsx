@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Breadcrumb } from "@/components/site/breadcrumb";
 
@@ -13,11 +14,13 @@ export function PagePlaceholder({
   icon: Icon,
   title,
   description,
+  children,
 }: {
   eyebrow: string;
   icon: LucideIcon;
   title: string;
   description: string;
+  children?: ReactNode;
 }) {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
@@ -28,6 +31,7 @@ export function PagePlaceholder({
       <p className="mb-2 text-xs font-semibold tracking-[0.2em] text-brand uppercase">{eyebrow}</p>
       <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
       <p className="mt-4 max-w-xl text-muted-foreground">{description}</p>
+      {children}
     </div>
   );
 }
