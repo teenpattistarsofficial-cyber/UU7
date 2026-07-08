@@ -1,11 +1,6 @@
-import { drizzle } from "drizzle-orm/postgres-js";
+import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./schema";
-
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) {
-  throw new Error("DATABASE_URL is not set");
-}
 
 // Cached on `globalThis` in development so Next's hot-reload re-evaluating
 // this module doesn't open a brand-new postgres.js pool every time without
@@ -17,9 +12,31 @@ if (!connectionString) {
 // cache is a no-op there.
 const globalForDb = globalThis as unknown as { __dbClient?: postgres.Sql };
 
-const client = globalForDb.__dbClient ?? postgres(connectionString);
-if (process.env.NODE_ENV !== "production") {
-  globalForDb.__dbClient = client;
+function createDb(): PostgresJsDatabase<typeof schema> {
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error("DATABASE_URL is not set");
+  }
+  const client = globalForDb.__dbClient ?? postgres(connectionString);
+  if (process.env.NODE_ENV !== "production") {
+    globalForDb.__dbClient = client;
+  }
+  return drizzle(client, { schema });
 }
 
-export const db = drizzle(client, { schema });
+// Lazy behind a Proxy, not constructed eagerly at module scope — `next
+// build`'s "Collecting page data" step imports every route module
+// (including API routes, regardless of `force-dynamic`) to read its
+// exports, which would otherwise throw here on the very first import since
+// the build stage intentionally runs with no DATABASE_URL (see the
+// Dockerfile comment). Deferring construction to first property access
+// means the connection is only ever attempted once a request actually
+// queries the database at runtime, when the env var is really set.
+let realDb: PostgresJsDatabase<typeof schema> | undefined;
+
+export const db = new Proxy({} as PostgresJsDatabase<typeof schema>, {
+  get(_target, prop, receiver) {
+    if (!realDb) realDb = createDb();
+    return Reflect.get(realDb as object, prop, receiver);
+  },
+});
