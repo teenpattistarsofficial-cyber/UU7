@@ -5,12 +5,19 @@ import { MessageCircle, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ASK_AI_SOURCES_SENTINEL, type AskAiSource } from "@/lib/ai/stream-protocol";
+import { TELEGRAM_CONTACT_URL } from "@/lib/site";
 
 type ChatMessage = {
   role: "user" | "assistant";
   text: string;
   sources?: AskAiSource[];
   pending?: boolean;
+  // Set when the AI genuinely couldn't help — not configured, an
+  // unexpected error, or (once the stream completes) no relevant content
+  // was found for the question — as opposed to a recoverable/actionable
+  // case like rate-limiting or an invalid question, where a human wouldn't
+  // add anything a retry can't fix.
+  escalate?: boolean;
 };
 
 function replaceLastAssistant(prev: ChatMessage[], next: ChatMessage): ChatMessage[] {
@@ -55,8 +62,18 @@ export function AskAiWidget() {
 
       if (!res.ok || !res.body) {
         const data = await res.json().catch(() => null);
+        // Rate-limiting and an invalid question are both on the visitor to
+        // fix (wait, or ask something else) — a human can't do anything a
+        // retry can't. Anything else (not configured, an unrecognized
+        // error) means the AI itself is the problem, so offer the escape
+        // hatch.
+        const userFixable = data?.error === "rate_limited" || data?.error === "invalid_question";
         setMessages((prev) =>
-          replaceLastAssistant(prev, { role: "assistant", text: data?.message ?? "Something went wrong." }),
+          replaceLastAssistant(prev, {
+            role: "assistant",
+            text: data?.message ?? "Something went wrong.",
+            escalate: !userFixable,
+          }),
         );
         return;
       }
@@ -81,10 +98,26 @@ export function AskAiWidget() {
           sources = [];
         }
       }
-      setMessages((prev) => replaceLastAssistant(prev, { role: "assistant", text: answerText.trim(), sources }));
+      setMessages((prev) =>
+        replaceLastAssistant(prev, {
+          role: "assistant",
+          text: answerText.trim(),
+          sources,
+          // No matching source means the retriever found nothing relevant
+          // on the site for this question — the model was told to say so
+          // plainly rather than fabricate (see ASK_AI_SYSTEM_PROMPT), which
+          // this catches structurally instead of pattern-matching its
+          // wording.
+          escalate: sources.length === 0,
+        }),
+      );
     } catch {
       setMessages((prev) =>
-        replaceLastAssistant(prev, { role: "assistant", text: "Something went wrong reaching Ask-AI." }),
+        replaceLastAssistant(prev, {
+          role: "assistant",
+          text: "Something went wrong reaching Ask-AI.",
+          escalate: true,
+        }),
       );
     } finally {
       setSending(false);
@@ -92,17 +125,22 @@ export function AskAiWidget() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className={open ? "fixed inset-0 z-50 sm:inset-auto sm:bottom-4 sm:right-4" : "fixed bottom-4 right-4 z-50"}>
       {open ? (
         <div
-          // `w-[calc(100vw-2rem)]` below `sm` instead of a fixed `w-96` —
-          // this panel is anchored via `right-4` only (no `left`), so a
-          // fixed width wider than "viewport minus that right offset" runs
-          // off the left edge of the screen instead of centering itself;
-          // on a 390px phone `w-96` (384px) did exactly that, clipping the
-          // panel ~10px past x=0. `max-h-[85vh]` is the same idea for
-          // height, for short/landscape phones.
-          className="flex h-[36rem] max-h-[85vh] w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-border bg-background shadow-xl sm:w-[28rem]"
+          // Full-screen below `sm` (`inset-0`/`h-dvh`/`w-full`, no rounding)
+          // rather than a floating card anchored by a fixed height — a
+          // `vh`-based height doesn't track the on-screen keyboard on
+          // mobile, so once the keyboard opened the panel's layout went
+          // stale: the input could end up below the keyboard's edge,
+          // forcing a pinch-zoom-and-scroll just to see what was typed.
+          // `dvh` (dynamic viewport height) does track the keyboard, and a
+          // true full-screen flex column keeps the input pinned to the
+          // bottom of whatever space is actually left, same fix already
+          // used for the mobile nav menu (components/layout/header.tsx).
+          // `sm` and up go back to the original floating card — no
+          // on-screen keyboard obstruction concern on a real keyboard/tablet.
+          className="flex h-dvh w-full flex-col overflow-hidden bg-background sm:h-[36rem] sm:max-h-[85vh] sm:w-[28rem] sm:rounded-xl sm:border sm:border-border sm:shadow-xl"
         >
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <span className="text-base font-semibold">Ask-AI</span>
@@ -136,6 +174,17 @@ export function AskAiWidget() {
                       </li>
                     ))}
                   </ul>
+                )}
+                {!m.pending && m.escalate && (
+                  <a
+                    href={TELEGRAM_CONTACT_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
+                  >
+                    <Send className="size-3.5" />
+                    Talk to a human on Telegram
+                  </a>
                 )}
               </div>
             ))}

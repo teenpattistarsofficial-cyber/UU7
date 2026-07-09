@@ -1,4 +1,5 @@
 import { Send } from "lucide-react";
+import { TELEGRAM_CONTACT_URL } from "@/lib/site";
 
 // No official Telegram glyph here on purpose — lucide-react ships no brand
 // icons (see the same note in components/article/author-box.tsx), so this
@@ -18,7 +19,7 @@ export function ContactChannels() {
         <span className="font-medium text-foreground">@nehakapoorbot</span> for the fastest response.
       </p>
       <a
-        href="https://t.me/nehakapoorbot"
+        href={TELEGRAM_CONTACT_URL}
         target="_blank"
         rel="noopener noreferrer"
         className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-brand px-7 py-3.5 text-sm font-semibold text-brand-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_20px_-8px_rgba(0,0,0,0.3)] transition-transform hover:-translate-y-0.5 hover:bg-brand/90"
