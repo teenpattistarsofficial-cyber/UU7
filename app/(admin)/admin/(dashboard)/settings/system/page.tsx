@@ -7,6 +7,12 @@ import { OpenAiKeySettings } from "@/components/admin/openai-key-settings";
 import { SystemDiagnosticsPanel } from "@/components/admin/system-diagnostics-panel";
 import { SettingsSectionHeader } from "@/components/admin/settings-section-header";
 
+// No params/searchParams here for Next to infer dynamic rendering from, so
+// without this, `next build` tries to statically prerender it — which runs
+// a live DB query (getSiteSettings) at build time with no DATABASE_URL
+// available (see the Dockerfile's comment on this exact failure mode).
+export const dynamic = "force-dynamic";
+
 export default async function SystemControlsPage() {
   const siteSettingsRow = await getSiteSettings();
 

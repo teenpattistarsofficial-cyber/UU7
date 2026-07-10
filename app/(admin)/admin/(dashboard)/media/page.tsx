@@ -1,6 +1,12 @@
 import { db } from "@/lib/db";
 import { MediaGrid } from "./media-grid";
 
+// No params/searchParams here for Next to infer dynamic rendering from, so
+// without this, `next build` tries to statically prerender it — which runs
+// this DB query at build time with no DATABASE_URL available (see the
+// Dockerfile's comment on this exact failure mode).
+export const dynamic = "force-dynamic";
+
 export default async function MediaPage() {
   const rows = await db.query.media.findMany({ orderBy: (m, { desc }) => desc(m.createdAt) });
 
