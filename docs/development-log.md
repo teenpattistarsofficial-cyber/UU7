@@ -4,6 +4,19 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ---
 
+## 2026-07-11
+
+### First production deployment
+- Deployed to the production VPS (aaPanel + Docker Compose, `/www/wwwroot/uu7.io`) for the first time, pulling the full day's accumulated work (commit `9af09a8`, "Full CMS dashboard built").
+- Found and fixed a real build bug uncovered during this deploy: many admin pages (analytics, media, redirects, all Settings sub-pages, and — despite using `searchParams` — posts, pages, categories, authors, comments, users) were getting statically prerendered by `next build` instead of rendering dynamically, because `searchParams` usage alone isn't a reliable dynamic-rendering signal under this Next.js/Turbopack build. This crashed the build with `Error: DATABASE_URL is not set` (intentionally absent at build time — see the Dockerfile's own comment on this failure mode).
+  - Fixed at the shared layout level (`app/(admin)/admin/(dashboard)/layout.tsx` now has `export const dynamic = "force-dynamic"`), which covers every page underneath in one place, plus explicit exports added to the remaining leaf pages and `app/not-found.tsx` for the same reason.
+  - Verified with a full local `DATABASE_URL="" npx next build` before pushing — confirmed every route renders `ƒ` (dynamic) instead of failing prerender.
+- Applied the day's accumulated DB migrations (`0012`–`0016`) on the production database — added `contact_channels`, `site_settings`, `openai_api_key` column, `audit_log`, `cta_clicks`, `page_views`, and `comments`/`comment_status` — after discovering the first migration attempt had silently done nothing (the `migrate` Docker image was stale from before the code pull, since `docker compose run` doesn't rebuild automatically).
+- Documented the real update workflow for this deployment going forward: pull → rebuild `migrate` with `--build` → apply migrations → rebuild `app` → recreate — with the `--build` flag being the detail that had been missing.
+- Stopped the bundled `docker-compose` `nginx`/`certbot` services entirely — aaPanel's own web server is what actually reverse-proxies `https://uu7.io` to the app container on `127.0.0.1:3006`, per the docker-compose.yml's own aaPanel-specific guidance; the bundled `nginx` container was crash-looping (Docker DNS couldn't resolve the `app` upstream) without ever actually serving live traffic.
+
+---
+
 ## 2026-07-10
 
 ### Maintenance mode
