@@ -23,7 +23,7 @@ WORKDIR /app
 # packages instead of blocking everyone or trusting everyone.
 FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile --trust-lockfile
+RUN pnpm install --frozen-lockfile
 
 # ---- builder: compile the Next.js app ----
 FROM base AS builder
