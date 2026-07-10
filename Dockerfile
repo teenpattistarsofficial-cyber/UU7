@@ -11,9 +11,19 @@ WORKDIR /app
 
 # ---- deps: installed once, cached by Docker as long as the lockfile
 # doesn't change, independent of source-code edits ----
+# `--ignore-scripts` used to be set here, blocking every package's install
+# scripts — including sharp's, whose prebuilt native binary (for whichever
+# platform is running) needs its own install step to link its bundled
+# libvips shared library. Without it, sharp's binary exists but fails to
+# load at runtime with "Could not load the sharp module... ERR_DLOPEN_FAILED"
+# the moment a real image upload runs it — a working `next build` never
+# exercises this path, so the break was invisible until then. Removed in
+# favor of pnpm-workspace.yaml's `onlyBuiltDependencies` allowlist (already
+# used for esbuild), which restricts install scripts to specifically-approved
+# packages instead of blocking everyone or trusting everyone.
 FROM base AS deps
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --trust-lockfile --ignore-scripts
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile --trust-lockfile
 
 # ---- builder: compile the Next.js app ----
 FROM base AS builder
