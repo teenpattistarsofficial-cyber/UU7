@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
+// Next prerenders this as the static `/_not-found` shell by default, which
+// runs the DB call below at build time with no DATABASE_URL available (see
+// the Dockerfile's comment on this exact failure mode) — same fix as every
+// other page in this codebase that does a live DB read with no other signal
+// (params/searchParams/headers/cookies) telling Next it needs to be dynamic.
+export const dynamic = "force-dynamic";
+
 export default async function RootNotFound() {
   const settings = await getSiteSettings();
   const logoUrl = settings?.logoUrl || DEFAULT_LOGO_URL;

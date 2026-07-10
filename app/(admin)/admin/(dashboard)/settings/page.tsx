@@ -5,6 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { SettingsSectionHeader } from "@/components/admin/settings-section-header";
 import { ProfileSettings } from "@/components/admin/profile-settings";
 
+// headers() usage alone doesn't reliably force dynamic rendering in this
+// Next.js/Turbopack build — confirmed empirically elsewhere in this app
+// (see the Dockerfile's comment on this failure mode).
+export const dynamic = "force-dynamic";
+
 export default async function AccountSettingsPage() {
   const session = await auth.api.getSession({ headers: await headers() });
 

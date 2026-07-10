@@ -35,6 +35,12 @@ import { IntelligenceHealthSection } from "@/components/admin/dashboard/intellig
 import { MonthlyActivityCharts, RecentPostsSection, ActivityLogSection } from "@/components/admin/dashboard/activity-section";
 import { TopCategoriesAuthorsSection, MostCommentedMediaTypesSection, UserRolesSnapshotSection } from "@/components/admin/dashboard/top-lists-section";
 
+// searchParams alone doesn't reliably force dynamic rendering in this
+// Next.js/Turbopack build — confirmed empirically (see the Dockerfile's
+// comment on this failure mode). Every admin page doing a live DB read
+// needs its own explicit force-dynamic.
+export const dynamic = "force-dynamic";
+
 function isVisitorRange(value: string | undefined): value is VisitorRange {
   return value === "today" || value === "7d" || value === "30d";
 }

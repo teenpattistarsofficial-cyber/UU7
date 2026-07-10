@@ -10,6 +10,16 @@ import { AdminNav } from "./admin-nav";
 import { SignOutButton } from "./sign-out-button";
 import { ThemeToggleMenuItem } from "@/components/admin/theme-toggle";
 
+// This layout does a live session check + DB read (getSiteSettings) on
+// every request. A child page with none of its own dynamic signals (no
+// params/searchParams/DB call — e.g. a plain "new X" form page) gives Next
+// nothing to detect, so `next build` tries to prerender the whole tree
+// including this layout, which fails with no DATABASE_URL at build time
+// (see the Dockerfile's comment on this exact failure mode). Marking the
+// layout itself dynamic covers every page under it in one place, rather
+// than requiring every current and future leaf page to remember its own.
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardLayout({
   children,
 }: {

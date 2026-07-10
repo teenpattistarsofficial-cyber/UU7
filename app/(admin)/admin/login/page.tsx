@@ -5,6 +5,11 @@ import { DEFAULT_LOGO_URL } from "@/lib/site";
 import { ThemeToggle } from "@/components/admin/theme-toggle";
 import { LoginForm } from "./login-form";
 
+// searchParams alone doesn't reliably force dynamic rendering in this
+// Next.js/Turbopack build — confirmed empirically elsewhere in this app
+// (see the Dockerfile's comment on this failure mode).
+export const dynamic = "force-dynamic";
+
 export default async function LoginPage({
   searchParams,
 }: {

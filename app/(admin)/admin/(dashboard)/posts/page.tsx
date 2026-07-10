@@ -13,6 +13,12 @@ import { STATUS_ICONS } from "@/lib/admin/status-tabs";
 import { AdminPagination, paginate, parsePerPage } from "@/components/admin/pagination";
 import { PostsTable, type PostRow } from "./posts-table";
 
+// searchParams alone doesn't reliably force dynamic rendering in this
+// Next.js/Turbopack build — confirmed empirically (see the Dockerfile's
+// comment on this failure mode). Every admin page doing a live DB read
+// needs its own explicit force-dynamic.
+export const dynamic = "force-dynamic";
+
 const STATUS_TABS = [
   { value: "all", label: "All Posts", icon: STATUS_ICONS.all },
   { value: "published", label: "Published", icon: STATUS_ICONS.published },

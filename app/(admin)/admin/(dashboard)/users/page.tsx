@@ -6,6 +6,12 @@ import { db } from "@/lib/db";
 import { AdminPagination, paginate, parsePerPage } from "@/components/admin/pagination";
 import { UsersTable, type UserRow } from "./users-table";
 
+// searchParams alone doesn't reliably force dynamic rendering in this
+// Next.js/Turbopack build — confirmed empirically (see the Dockerfile's
+// comment on this failure mode). Every admin page doing a live DB read
+// needs its own explicit force-dynamic.
+export const dynamic = "force-dynamic";
+
 export default async function UsersPage({
   searchParams,
 }: {

@@ -5,6 +5,13 @@ import { categories, seoMeta } from "@/lib/db/schema";
 import { CategoryForm } from "../../category-form";
 import { updateCategory } from "@/lib/actions/categories";
 
+// Dynamic segments without generateStaticParams are normally safe from
+// build-time prerendering by default, but every other implicit signal in
+// this codebase turned out unreliable under this Next.js/Turbopack build
+// (see the Dockerfile's comment on this failure mode) — being explicit here
+// too rather than relying on that default.
+export const dynamic = "force-dynamic";
+
 export default async function EditCategoryPage({
   params,
 }: {

@@ -5,6 +5,13 @@ import { pages, seoMeta } from "@/lib/db/schema";
 import { PageForm } from "../../page-form";
 import { updatePage } from "@/lib/actions/pages";
 
+// Dynamic segments without generateStaticParams are normally safe from
+// build-time prerendering by default, but every other implicit signal in
+// this codebase turned out unreliable under this Next.js/Turbopack build
+// (see the Dockerfile's comment on this failure mode) — being explicit here
+// too rather than relying on that default.
+export const dynamic = "force-dynamic";
+
 export default async function EditPagePage({
   params,
 }: {

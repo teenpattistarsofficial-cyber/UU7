@@ -19,6 +19,13 @@ import {
 import { PostForm } from "../../post-form";
 import { updatePost } from "@/lib/actions/posts";
 
+// Dynamic segments without generateStaticParams are normally safe from
+// build-time prerendering by default, but every other implicit signal in
+// this codebase turned out unreliable under this Next.js/Turbopack build
+// (see the Dockerfile's comment on this failure mode) — being explicit here
+// too rather than relying on that default.
+export const dynamic = "force-dynamic";
+
 export default async function EditPostPage({
   params,
 }: {

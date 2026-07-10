@@ -10,6 +10,12 @@ import { cn } from "@/lib/utils";
 import { AdminPagination, paginate, parsePerPage } from "@/components/admin/pagination";
 import { CategoriesTable, type CategoryRow } from "./categories-table";
 
+// searchParams alone doesn't reliably force dynamic rendering in this
+// Next.js/Turbopack build — confirmed empirically (see the Dockerfile's
+// comment on this failure mode). Every admin page doing a live DB read
+// needs its own explicit force-dynamic.
+export const dynamic = "force-dynamic";
+
 const STATUS_TABS = [
   { value: "all", label: "All Categories", icon: Layers },
   { value: "trash", label: "Trash", icon: Trash2 },
