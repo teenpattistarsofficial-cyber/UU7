@@ -2,12 +2,13 @@
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { Trash2 } from "lucide-react";
+import { Trash2, ArrowRightLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FormSelect } from "@/components/admin/form-select";
+import { ControlCard } from "@/components/admin/control-card";
 import { createRedirect, deleteRedirect } from "@/lib/actions/redirects";
 
 export type RedirectRow = { id: string; fromPath: string; toPath: string; statusCode: number; createdAt: Date };
@@ -56,27 +57,43 @@ export function RedirectsTable({ initialRows }: { initialRows: RedirectRow[] }) 
   }
 
   return (
-    <div>
-      <form
-        onSubmit={handleCreate}
-        className="mb-6 flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.08)]"
+    <div className="space-y-6">
+      <ControlCard
+        icon={ArrowRightLeft}
+        iconClassName="bg-brand/10 text-brand"
+        title="Add a Redirect"
+        description="Send an old or changed URL to its new destination instead of 404ing."
       >
-        <div className="min-w-[200px] flex-1 space-y-1.5">
-          <Label className="text-xs text-muted-foreground uppercase">From path</Label>
-          <Input value={fromPath} onChange={(e) => setFromPath(e.target.value)} placeholder="/old-slug" required />
-        </div>
-        <div className="min-w-[200px] flex-1 space-y-1.5">
-          <Label className="text-xs text-muted-foreground uppercase">To path</Label>
-          <Input value={toPath} onChange={(e) => setToPath(e.target.value)} placeholder="/new-slug" required />
-        </div>
-        <div className="w-48 space-y-1.5">
-          <Label className="text-xs text-muted-foreground uppercase">Status</Label>
-          <FormSelect value={statusCode} onValueChange={setStatusCode} options={STATUS_OPTIONS} />
-        </div>
-        <Button type="submit" disabled={pending}>
-          {pending ? "Adding…" : "Add redirect"}
-        </Button>
-      </form>
+        <form onSubmit={handleCreate} className="flex flex-wrap items-end gap-3 border-t border-border p-5">
+          <div className="min-w-[200px] flex-1 space-y-1.5">
+            <Label className="text-sm text-muted-foreground uppercase">From path</Label>
+            <Input
+              className="h-10 bg-background text-base"
+              value={fromPath}
+              onChange={(e) => setFromPath(e.target.value)}
+              placeholder="/old-slug"
+              required
+            />
+          </div>
+          <div className="min-w-[200px] flex-1 space-y-1.5">
+            <Label className="text-sm text-muted-foreground uppercase">To path</Label>
+            <Input
+              className="h-10 bg-background text-base"
+              value={toPath}
+              onChange={(e) => setToPath(e.target.value)}
+              placeholder="/new-slug"
+              required
+            />
+          </div>
+          <div className="w-48 space-y-1.5">
+            <Label className="text-sm text-muted-foreground uppercase">Status</Label>
+            <FormSelect value={statusCode} onValueChange={setStatusCode} options={STATUS_OPTIONS} triggerClassName="h-10 bg-background text-base" />
+          </div>
+          <Button type="submit" variant="brand" className="rounded-full px-5" disabled={pending}>
+            {pending ? "Adding…" : "Add redirect"}
+          </Button>
+        </form>
+      </ControlCard>
 
       <div className="overflow-hidden rounded-xl border border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.08)]">
         <Table>

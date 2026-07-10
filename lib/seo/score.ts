@@ -24,6 +24,13 @@ export type SeoCheck = { key: string; label: string; passed: boolean };
 type ChecklistArgs = {
   title: string;
   slug?: string;
+  // `undefined` means "this entity type has no body-content concept at
+  // all" (categories, currently — just a title/slug/short description, not
+  // a full article) — every content-structure check below (headings, word
+  // count, internal/external links, focus-keyword-in-content) is omitted
+  // for those entities rather than shown as a permanent, unfixable
+  // failure, the same reasoning as `featuredImageUrl` below. `null` means
+  // the entity does have that concept but the content is genuinely empty.
   content: JSONContent | null | undefined;
   seo: SeoMetaRow;
   // `undefined` means "this entity type has no featured-image field at
@@ -39,6 +46,7 @@ type ChecklistArgs = {
  * exactly what's passing/failing instead of an opaque score.
  */
 export function getSeoChecklist({ title, slug, content, seo, featuredImageUrl }: ChecklistArgs): SeoCheck[] {
+  const hasBodyContent = content !== undefined;
   const text = extractText(content);
   const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
   const seoTitle = seo?.seoTitle?.trim() || title;
@@ -76,30 +84,43 @@ export function getSeoChecklist({ title, slug, content, seo, featuredImageUrl }:
         return Boolean(slugifiedKeyword && slug?.toLowerCase().includes(slugifiedKeyword));
       })(),
     },
-    {
-      key: "focusKeywordInContent",
-      label: "Focus keyword appears in the content",
-      passed: Boolean(focusKeyword && text.toLowerCase().includes(focusKeyword)),
-    },
-    { key: "hasHeading", label: "Content has at least one heading", passed: hasHeading(content) },
-    {
-      key: "singleH1",
-      label: "Only one H1 on the page (the post title) — no H1s in the body",
-      passed: hasNoH1InBody(content),
-    },
-    {
-      key: "headingHierarchy",
-      label: "Headings follow a proper H2 → H3 → H4 hierarchy (no skipped levels)",
-      passed: hasProperHeadingHierarchy(content),
-    },
-    {
-      key: "wordCount",
-      label: `Content is at least ${MIN_WORD_COUNT} words (currently ${wordCount})`,
-      passed: wordCount >= MIN_WORD_COUNT,
-    },
-    { key: "hasInternalLink", label: `Content has at least one internal link (${internal} found)`, passed: internal > 0 },
-    { key: "hasExternalLink", label: `Content has at least one external link (${external} found)`, passed: external > 0 },
   ];
+
+  if (hasBodyContent) {
+    checks.push(
+      {
+        key: "focusKeywordInContent",
+        label: "Focus keyword appears in the content",
+        passed: Boolean(focusKeyword && text.toLowerCase().includes(focusKeyword)),
+      },
+      { key: "hasHeading", label: "Content has at least one heading", passed: hasHeading(content) },
+      {
+        key: "singleH1",
+        label: "Only one H1 on the page (the post title) — no H1s in the body",
+        passed: hasNoH1InBody(content),
+      },
+      {
+        key: "headingHierarchy",
+        label: "Headings follow a proper H2 → H3 → H4 hierarchy (no skipped levels)",
+        passed: hasProperHeadingHierarchy(content),
+      },
+      {
+        key: "wordCount",
+        label: `Content is at least ${MIN_WORD_COUNT} words (currently ${wordCount})`,
+        passed: wordCount >= MIN_WORD_COUNT,
+      },
+      {
+        key: "hasInternalLink",
+        label: `Content has at least one internal link (${internal} found)`,
+        passed: internal > 0,
+      },
+      {
+        key: "hasExternalLink",
+        label: `Content has at least one external link (${external} found)`,
+        passed: external > 0,
+      },
+    );
+  }
 
   if (featuredImageUrl !== undefined) {
     checks.push({ key: "featuredImageSet", label: "Featured image is set", passed: Boolean(featuredImageUrl) });

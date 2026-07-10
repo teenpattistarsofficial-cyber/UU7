@@ -32,6 +32,11 @@ export const categories = pgTable("categories", {
   parentId: uuid("parent_id").references((): AnyPgColumn => categories.id, {
     onDelete: "set null",
   }),
+  // Soft-delete: non-null means "in Trash", same convention as posts/pages.
+  // Unlike posts/pages, a category can have live posts still assigned to
+  // it — lib/actions/categories.ts blocks trashing one until it's empty,
+  // since posts.categoryId has no soft-delete-aware fallback of its own.
+  deletedAt: timestamp("deleted_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -55,6 +60,11 @@ export const authors = pgTable("authors", {
   roleTitle: text("role_title"),
   expertiseTags: text("expertise_tags").array(),
   socialLinks: jsonb("social_links").$type<Record<string, string>>(),
+  // Soft-delete: non-null means "in Trash", same convention as posts/pages.
+  // Unlike categories, a post whose author is trashed just renders without
+  // a byline (see the `author &&` guards on the article template) rather
+  // than breaking, so trashing an author needs no equivalent guard.
+  deletedAt: timestamp("deleted_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

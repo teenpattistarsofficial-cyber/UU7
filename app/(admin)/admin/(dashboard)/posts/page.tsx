@@ -10,6 +10,7 @@ import { computeSeoScore } from "@/lib/seo/score";
 import { toTiptapDoc } from "@/lib/editor/doc";
 import { cn } from "@/lib/utils";
 import { STATUS_ICONS } from "@/lib/admin/status-tabs";
+import { AdminPagination, paginate, parsePerPage } from "@/components/admin/pagination";
 import { PostsTable, type PostRow } from "./posts-table";
 
 const STATUS_TABS = [
@@ -33,9 +34,10 @@ const RANGE_DAYS: Record<string, number> = { "7d": 7, "30d": 30, "90d": 90 };
 export default async function PostsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; q?: string; range?: string }>;
+  searchParams: Promise<{ status?: string; q?: string; range?: string; page?: string; perPage?: string }>;
 }) {
-  const { status = "all", q = "", range = "all" } = await searchParams;
+  const { status = "all", q = "", range = "all", page: rawPage, perPage: rawPerPage } = await searchParams;
+  const perPage = parsePerPage(rawPerPage);
 
   const [allPosts, categoryRows, authorRows, seoRows, tagJoinRows] = await Promise.all([
     db.query.posts.findMany({ orderBy: (p, { desc }) => desc(p.updatedAt) }),
@@ -97,6 +99,8 @@ export default async function PostsPage({
       }),
     }));
 
+  const { pageRows, currentPage, totalPages, totalItems } = paginate(rows, rawPage, perPage);
+
   function tabHref(tabStatus: string) {
     const params = new URLSearchParams();
     if (tabStatus !== "all") params.set("status", tabStatus);
@@ -110,14 +114,14 @@ export default async function PostsPage({
     <div>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">{status === "trash" ? "Trash" : "All Posts"}</h1>
+          <h1 className="text-2xl font-semibold">{status === "trash" ? "Trash" : "All Posts"}</h1>
           <p className="mt-1 text-muted-foreground">
             {status === "trash"
               ? "Posts moved to Trash — restore them or delete permanently."
               : "Manage, edit, or delete your blog content."}
           </p>
         </div>
-        <Link href="/admin/posts/new" className={cn(buttonVariants({ size: "lg" }), "gap-1.5 rounded-full")}>
+        <Link href="/admin/posts/new" className={cn(buttonVariants({ variant: "brand", size: "lg" }), "gap-1.5 rounded-full")}>
           <Plus className="size-4" />
           Create New
         </Link>
@@ -134,7 +138,7 @@ export default async function PostsPage({
               className={cn(
                 "flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-foreground text-background"
+                  ? "bg-brand text-brand-foreground"
                   : "border border-border text-foreground hover:bg-accent",
               )}
             >
@@ -157,12 +161,26 @@ export default async function PostsPage({
         <form method="GET" className="relative min-w-[260px] flex-1">
           {status !== "all" && <input type="hidden" name="status" value={status} />}
           {range !== "all" && <input type="hidden" name="range" value={range} />}
+          {rawPerPage && <input type="hidden" name="perPage" value={rawPerPage} />}
           <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input name="q" defaultValue={q} placeholder="Search by title, category, or author…" className="pl-9" />
         </form>
       </div>
 
-      <PostsTable rows={rows} isTrashView={status === "trash"} />
+      <PostsTable rows={pageRows} isTrashView={status === "trash"} />
+      <AdminPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={totalItems}
+        perPage={perPage}
+        basePath="/admin/posts"
+        params={{
+          status: status !== "all" ? status : undefined,
+          q: q || undefined,
+          range: range !== "all" ? range : undefined,
+          perPage: rawPerPage,
+        }}
+      />
     </div>
   );
 }

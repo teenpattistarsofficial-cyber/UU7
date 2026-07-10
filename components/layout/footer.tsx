@@ -14,7 +14,7 @@ const POLICY_LINKS = [
   { href: "/editorial-policy", label: "Editorial Policy" },
 ];
 
-export function SiteFooter() {
+export function SiteFooter({ logoUrl }: { logoUrl: string }) {
   return (
     <footer className="mt-auto border-t bg-brand/5">
       {/* Thin brand-gradient accent instead of a plain flat border — the one
@@ -37,7 +37,7 @@ export function SiteFooter() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="inline-flex items-center" aria-label="UU7 home">
-              <Image src="/UU7.io logo.webp" alt="UU7" width={64} height={64} className="rounded-md" />
+              <Image src={logoUrl} alt="UU7" width={64} height={64} unoptimized className="rounded-md" />
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
               Researched rules, honest reviews, and straight answers on Indian card games, betting, and bonuses —

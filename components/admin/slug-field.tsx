@@ -19,7 +19,7 @@ export function SlugField({
   value: string;
   onChange: (slug: string) => void;
   sourceTitle: string;
-  type: "post" | "page";
+  type: "post" | "page" | "category";
   excludeId?: string;
 }) {
   const [status, setStatus] = useState<Status>("idle");

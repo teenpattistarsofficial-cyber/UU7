@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Shield } from "lucide-react";
+import { getSiteSettings } from "@/lib/settings";
+import { DEFAULT_LOGO_URL } from "@/lib/site";
 import { ThemeToggle } from "@/components/admin/theme-toggle";
 import { LoginForm } from "./login-form";
 
@@ -8,7 +10,8 @@ export default async function LoginPage({
 }: {
   searchParams: Promise<{ next?: string }>;
 }) {
-  const { next } = await searchParams;
+  const [{ next }, siteSettingsRow] = await Promise.all([searchParams, getSiteSettings()]);
+  const logoUrl = siteSettingsRow?.logoUrl || DEFAULT_LOGO_URL;
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background p-4">
@@ -28,10 +31,11 @@ export default async function LoginPage({
       <div className="relative w-full max-w-sm rounded-3xl border border-border bg-card p-8 shadow-[0_2px_8px_rgba(0,0,0,0.04),0_24px_64px_-24px_rgba(0,0,0,0.18)] ring-1 ring-accent-foreground/[0.06]">
         <div className="mb-8 text-center">
           <Image
-            src="/UU7.io logo.webp"
+            src={logoUrl}
             alt="UU7"
             width={112}
             height={112}
+            unoptimized
             priority
             className="mx-auto mb-3 drop-shadow-[0_8px_16px_rgba(0,0,0,0.12)]"
           />

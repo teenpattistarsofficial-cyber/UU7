@@ -18,10 +18,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // Bespoke centered layout rather than the shared PagePlaceholder (used
-// as-is by about/editorial-policy/responsible-gaming) — Telegram is a real,
-// permanent contact channel rather than "not published yet" filler, so this
-// page gets its own standard contact-page treatment even before an editor
-// publishes a CMS "contact" row.
+// as-is by about/editorial-policy/responsible-gaming) — the configured
+// contact channels (Settings → Contact Channels) are real, permanent
+// content rather than "not published yet" filler, so this page gets its
+// own standard contact-page treatment even before an editor publishes a
+// CMS "contact" row.
 export default async function ContactPage() {
   const result = await getPublishedPageBySlug(SLUG);
 
@@ -37,8 +38,8 @@ export default async function ContactPage() {
           <p className="mb-2 text-xs font-semibold tracking-[0.2em] text-brand uppercase">Get in touch</p>
           <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">{FALLBACK_TITLE}</h1>
           <p className="mx-auto mt-4 max-w-md text-muted-foreground">
-            Have a question about a guide, spotted something that needs correcting, or just want to say hi? We&apos;re
-            easiest to reach on Telegram.
+            Have a question about a guide, spotted something that needs correcting, or just want to say hi? Reach
+            out below.
           </p>
         </div>
 

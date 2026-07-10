@@ -84,9 +84,9 @@ export function Hero() {
       // — this exact gap has reappeared more than once after the header's
       // logo size or padding changed and this value wasn't updated to
       // match. Two tiers because the header's own padding is responsive
-      // (py-1.5 below `sm`, py-2 from `sm` up) while the 80px logo stays
-      // fixed: 92px below `sm` (80 + 2*6px), 96px from `sm` up (80 + 2*8px).
-      className="relative -mt-[92px] overflow-hidden pt-[92px] sm:-mt-[96px] sm:pt-[96px]"
+      // (py-0.5 below `sm`, py-1 from `sm` up) while the 80px logo stays
+      // fixed: 84px below `sm` (80 + 2*2px), 88px from `sm` up (80 + 2*4px).
+      className="relative -mt-[84px] overflow-hidden pt-[84px] sm:-mt-[88px] sm:pt-[88px]"
       style={{
         background:
           "radial-gradient(circle at top center, #F76103 0%, #E44A02 35%, #C94102 65%, #B73601 100%)",
@@ -129,7 +129,7 @@ export function Hero() {
             India&apos;s Gaming Knowledge Hub
           </p>
 
-          {/* The line break is at "you" / "can", not "actually" / "trust"
+          {/* The line break is at "gaming" / "guides", not "can" / "trust"
              like the desktop corner block below — a more even split (2 short
              lines instead of one long line + one short word) leaves enough
              spare width per line to size the text meaningfully larger here
@@ -148,10 +148,10 @@ export function Hero() {
              the search bar and image below the fold on load. */}
           <h1 className="mb-4 text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl [@media(max-height:500px)]:mb-2 [@media(max-height:500px)]:text-2xl">
             <span className="hero-anim hero-reveal block" style={{ animationDelay: "0.3s" }}>
-              Gaming guides you
+              Real-money gaming
             </span>
             <span className="hero-anim hero-reveal block" style={{ animationDelay: "0.45s" }}>
-              can actually trust
+              guides you can trust
             </span>
           </h1>
 
@@ -223,10 +223,10 @@ export function Hero() {
            with no heading at all. */}
         <p className="text-5xl font-semibold leading-[0.95] tracking-tight text-white min-[1440px]:text-7xl">
           <span className="hero-anim hero-reveal block" style={{ animationDelay: "0.3s" }}>
-            Gaming guides you can actually
+            Real-money gaming guides
           </span>
           <span className="hero-anim hero-reveal block" style={{ animationDelay: "0.45s" }}>
-            trust
+            you can trust
           </span>
         </p>
       </div>

@@ -47,7 +47,11 @@ export function SeoFieldsPanel({
   featuredImageUrl,
 }: {
   pathPrefix: string;
-  content: JSONContent | null | undefined;
+  // Omitted entirely (left `undefined`) for entities with no body-content
+  // concept — categories, currently — so the SEO checklist below skips its
+  // content-structure checks instead of showing a permanent, unfixable
+  // failure (see the same reasoning on ChecklistArgs in lib/seo/score.ts).
+  content?: JSONContent | null;
   featuredImageUrl?: string | null;
 }) {
   const { register, control, setValue } = useFormContext<SeoFieldValues>();

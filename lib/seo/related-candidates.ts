@@ -25,7 +25,10 @@ export async function getPublishedPostCandidates(excludePostId?: string): Promis
           ? and(eq(posts.status, "published"), isNull(posts.deletedAt), ne(posts.id, excludePostId))
           : and(eq(posts.status, "published"), isNull(posts.deletedAt)),
       ),
-    db.select().from(categories),
+    // A trashed category (deletedAt set) is excluded the same way — any
+    // post pointing at one falls out via the categorySlug filter below,
+    // the same as a post with no category at all.
+    db.select().from(categories).where(isNull(categories.deletedAt)),
     db.select({ postId: postTags.postId, name: tags.name }).from(postTags).innerJoin(tags, eq(postTags.tagId, tags.id)),
   ]);
 

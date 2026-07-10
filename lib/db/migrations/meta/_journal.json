@@ -57,6 +57,69 @@
       "when": 1783419836344,
       "tag": "0007_skinny_obadiah_stane",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1783636526780,
+      "tag": "0008_bizarre_magus",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1783666471274,
+      "tag": "0009_chilly_timeslip",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1783668403785,
+      "tag": "0010_marvelous_the_watchers",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1783678210243,
+      "tag": "0011_aspiring_red_wolf",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1783679390592,
+      "tag": "0012_cuddly_kree",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1783680216628,
+      "tag": "0013_motionless_captain_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1783687803293,
+      "tag": "0014_striped_puff_adder",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1783689704758,
+      "tag": "0015_nifty_lyja",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1783696178753,
+      "tag": "0016_milky_gorilla_man",
+      "breakpoints": true
     }
   ]
 }

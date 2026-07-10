@@ -66,7 +66,7 @@ const CATEGORY_LINKS = [...SITE_CATEGORIES, { slug: "about", label: "About", hre
 // checked synchronously from the pathname, not discovered after the fact by
 // querying the DOM, so there's no flash of white-on-light text on first
 // paint before an effect gets a chance to run.
-export function SiteHeader() {
+export function SiteHeader({ logoUrl }: { logoUrl: string }) {
   const pathname = usePathname();
   const hasHero = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
@@ -118,9 +118,13 @@ export function SiteHeader() {
           scrolled && "border-b border-white/15 bg-white/10 shadow-sm backdrop-blur-xl backdrop-saturate-150",
         )}
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-1.5 sm:py-2">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-0.5 sm:py-1">
           <Link href="/" className="flex items-center" aria-label="UU7 home">
-            <Image src="/UU7.io logo.webp" alt="UU7" width={80} height={80} className="rounded-md" priority />
+            {/* `unoptimized` — the logo can now be set to any arbitrary URL
+               from Settings → Branding, not just the bundled default or a
+               same-origin /uploads/ path, and next.config.ts has no
+               `images.remotePatterns` configured for external domains. */}
+            <Image src={logoUrl} alt="UU7" width={80} height={80} unoptimized className="rounded-md" priority />
           </Link>
           <nav
             className={cn(
@@ -146,7 +150,7 @@ export function SiteHeader() {
             onClick={() => setMenuOpen(true)}
             className={cn("md:hidden", overHero ? "text-white/90 hover:text-white" : "text-foreground/80")}
           >
-            <Menu className="size-5" />
+            <Menu className="size-6" />
           </Button>
         </div>
       </header>
@@ -184,7 +188,7 @@ export function SiteHeader() {
                  accessible name, so it's kept but visually hidden rather
                  than removed outright. */}
               <DialogTitle className="sr-only">Menu</DialogTitle>
-              <Image src="/UU7.io logo.webp" alt="UU7" width={72} height={72} className="rounded-md" />
+              <Image src={logoUrl} alt="UU7" width={72} height={72} unoptimized className="rounded-md" />
               <Button
                 type="button"
                 variant="ghost"
@@ -193,7 +197,7 @@ export function SiteHeader() {
                 onClick={() => setMenuOpen(false)}
                 className="text-white hover:bg-white/10 hover:text-white"
               >
-                <X className="size-5" />
+                <X className="size-6" />
               </Button>
             </div>
 

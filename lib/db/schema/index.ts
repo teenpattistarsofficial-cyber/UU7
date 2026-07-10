@@ -5,3 +5,6 @@ export * from "./media";
 export * from "./article-blocks";
 export * from "./redirects";
 export * from "./analytics";
+export * from "./settings";
+export * from "./tracking";
+export * from "./comments";

@@ -203,15 +203,11 @@ export function PostForm({
               <ArrowLeft className="size-4" />
               Back to Posts
             </Link>
-            <h1 className="text-2xl font-bold">{defaultValues?.id ? "Edit Post" : "New Post"}</h1>
+            <h1 className="text-2xl font-semibold">{defaultValues?.id ? "Edit Post" : "New Post"}</h1>
           </div>
           <div className="flex items-center gap-3">
             <SeoScorePill score={liveScore} />
-            <Button
-              type="submit"
-              disabled={pending}
-              className="gap-1.5 bg-brand text-brand-foreground shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-4px_rgba(0,0,0,0.15)] hover:bg-brand/90"
-            >
+            <Button type="submit" variant="brand" className="gap-1.5 rounded-full px-5" disabled={pending}>
               <Save className="size-4" />
               {pending ? "Saving…" : "Save"}
             </Button>
@@ -311,7 +307,7 @@ export function PostForm({
                 {featuredImageUrl ? (
                   <Image src={featuredImageUrl} alt="" width={320} height={180} unoptimized className="size-full object-cover" />
                 ) : (
-                  <ImageOff className="size-6 text-muted-foreground" />
+                  <ImageOff className="size-6 text-brand/70" />
                 )}
               </div>
               <div className="flex gap-2">

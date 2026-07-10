@@ -149,13 +149,23 @@ export function PageForm({
             <TiptapEditor content={content} onChange={setContent} />
           </div>
 
-          <Button type="submit" disabled={pending}>
+          <Button type="submit" variant="brand" className="rounded-full px-6" disabled={pending}>
             {pending ? "Saving…" : "Save"}
           </Button>
         </div>
 
         <div>
-          <SeoFieldsPanel pathPrefix="/pages" content={content} />
+          {/* Empty, not "/pages" — a page's real public URL is the bare
+             `/${slug}` (its own literal route for about/contact/etc., or
+             the [category] route's generic fallback for any other page),
+             never under a literal "/pages" segment. The wrong prefix here
+             only affects this admin-only SERP preview / canonical
+             placeholder — the live page's real canonical (lib/seo/metadata.ts)
+             is built from the correct path by its own route component — but
+             an editor trusting this preview and copying it into the
+             Canonical URL field would have shipped a wrong, real canonical
+             tag. */}
+          <SeoFieldsPanel pathPrefix="" content={content} />
         </div>
       </form>
     </FormProvider>

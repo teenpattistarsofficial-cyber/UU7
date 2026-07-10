@@ -33,6 +33,15 @@ export function LoginForm({ next }: { next: string }) {
       return;
     }
     toast.success("Signed in successfully");
+    // A plain fetch, not a direct Server Action call — calling logActivity()
+    // directly from here raced against router.push()/refresh() right below
+    // and got tangled in proxy.ts's own admin-auth redirect chain (the
+    // action's implicit "POST to the current URL" target hit the
+    // /admin/login redirect-if-already-signed-in branch), silently dropping
+    // the call before it ever reached the server function body. Fire-and
+    // forget is fine here — a missed login-audit entry isn't worth blocking
+    // the redirect over.
+    fetch("/api/admin/log-login", { method: "POST" }).catch(() => {});
     router.push(next);
     router.refresh();
   }

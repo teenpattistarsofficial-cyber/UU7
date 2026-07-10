@@ -28,6 +28,7 @@ import { hasNoH1InBody, hasProperHeadingHierarchy } from "@/lib/seo/score";
 import { extractText } from "@/lib/editor/text";
 import { toTiptapDoc } from "@/lib/editor/doc";
 import { invalidatePublicPaths } from "@/lib/cache/invalidate-public-paths";
+import { logActivity } from "@/lib/actions/audit-log";
 
 // Module 7/9 hard gate — these two checks (plus missing alt text on an
 // uploaded featured image) block publishing outright rather than just
@@ -248,6 +249,13 @@ export async function createPost(formData: FormData) {
   await syncPostCtas(id, formData);
   await syncPostStatsTables(id, formData);
 
+  await logActivity({
+    action: values.status === "published" ? "post.published" : "post.created",
+    entityType: "post",
+    entityId: id,
+    entityLabel: values.title,
+  });
+
   revalidatePath("/admin/posts");
   revalidatePublicPostPaths(await getCategorySlug(values.categoryId), values.slug);
   redirect("/admin/posts");
@@ -299,6 +307,9 @@ export async function deletePost(id: string) {
   await requireRole("editor");
   const existing = await db.query.posts.findFirst({ where: eq(posts.id, id) });
   await db.update(posts).set({ deletedAt: new Date() }).where(eq(posts.id, id));
+  if (existing) {
+    await logActivity({ action: "post.deleted", entityType: "post", entityId: id, entityLabel: existing.title });
+  }
   revalidatePath("/admin/posts");
   if (existing) revalidatePublicPostPaths(await getCategorySlug(existing.categoryId), existing.slug);
 }
@@ -338,8 +349,12 @@ export async function bulkRestorePosts(ids: string[]) {
 // safety net past this point. Only reachable from the Trash tab.
 export async function permanentlyDeletePost(id: string) {
   await requireRole("admin");
+  const existing = await db.query.posts.findFirst({ where: eq(posts.id, id) });
   await db.delete(posts).where(eq(posts.id, id));
   await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "post"), eq(seoMeta.entityId, id)));
+  if (existing) {
+    await logActivity({ action: "post.deleted_permanently", entityType: "post", entityId: id, entityLabel: existing.title });
+  }
   revalidatePath("/admin/posts");
 }
 

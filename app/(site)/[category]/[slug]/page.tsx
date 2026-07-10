@@ -1,4 +1,4 @@
-import { eq, and } from "drizzle-orm";
+import { eq, and, isNull } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,6 +19,7 @@ import {
   postStatsTables,
   tags,
   postTags,
+  comments,
 } from "@/lib/db/schema";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { buildFaqSchema, buildArticleSchema, buildBreadcrumbSchema, buildPersonSchema } from "@/lib/seo/jsonld";
@@ -42,6 +43,7 @@ import { FaqSection } from "@/components/article/faq-section";
 import { RelatedPosts } from "@/components/article/related-posts";
 import { AuthorBox } from "@/components/article/author-box";
 import { SourceCitations } from "@/components/article/source-citations";
+import { CommentsSection } from "@/components/article/comments-section";
 import { JsonLd } from "@/components/article/json-ld";
 
 // Safety-net ISR ceiling — lib/actions/posts.ts already revalidates this
@@ -62,7 +64,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { category, slug } = await params;
   const post = await db.query.posts.findFirst({ where: eq(posts.slug, slug) });
-  if (!post || post.status !== "published" || post.deletedAt) return { title: "Post" };
+  if (!post || post.status !== "published" || post.deletedAt) {
+    return { title: "Not found", robots: { index: false, follow: true } };
+  }
 
   const seo = await db.query.seoMeta.findFirst({
     where: and(eq(seoMeta.entityType, "post"), eq(seoMeta.entityId, post.id)),
@@ -102,9 +106,19 @@ export default async function ArticlePage({
     quickAnswerRow,
     ctaRows,
     statsTableRows,
+    approvedComments,
   ] = await Promise.all([
-    post.authorId ? db.query.authors.findFirst({ where: eq(authors.id, post.authorId) }) : Promise.resolve(null),
-    post.categoryId ? db.query.categories.findFirst({ where: eq(categories.id, post.categoryId) }) : Promise.resolve(null),
+    // `deletedAt` is separate from a status field authors/categories don't
+    // have — a trashed author just drops the byline (see the `author &&`
+    // guards below) and a trashed category just drops the badge/breadcrumb
+    // entry (see the `category ? ... : null` below), the same graceful
+    // fallback already used when a post simply has no author/category set.
+    post.authorId
+      ? db.query.authors.findFirst({ where: and(eq(authors.id, post.authorId), isNull(authors.deletedAt)) })
+      : Promise.resolve(null),
+    post.categoryId
+      ? db.query.categories.findFirst({ where: and(eq(categories.id, post.categoryId), isNull(categories.deletedAt)) })
+      : Promise.resolve(null),
     db.query.postFaqs.findMany({ where: eq(postFaqs.postId, post.id), orderBy: (f, { asc }) => asc(f.position) }),
     db.query.postAiSummary.findFirst({ where: eq(postAiSummary.postId, post.id) }),
     db.query.postKeyTakeaways.findMany({
@@ -120,6 +134,10 @@ export default async function ArticlePage({
     db.query.postQuickAnswer.findFirst({ where: eq(postQuickAnswer.postId, post.id) }),
     db.query.postCtas.findMany({ where: eq(postCtas.postId, post.id), orderBy: (c, { asc }) => asc(c.position) }),
     db.query.postStatsTables.findMany({ where: eq(postStatsTables.postId, post.id), orderBy: (t, { asc }) => asc(t.position) }),
+    db.query.comments.findMany({
+      where: and(eq(comments.postId, post.id), eq(comments.status, "approved")),
+      orderBy: (c, { asc }) => asc(c.createdAt),
+    }),
   ]);
 
   // Manual pins if the editor set any; otherwise the same scoring
@@ -270,7 +288,14 @@ export default async function ArticlePage({
         ))}
 
         {ctaRows.map((c) => (
-          <CtaBlock key={c.id} heading={c.heading} description={c.description} buttonText={c.buttonText} buttonUrl={c.buttonUrl} />
+          <CtaBlock
+            key={c.id}
+            id={c.id}
+            heading={c.heading}
+            description={c.description}
+            buttonText={c.buttonText}
+            buttonUrl={c.buttonUrl}
+          />
         ))}
 
         <FaqSection faqs={faqs} />
@@ -287,6 +312,7 @@ export default async function ArticlePage({
         )}
         <RelatedPosts posts={relatedPosts} />
         <SourceCitations citations={citations} />
+        <CommentsSection postId={post.id} comments={approvedComments} />
         <JsonLd blocks={[articleSchema, breadcrumbSchema, personSchema, buildFaqSchema(faqs)]} />
       </div>
     </article>

@@ -207,8 +207,8 @@ export function PagesTable({ rows, isTrashView = false }: { rows: PageRow[]; isT
                 </TableCell>
                 <TableCell className="px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-                      <StickyNote className="size-4 text-muted-foreground" />
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-blue-500/10">
+                      <StickyNote className="size-4 text-blue-600" />
                     </div>
                     <div className="min-w-0">
                       <div className="max-w-[280px] truncate font-medium" title={page.title}>

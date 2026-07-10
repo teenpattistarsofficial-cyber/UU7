@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowUpRight } from "lucide-react";
+import { trackCtaClick } from "@/lib/tracking/track-cta-click";
 
 /** The homepage-level version of the same "commercial mechanism" every
  * article's admin-authored CtaBlock already provides per-post
@@ -21,6 +24,7 @@ export function SiteCta() {
           href="https://uu7stars.com/"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackCtaClick("homepage", "Visit UU7GAME")}
           className="mt-6 inline-flex items-center justify-center gap-1.5 rounded-full bg-brand px-7 py-3.5 text-sm font-semibold text-brand-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_20px_-8px_rgba(0,0,0,0.3)] transition-transform hover:-translate-y-0.5 hover:bg-brand/90"
         >
           Visit UU7GAME

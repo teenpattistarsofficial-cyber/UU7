@@ -225,7 +225,7 @@ export function PostsTable({ rows, isTrashView = false }: { rows: PostRow[]; isT
                           className="size-10 object-cover"
                         />
                       ) : (
-                        <ImageOff className="size-4 text-muted-foreground" />
+                        <ImageOff className="size-4 text-brand/70" />
                       )}
                     </div>
                     <div className="min-w-0">

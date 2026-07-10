@@ -3,7 +3,9 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { ExternalLink } from "lucide-react";
-import { auth } from "@/lib/auth";
+import { auth, type Role } from "@/lib/auth";
+import { getSiteSettings } from "@/lib/settings";
+import { DEFAULT_LOGO_URL } from "@/lib/site";
 import { AdminNav } from "./admin-nav";
 import { SignOutButton } from "./sign-out-button";
 import { ThemeToggleMenuItem } from "@/components/admin/theme-toggle";
@@ -16,12 +18,16 @@ export default async function AdminDashboardLayout({
   // Authoritative check — proxy.ts already gates on cookie presence, but
   // layouts/server actions must do the real DB-backed lookup per Next.js's
   // guidance not to rely on Proxy alone.
-  const result = await auth.api.getSession({ headers: await headers() });
+  const [result, siteSettingsRow] = await Promise.all([
+    auth.api.getSession({ headers: await headers() }),
+    getSiteSettings(),
+  ]);
   if (!result?.user) {
     redirect("/admin/login");
   }
 
   const initial = (result.user.name || result.user.email).charAt(0).toUpperCase();
+  const logoUrl = siteSettingsRow?.logoUrl || DEFAULT_LOGO_URL;
 
   return (
     // `h-screen overflow-hidden` locks the app shell to exactly the
@@ -37,17 +43,26 @@ export default async function AdminDashboardLayout({
       <aside className="flex w-64 shrink-0 flex-col overflow-y-auto bg-sidebar p-4 text-sidebar-foreground">
         <div className="mb-5 flex items-center px-1">
           <Image
-            src="/UU7.io logo.webp"
+            src={logoUrl}
             alt="UU7"
             width={40}
             height={40}
+            unoptimized
             className="drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)]"
           />
         </div>
 
-        <div className="mb-7 flex items-center gap-2.5 px-1">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-sidebar-accent text-xs font-semibold text-sidebar-accent-foreground">
-            {initial}
+        <Link
+          href="/admin/settings"
+          className="mb-7 flex items-center gap-2.5 rounded-lg px-1 py-1 transition-colors hover:bg-sidebar-accent/60"
+          title="My profile"
+        >
+          <div className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-sidebar-accent text-xs font-semibold text-sidebar-accent-foreground">
+            {result.user.image ? (
+              <Image src={result.user.image} alt={result.user.name || "Admin"} fill unoptimized className="object-cover" />
+            ) : (
+              initial
+            )}
           </div>
           <div className="min-w-0">
             <div className="truncate text-sm font-medium">{result.user.name || "Admin"}</div>
@@ -55,9 +70,9 @@ export default async function AdminDashboardLayout({
               {result.user.role as string}
             </span>
           </div>
-        </div>
+        </Link>
 
-        <AdminNav />
+        <AdminNav role={result.user.role as Role} />
 
         <div className="mt-auto space-y-1 border-t border-sidebar-border pt-3">
           <Link
@@ -93,8 +108,8 @@ export default async function AdminDashboardLayout({
             reads as depth in the page background rather than decoration on
             any one card. */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute top-[-25%] left-1/3 h-[560px] w-[560px] rounded-full bg-primary/[0.05] blur-[150px]" />
-          <div className="absolute top-[10%] right-[-10%] h-[420px] w-[420px] rounded-full bg-accent-foreground/[0.05] blur-[130px]" />
+          <div className="absolute top-[-25%] left-1/3 h-[560px] w-[560px] rounded-full bg-brand/[0.07] blur-[150px]" />
+          <div className="absolute top-[10%] right-[-10%] h-[420px] w-[420px] rounded-full bg-primary/[0.04] blur-[130px]" />
         </div>
 
         <main className="relative z-10 flex-1 overflow-auto bg-background p-8 text-foreground">{children}</main>

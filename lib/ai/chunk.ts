@@ -7,6 +7,13 @@ export type AiChunk = {
   url: string;
   section: string;
   text: string;
+  // Set on the About page's chunks (see lib/ai/context.ts) — a generic
+  // "what is this site/platform" question has weak keyword overlap with
+  // any specific guide, so retrieveChunks() guarantees these are still
+  // included as baseline context when nothing else scores well, rather
+  // than surfacing "I don't have that information" for a question the
+  // About page already answers.
+  priority?: boolean;
 };
 
 const MAX_CHUNK_WORDS = 180;
@@ -26,11 +33,14 @@ export function chunkPost(post: {
   keyTakeaways?: string[];
   faqs?: { question: string; answer: string }[];
   content: JSONContent;
+  priority?: boolean;
 }): AiChunk[] {
   const chunks: AiChunk[] = [];
   const push = (section: string, text: string) => {
     const trimmed = text.trim();
-    if (trimmed) chunks.push({ postId: post.id, title: post.title, url: post.url, section, text: trimmed });
+    if (trimmed) {
+      chunks.push({ postId: post.id, title: post.title, url: post.url, section, text: trimmed, priority: post.priority });
+    }
   };
 
   push("Quick Answer", post.quickAnswer ?? "");

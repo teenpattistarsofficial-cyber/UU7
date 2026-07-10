@@ -9,6 +9,7 @@ import { requireRole } from "@/lib/auth/guards";
 import { slugify } from "@/lib/seo/slugify";
 import { toTiptapDoc } from "@/lib/editor/doc";
 import { invalidatePublicPaths } from "@/lib/cache/invalidate-public-paths";
+import { logActivity } from "@/lib/actions/audit-log";
 
 function parsePageForm(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
@@ -67,6 +68,7 @@ export async function createPage(formData: FormData) {
   const values = parsePageForm(formData);
   const [{ id }] = await db.insert(pages).values(values).returning({ id: pages.id });
   await upsertSeoMeta(id, formData);
+  await logActivity({ action: "page.created", entityType: "page", entityId: id, entityLabel: values.title });
   revalidatePath("/admin/pages");
   revalidatePublicPagePaths(values.slug);
   redirect("/admin/pages");
@@ -95,6 +97,9 @@ export async function deletePage(id: string) {
   await requireRole("editor");
   const existing = await db.query.pages.findFirst({ where: eq(pages.id, id) });
   await db.update(pages).set({ deletedAt: new Date() }).where(eq(pages.id, id));
+  if (existing) {
+    await logActivity({ action: "page.deleted", entityType: "page", entityId: id, entityLabel: existing.title });
+  }
   revalidatePath("/admin/pages");
   if (existing) revalidatePublicPagePaths(existing.slug);
 }
@@ -130,8 +135,12 @@ export async function bulkRestorePages(ids: string[]) {
 // safety net past this point. Only reachable from the Trash tab.
 export async function permanentlyDeletePage(id: string) {
   await requireRole("admin");
+  const existing = await db.query.pages.findFirst({ where: eq(pages.id, id) });
   await db.delete(pages).where(eq(pages.id, id));
   await db.delete(seoMeta).where(and(eq(seoMeta.entityType, "page"), eq(seoMeta.entityId, id)));
+  if (existing) {
+    await logActivity({ action: "page.deleted_permanently", entityType: "page", entityId: id, entityLabel: existing.title });
+  }
   revalidatePath("/admin/pages");
 }
 

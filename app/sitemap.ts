@@ -27,10 +27,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // `deletedAt` is separate from `status` — a trashed post/page keeps its
   // prior status, so both must be excluded explicitly or a trashed page's
   // now-404ing URL stays listed here, telling Google to crawl a dead link.
+  // Categories and authors have no `status` at all, just `deletedAt`.
   const [publishedPosts, allCategories, allAuthors, publishedPages] = await Promise.all([
     db.select().from(posts).where(and(eq(posts.status, "published"), isNull(posts.deletedAt))),
-    db.select().from(categories),
-    db.select().from(authors),
+    db.select().from(categories).where(isNull(categories.deletedAt)),
+    db.select().from(authors).where(isNull(authors.deletedAt)),
     db.select().from(pages).where(and(eq(pages.status, "published"), isNull(pages.deletedAt))),
   ]);
 

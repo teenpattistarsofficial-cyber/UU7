@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { MessageCircle, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ASK_AI_SOURCES_SENTINEL, type AskAiSource } from "@/lib/ai/stream-protocol";
-import { TELEGRAM_CONTACT_URL } from "@/lib/site";
+import { ASK_AI_SOURCES_SENTINEL, ASK_AI_ESCALATE_MARKER, type AskAiSource } from "@/lib/ai/stream-protocol";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -13,10 +12,11 @@ type ChatMessage = {
   sources?: AskAiSource[];
   pending?: boolean;
   // Set when the AI genuinely couldn't help — not configured, an
-  // unexpected error, or (once the stream completes) no relevant content
-  // was found for the question — as opposed to a recoverable/actionable
-  // case like rate-limiting or an invalid question, where a human wouldn't
-  // add anything a retry can't fix.
+  // unexpected error, or (once the stream completes) the model itself
+  // emitted ASK_AI_ESCALATE_MARKER for a real content question it couldn't
+  // answer — as opposed to a recoverable/actionable case like rate-limiting
+  // or an invalid question (a human wouldn't add anything a retry can't
+  // fix), or ordinary small talk the model just answered directly.
   escalate?: boolean;
 };
 
@@ -29,11 +29,19 @@ function replaceLastAssistant(prev: ChatMessage[], next: ChatMessage): ChatMessa
 /**
  * GEO/AEO Module 6 — a RAG chat widget over this site's own published
  * content (see lib/ai/{chunk,retrieve,prompt,context}.ts). Degrades
- * gracefully when ANTHROPIC_API_KEY isn't set: the API returns a plain
+ * gracefully when OPENAI_API_KEY isn't set: the API returns a plain
  * "not configured" error and the widget just surfaces that message rather
  * than breaking.
  */
-export function AskAiWidget() {
+export function AskAiWidget({
+  contactChannel,
+  enabled = true,
+  welcomeMessage,
+}: {
+  contactChannel: { href: string; label: string } | null;
+  enabled?: boolean;
+  welcomeMessage?: string | null;
+}) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [question, setQuestion] = useState("");
@@ -43,6 +51,8 @@ export function AskAiWidget() {
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
   }, [messages]);
+
+  if (!enabled) return null;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -85,7 +95,8 @@ export function AskAiWidget() {
         const { done, value } = await reader.read();
         if (done) break;
         full += decoder.decode(value, { stream: true });
-        const [visibleText] = full.split(ASK_AI_SOURCES_SENTINEL);
+        const [rawVisibleText] = full.split(ASK_AI_SOURCES_SENTINEL);
+        const [visibleText] = rawVisibleText.split(ASK_AI_ESCALATE_MARKER);
         setMessages((prev) => replaceLastAssistant(prev, { role: "assistant", text: visibleText, pending: true }));
       }
 
@@ -98,17 +109,18 @@ export function AskAiWidget() {
           sources = [];
         }
       }
+      // Escalation is driven by the model emitting ASK_AI_ESCALATE_MARKER,
+      // not by "did retrieval find zero sources" — that's also true for
+      // ordinary small talk ("thanks!") that was never a content question
+      // in the first place. See lib/ai/prompt.ts for why this has to be the
+      // model's own judgment call.
+      const [cleanAnswerText, escalateFlag] = answerText.split(ASK_AI_ESCALATE_MARKER);
       setMessages((prev) =>
         replaceLastAssistant(prev, {
           role: "assistant",
-          text: answerText.trim(),
+          text: cleanAnswerText.trim(),
           sources,
-          // No matching source means the retriever found nothing relevant
-          // on the site for this question — the model was told to say so
-          // plainly rather than fabricate (see ASK_AI_SYSTEM_PROMPT), which
-          // this catches structurally instead of pattern-matching its
-          // wording.
-          escalate: sources.length === 0,
+          escalate: escalateFlag !== undefined,
         }),
       );
     } catch {
@@ -151,7 +163,7 @@ export function AskAiWidget() {
 
           <div ref={listRef} className="flex-1 space-y-4 overflow-y-auto px-4 py-4 text-base">
             {messages.length === 0 && (
-              <p className="text-muted-foreground">Ask a question about content on this site.</p>
+              <p className="text-muted-foreground">{welcomeMessage || "Ask a question about content on this site."}</p>
             )}
             {messages.map((m, i) => (
               <div key={i} className={m.role === "user" ? "text-right" : "text-left"}>
@@ -175,15 +187,15 @@ export function AskAiWidget() {
                     ))}
                   </ul>
                 )}
-                {!m.pending && m.escalate && (
+                {!m.pending && m.escalate && contactChannel && (
                   <a
-                    href={TELEGRAM_CONTACT_URL}
+                    href={contactChannel.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
                   >
                     <Send className="size-3.5" />
-                    Talk to a human on Telegram
+                    Talk to a human on {contactChannel.label}
                   </a>
                 )}
               </div>

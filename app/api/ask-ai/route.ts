@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { loadAllChunks } from "@/lib/ai/context";
 import { retrieveChunks } from "@/lib/ai/retrieve";
 import { ASK_AI_SYSTEM_PROMPT, buildUserMessage } from "@/lib/ai/prompt";
-import { ASK_AI_MODEL, getAnthropicClient, isAskAiConfigured } from "@/lib/ai/client";
+import { ASK_AI_MODEL, getOpenAiClient, isAskAiConfigured } from "@/lib/ai/client";
 import { checkRateLimit } from "@/lib/ai/rate-limit";
 import { ASK_AI_SOURCES_SENTINEL } from "@/lib/ai/stream-protocol";
 
@@ -11,9 +11,9 @@ export const runtime = "nodejs";
 const MAX_QUESTION_LENGTH = 500;
 
 export async function POST(request: NextRequest) {
-  if (!isAskAiConfigured()) {
+  if (!(await isAskAiConfigured())) {
     return Response.json(
-      { error: "not_configured", message: "Ask-AI isn't set up yet — it needs an ANTHROPIC_API_KEY." },
+      { error: "not_configured", message: "Ask-AI isn't set up yet — it needs an OPENAI_API_KEY." },
       { status: 503 },
     );
   }
@@ -39,21 +39,25 @@ export async function POST(request: NextRequest) {
   const relevant = retrieveChunks(question, chunks, 6);
   const sources = [...new Map(relevant.map((c) => [c.url, { title: c.title, url: c.url }])).values()];
 
-  const client = getAnthropicClient();
-  const messageStream = client.messages.stream({
+  const client = await getOpenAiClient();
+  const stream = await client.chat.completions.create({
     model: ASK_AI_MODEL,
-    max_tokens: 1024,
-    thinking: { type: "adaptive" },
-    system: [{ type: "text", text: ASK_AI_SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
-    messages: [{ role: "user", content: buildUserMessage(question, relevant) }],
+    max_completion_tokens: 1024,
+    stream: true,
+    messages: [
+      { role: "system", content: ASK_AI_SYSTEM_PROMPT },
+      { role: "user", content: buildUserMessage(question, relevant) },
+    ],
   });
 
   const encoder = new TextEncoder();
   const responseBody = new ReadableStream({
     async start(controller) {
-      messageStream.on("text", (delta: string) => controller.enqueue(encoder.encode(delta)));
       try {
-        await messageStream.finalMessage();
+        for await (const chunk of stream) {
+          const delta = chunk.choices[0]?.delta?.content;
+          if (delta) controller.enqueue(encoder.encode(delta));
+        }
         controller.enqueue(encoder.encode(`${ASK_AI_SOURCES_SENTINEL}${JSON.stringify(sources)}`));
       } catch {
         controller.enqueue(encoder.encode("\n\nSomething went wrong generating an answer — try again shortly."));

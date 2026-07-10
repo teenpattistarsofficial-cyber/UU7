@@ -9,10 +9,11 @@ import { SITE_URL } from "@/lib/site";
 // hand-curated one with its own admin UI.
 export async function GET() {
   // `deletedAt` is separate from `status` — a trashed post keeps its prior
-  // status, so it must be excluded explicitly here too.
+  // status, so it must be excluded explicitly here too. Categories have no
+  // `status`, just `deletedAt`.
   const [publishedPosts, allCategories] = await Promise.all([
     db.select().from(posts).where(and(eq(posts.status, "published"), isNull(posts.deletedAt))),
-    db.select().from(categories),
+    db.select().from(categories).where(isNull(categories.deletedAt)),
   ]);
   const categorySlugById = new Map(allCategories.map((c) => [c.id, c.slug]));
 

@@ -10,6 +10,7 @@ import { computeSeoScore } from "@/lib/seo/score";
 import { toTiptapDoc } from "@/lib/editor/doc";
 import { cn } from "@/lib/utils";
 import { STATUS_ICONS } from "@/lib/admin/status-tabs";
+import { AdminPagination, paginate, parsePerPage } from "@/components/admin/pagination";
 import { PagesTable, type PageRow } from "./pages-table";
 
 const STATUS_TABS = [
@@ -33,9 +34,10 @@ const RANGE_DAYS: Record<string, number> = { "7d": 7, "30d": 30, "90d": 90 };
 export default async function PagesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; q?: string; range?: string }>;
+  searchParams: Promise<{ status?: string; q?: string; range?: string; page?: string; perPage?: string }>;
 }) {
-  const { status = "all", q = "", range = "all" } = await searchParams;
+  const { status = "all", q = "", range = "all", page: rawPage, perPage: rawPerPage } = await searchParams;
+  const perPage = parsePerPage(rawPerPage);
 
   const [allPages, seoRows] = await Promise.all([
     db.query.pages.findMany({ orderBy: (p, { desc }) => desc(p.updatedAt) }),
@@ -73,6 +75,8 @@ export default async function PagesPage({
       seoScore: computeSeoScore({ title: p.title, slug: p.slug, content: toTiptapDoc(p.content), seo: seoByPageId.get(p.id) }),
     }));
 
+  const { pageRows, currentPage, totalPages, totalItems } = paginate(rows, rawPage, perPage);
+
   function tabHref(tabStatus: string) {
     const params = new URLSearchParams();
     if (tabStatus !== "all") params.set("status", tabStatus);
@@ -86,14 +90,14 @@ export default async function PagesPage({
     <div>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">{status === "trash" ? "Trash" : "All Pages"}</h1>
+          <h1 className="text-2xl font-semibold">{status === "trash" ? "Trash" : "All Pages"}</h1>
           <p className="mt-1 text-muted-foreground">
             {status === "trash"
               ? "Pages moved to Trash — restore them or delete permanently."
               : "Manage your site's static pages."}
           </p>
         </div>
-        <Link href="/admin/pages/new" className={cn(buttonVariants({ size: "lg" }), "gap-1.5 rounded-full")}>
+        <Link href="/admin/pages/new" className={cn(buttonVariants({ variant: "brand", size: "lg" }), "gap-1.5 rounded-full")}>
           <Plus className="size-4" />
           Create New
         </Link>
@@ -110,7 +114,7 @@ export default async function PagesPage({
               className={cn(
                 "flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-foreground text-background"
+                  ? "bg-brand text-brand-foreground"
                   : "border border-border text-foreground hover:bg-accent",
               )}
             >
@@ -133,12 +137,26 @@ export default async function PagesPage({
         <form method="GET" className="relative min-w-[260px] flex-1">
           {status !== "all" && <input type="hidden" name="status" value={status} />}
           {range !== "all" && <input type="hidden" name="range" value={range} />}
+          {rawPerPage && <input type="hidden" name="perPage" value={rawPerPage} />}
           <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input name="q" defaultValue={q} placeholder="Search by title or template…" className="pl-9" />
         </form>
       </div>
 
-      <PagesTable rows={rows} isTrashView={status === "trash"} />
+      <PagesTable rows={pageRows} isTrashView={status === "trash"} />
+      <AdminPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={totalItems}
+        perPage={perPage}
+        basePath="/admin/pages"
+        params={{
+          status: status !== "all" ? status : undefined,
+          q: q || undefined,
+          range: range !== "all" ? range : undefined,
+          perPage: rawPerPage,
+        }}
+      />
     </div>
   );
 }

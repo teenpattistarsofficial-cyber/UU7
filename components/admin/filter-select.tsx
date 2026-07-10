@@ -29,6 +29,11 @@ export function FilterSelect({
     } else {
       params.set(paramName, next);
     }
+    // Changing a filter invalidates whatever page you were on — a stale
+    // `page` value would otherwise survive (searchParams.toString() above
+    // preserves every existing param) and could land past the new, smaller
+    // result set's last page.
+    params.delete("page");
     router.push(params.size ? `${pathname}?${params.toString()}` : pathname);
   }
 

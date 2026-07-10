@@ -1,38 +1,61 @@
 import { headers } from "next/headers";
+import { User, Mail, ShieldCheck } from "lucide-react";
 import { auth } from "@/lib/auth";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { SettingsSectionHeader } from "@/components/admin/settings-section-header";
+import { ProfileSettings } from "@/components/admin/profile-settings";
 
-export default async function SettingsPage() {
+export default async function AccountSettingsPage() {
   const session = await auth.api.getSession({ headers: await headers() });
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-semibold">Settings</h1>
+      <SettingsSectionHeader
+        icon={User}
+        title="Account"
+        description="Your signed-in identity, photo, and password for this admin."
+      />
 
-      <Card className="max-w-lg">
-        <CardHeader>
-          <CardTitle>Account</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          <div className="flex justify-between border-b border-border pb-3">
-            <span className="text-muted-foreground">Name</span>
-            <span>{session?.user?.name}</span>
-          </div>
-          <div className="flex justify-between border-b border-border pb-3">
-            <span className="text-muted-foreground">Email</span>
-            <span>{session?.user?.email}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Role</span>
-            <span className="uppercase">{session?.user?.role as string}</span>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="max-w-2xl space-y-5">
+        <ProfileSettings initial={{ name: session?.user?.name ?? "", image: session?.user?.image ?? null }} />
 
-      <p className="mt-6 max-w-lg text-sm text-muted-foreground">
-        Site-wide SEO defaults, redirects, and technical SEO settings (Modules 4-6) land here once
-        those admin modules are built.
-      </p>
+        <div className="overflow-hidden rounded-xl border border-border bg-muted/40">
+          <InfoRow icon={Mail} label="Email" value={session?.user?.email ?? ""} />
+          <div className="flex items-center justify-between gap-4 px-5 py-4">
+            <div className="flex items-center gap-3">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                <ShieldCheck className="size-4" />
+              </span>
+              <p className="text-sm font-semibold text-foreground">Role</p>
+            </div>
+            <Badge variant="brand" className="h-6 px-3 text-sm uppercase">
+              {session?.user?.role as string}
+            </Badge>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InfoRow({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+      <div className="flex items-center gap-3">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+          <Icon className="size-4" />
+        </span>
+        <p className="text-sm font-semibold text-foreground">{label}</p>
+      </div>
+      <span className="text-base font-medium text-foreground">{value}</span>
     </div>
   );
 }

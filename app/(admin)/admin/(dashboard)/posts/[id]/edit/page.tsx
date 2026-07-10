@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { eq, and } from "drizzle-orm";
+import { eq, and, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import {
   posts,
@@ -40,8 +40,15 @@ export default async function EditPostPage({
     statsTableRows,
   ] = await Promise.all([
     db.query.posts.findFirst({ where: eq(posts.id, id) }),
+    // Authors are deliberately NOT filtered here — unlike categories,
+    // nothing blocks trashing an author that a live post still references
+    // (see lib/actions/authors.ts), so this post's own current author could
+    // legitimately be trashed; excluding it would drop it from this select
+    // silently. Categories can't have that problem — lib/actions/categories.ts
+    // blocks trashing one while any live post still points at it — so
+    // excluding trashed categories here is safe.
     db.select().from(authors),
-    db.select().from(categories),
+    db.select().from(categories).where(isNull(categories.deletedAt)),
     db.query.seoMeta.findFirst({ where: and(eq(seoMeta.entityType, "post"), eq(seoMeta.entityId, id)) }),
     db.select({ name: tags.name }).from(postTags).innerJoin(tags, eq(postTags.tagId, tags.id)).where(eq(postTags.postId, id)),
     db.query.postFaqs.findMany({ where: eq(postFaqs.postId, id), orderBy: (f, { asc }) => asc(f.position) }),

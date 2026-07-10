@@ -2,12 +2,12 @@ import { and, desc, eq, isNull } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
-import { categories, posts } from "@/lib/db/schema";
+import { categories, posts, seoMeta } from "@/lib/db/schema";
 import { getPublishedPageBySlug } from "@/lib/pages/get-page";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { getCategoryMeta } from "@/lib/site-categories";
 import { CmsPageBody } from "@/components/site/cms-page";
-import { PostCard } from "@/components/home/post-card";
+import { CategoryGuideSearch } from "@/components/site/category-guide-search";
 import { Breadcrumb } from "@/components/site/breadcrumb";
 
 // Safety-net ISR ceiling — lib/actions/posts.ts and lib/actions/categories.ts
@@ -20,8 +20,23 @@ export async function generateMetadata({
   params: Promise<{ category: string }>;
 }): Promise<Metadata> {
   const { category: slug } = await params;
-  const category = await db.query.categories.findFirst({ where: eq(categories.slug, slug) });
-  if (category) return { title: category.name };
+  // `deletedAt` is separate from a status field categories don't have — a
+  // trashed category must be excluded explicitly so this falls through to
+  // notFound() the same way a trashed page/post already does.
+  const category = await db.query.categories.findFirst({
+    where: and(eq(categories.slug, slug), isNull(categories.deletedAt)),
+  });
+  if (category) {
+    const seo = await db.query.seoMeta.findFirst({
+      where: and(eq(seoMeta.entityType, "category"), eq(seoMeta.entityId, category.id)),
+    });
+    return buildMetadata({
+      seo,
+      fallbackTitle: category.name,
+      fallbackDescription: category.description,
+      path: `/${slug}`,
+    });
+  }
 
   // A category and a CMS page share this same single-segment URL space
   // (categories own the four hardcoded slugs — about/contact/
@@ -33,7 +48,7 @@ export async function generateMetadata({
     return buildMetadata({ seo: pageResult.seo, fallbackTitle: pageResult.page.title, path: `/${slug}` });
   }
 
-  return { title: "Not found" };
+  return { title: "Not found", robots: { index: false, follow: true } };
 }
 
 export default async function CategoryOrPageRoute({
@@ -42,7 +57,12 @@ export default async function CategoryOrPageRoute({
   params: Promise<{ category: string }>;
 }) {
   const { category: slug } = await params;
-  const category = await db.query.categories.findFirst({ where: eq(categories.slug, slug) });
+  // `deletedAt` is separate from a status field categories don't have — a
+  // trashed category must be excluded explicitly so this falls through to
+  // notFound() the same way a trashed page/post already does.
+  const category = await db.query.categories.findFirst({
+    where: and(eq(categories.slug, slug), isNull(categories.deletedAt)),
+  });
 
   if (!category) {
     const pageResult = await getPublishedPageBySlug(slug);
@@ -100,11 +120,7 @@ export default async function CategoryOrPageRoute({
       {cards.length === 0 ? (
         <p className="text-muted-foreground">No published posts in this category yet.</p>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {cards.map((post, i) => (
-            <PostCard key={post.id} post={post} priority={i === 0} />
-          ))}
-        </div>
+        <CategoryGuideSearch posts={cards} />
       )}
     </div>
   );

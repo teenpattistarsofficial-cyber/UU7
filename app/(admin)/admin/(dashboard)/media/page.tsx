@@ -7,7 +7,7 @@ export default async function MediaPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Media Library</h1>
+        <h1 className="text-2xl font-semibold">Media Library</h1>
         <p className="mt-1 text-muted-foreground">Upload and manage images used across posts and pages.</p>
       </div>
       <MediaGrid initialRows={rows} />

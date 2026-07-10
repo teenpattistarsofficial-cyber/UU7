@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { UploadCloud, Trash2, Pencil } from "lucide-react";
+import { UploadCloud, Trash2, Pencil, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,6 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { updateMedia, deleteMedia, bulkDeleteMedia } from "@/lib/actions/media";
 import { cn } from "@/lib/utils";
+import { ADMIN_PAGE_SIZE, PER_PAGE_OPTIONS } from "@/components/admin/pagination";
+import { FormSelect } from "@/components/admin/form-select";
 
 export type MediaRow = {
   id: string;
@@ -33,6 +35,8 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
   const [editing, setEditing] = useState<MediaRow | null>(null);
   const [uploading, setUploading] = useState(false);
   const [pending, startTransition] = useTransition();
+  const [page, setPage] = useState(0);
+  const [perPage, setPerPage] = useState(ADMIN_PAGE_SIZE);
 
   const needle = query.trim().toLowerCase();
   const filtered = rows.filter(
@@ -42,6 +46,9 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
       r.alt.toLowerCase().includes(needle) ||
       (r.title ?? "").toLowerCase().includes(needle),
   );
+  const pageCount = Math.max(1, Math.ceil(filtered.length / perPage));
+  const currentPage = Math.min(page, pageCount - 1);
+  const visible = filtered.slice(currentPage * perPage, (currentPage + 1) * perPage);
 
   async function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
@@ -114,7 +121,7 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <label
           className={cn(
-            "flex cursor-pointer items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90",
+            "flex h-8 cursor-pointer items-center gap-1.5 rounded-full bg-brand px-4 text-sm font-medium text-brand-foreground shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_14px_-4px_var(--brand)] hover:bg-brand/90",
             uploading && "pointer-events-none opacity-60",
           )}
         >
@@ -125,7 +132,10 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
         <Input
           placeholder="Search by filename, alt, or title…"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setPage(0);
+          }}
           className="max-w-xs"
         />
         {selected.size > 0 && (
@@ -141,7 +151,7 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          {filtered.map((item) => (
+          {visible.map((item) => (
             <div
               key={item.id}
               className="group relative overflow-hidden rounded-xl border border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.08)]"
@@ -177,6 +187,55 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {filtered.length > 0 && (
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">
+              Showing {currentPage * perPage + 1}–{Math.min((currentPage + 1) * perPage, filtered.length)} of {filtered.length}
+            </span>
+            <div className="w-32">
+              <FormSelect
+                value={String(perPage)}
+                onValueChange={(v) => {
+                  setPerPage(Number(v));
+                  setPage(0);
+                }}
+                options={PER_PAGE_OPTIONS}
+              />
+            </div>
+          </div>
+          {pageCount > 1 && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">
+                Page {currentPage + 1} of {pageCount}
+              </span>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="gap-1"
+                disabled={currentPage === 0}
+                onClick={() => setPage((p) => Math.max(0, p - 1))}
+              >
+                <ChevronLeft className="size-4" />
+                Previous
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="gap-1"
+                disabled={currentPage >= pageCount - 1}
+                onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
+              >
+                Next
+                <ChevronRight className="size-4" />
+              </Button>
+            </div>
+          )}
         </div>
       )}
 
@@ -230,7 +289,9 @@ function EditMediaDialog({
               <Textarea id="caption" name="caption" rows={2} defaultValue={media.caption ?? ""} />
             </div>
             <DialogFooter>
-              <Button type="submit">Save</Button>
+              <Button type="submit" variant="brand" className="rounded-full px-5">
+                Save
+              </Button>
             </DialogFooter>
           </form>
         )}

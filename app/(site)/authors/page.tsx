@@ -1,7 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { isNull } from "drizzle-orm";
 import { Users } from "lucide-react";
 import { db } from "@/lib/db";
+import { authors } from "@/lib/db/schema";
 import { AuthorAvatar } from "@/components/site/author-avatar";
 import { Breadcrumb } from "@/components/site/breadcrumb";
 
@@ -14,7 +16,12 @@ export const metadata: Metadata = { title: "Authors" };
 export const dynamic = "force-dynamic";
 
 export default async function AuthorsDirectoryPage() {
-  const rows = await db.query.authors.findMany({ orderBy: (a, { asc }) => asc(a.displayName) });
+  // `deletedAt` is separate from a status field authors don't have — a
+  // trashed author must be excluded explicitly.
+  const rows = await db.query.authors.findMany({
+    where: isNull(authors.deletedAt),
+    orderBy: (a, { asc }) => asc(a.displayName),
+  });
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">

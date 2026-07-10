@@ -5,6 +5,7 @@ import { Globe, Link2 } from "lucide-react";
 import { db } from "@/lib/db";
 import { authors, posts, categories } from "@/lib/db/schema";
 import { buildPersonSchema } from "@/lib/seo/jsonld";
+import { buildMetadata } from "@/lib/seo/metadata";
 import { SITE_URL } from "@/lib/site";
 import { JsonLd } from "@/components/article/json-ld";
 import { AuthorAvatar } from "@/components/site/author-avatar";
@@ -31,8 +32,26 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const author = await db.query.authors.findFirst({ where: eq(authors.slug, slug) });
-  return { title: author?.displayName ?? "Author", description: author?.bio ?? undefined };
+  // `deletedAt` is separate from a status field authors don't have — a
+  // trashed author must be excluded explicitly so this correctly 404s.
+  const author = await db.query.authors.findFirst({
+    where: and(eq(authors.slug, slug), isNull(authors.deletedAt)),
+  });
+  if (!author) return { title: "Not found", robots: { index: false, follow: true } };
+
+  // No manual SEO panel for authors (unlike posts/pages/categories) — a
+  // bio page is more of an E-E-A-T/trust signal than something worth
+  // hand-tuning a meta title for, so this is auto-generated from the
+  // fields the admin already has: bio as the description, avatar as the
+  // social preview image (`seo: null` since there's no seo_meta row to
+  // read — buildMetadata falls back to these entirely).
+  return buildMetadata({
+    seo: null,
+    fallbackTitle: author.displayName,
+    fallbackDescription: author.bio,
+    fallbackImage: author.avatarUrl,
+    path: `/authors/${slug}`,
+  });
 }
 
 export default async function AuthorProfilePage({
@@ -41,7 +60,11 @@ export default async function AuthorProfilePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const author = await db.query.authors.findFirst({ where: eq(authors.slug, slug) });
+  // `deletedAt` is separate from a status field authors don't have — a
+  // trashed author must be excluded explicitly so this correctly 404s.
+  const author = await db.query.authors.findFirst({
+    where: and(eq(authors.slug, slug), isNull(authors.deletedAt)),
+  });
   if (!author) notFound();
 
   const [authoredPosts, allCategories] = await Promise.all([
@@ -60,7 +83,7 @@ export default async function AuthorProfilePage({
       // prior status, so it must be excluded explicitly here too.
       .where(and(eq(posts.authorId, author.id), eq(posts.status, "published"), isNull(posts.deletedAt)))
       .orderBy(desc(posts.publishedAt)),
-    db.select().from(categories),
+    db.select().from(categories).where(isNull(categories.deletedAt)),
   ]);
   const categoryById = new Map(allCategories.map((c) => [c.id, c]));
   const cards = authoredPosts

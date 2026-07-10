@@ -1,14 +1,21 @@
 import "server-only";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
+import { getSiteSettings } from "@/lib/settings";
 
-// Per the claude-api skill's model defaults: always claude-opus-4-8 unless
-// explicitly told otherwise — not chosen for this feature specifically.
-export const ASK_AI_MODEL = "claude-opus-4-8";
+export const ASK_AI_MODEL = "gpt-4o-mini";
 
-export function isAskAiConfigured(): boolean {
-  return Boolean(process.env.ANTHROPIC_API_KEY);
+// DB value (Settings → System Controls) takes priority over the env var —
+// lets a key be set/rotated from the admin without a redeploy, while still
+// working for anyone who only ever set OPENAI_API_KEY the old way.
+async function resolveApiKey(): Promise<string | undefined> {
+  const settings = await getSiteSettings();
+  return settings?.openaiApiKey || process.env.OPENAI_API_KEY;
 }
 
-export function getAnthropicClient(): Anthropic {
-  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+export async function isAskAiConfigured(): Promise<boolean> {
+  return Boolean(await resolveApiKey());
+}
+
+export async function getOpenAiClient(): Promise<OpenAI> {
+  return new OpenAI({ apiKey: await resolveApiKey() });
 }

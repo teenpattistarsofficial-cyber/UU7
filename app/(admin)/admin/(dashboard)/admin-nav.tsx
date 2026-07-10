@@ -9,11 +9,14 @@ import {
   FolderTree,
   Users,
   Image as ImageIcon,
-  HelpCircle,
+  MessageSquare,
   ArrowRightLeft,
   BarChart3,
+  Settings,
+  UserCog,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Role } from "@/lib/auth";
 
 const OVERVIEW_ITEMS = [{ href: "/admin", label: "Dashboard", icon: LayoutDashboard }];
 
@@ -23,16 +26,20 @@ const CONTENT_ITEMS = [
   { href: "/admin/categories", label: "Categories", icon: FolderTree },
   { href: "/admin/authors", label: "Authors", icon: Users },
   { href: "/admin/media", label: "Media Library", icon: ImageIcon },
+  { href: "/admin/comments", label: "Comments", icon: MessageSquare },
 ];
 
 const REPORTS_ITEMS = [{ href: "/admin/analytics", label: "Analytics", icon: BarChart3 }];
 
-const TOOLS_ITEMS = [{ href: "/admin/redirects", label: "Redirects", icon: ArrowRightLeft }];
+const TOOLS_ITEMS = [
+  { href: "/admin/redirects", label: "Redirects", icon: ArrowRightLeft },
+  { href: "/admin/settings", label: "Settings", icon: Settings },
+];
 
-// Not built yet — FAQ Builder is Phase 4 per the implementation plan. Shown
-// greyed-out/non-clickable so the sidebar previews the roadmap honestly
-// instead of linking somewhere that 404s.
-const UPCOMING_ITEMS = [{ label: "FAQ Manager", icon: HelpCircle }];
+// Exposes every account's name/email/role — kept out of TOOLS_ITEMS (visible
+// to every signed-in role today, see redirects/settings) and only rendered
+// for admins, matching users/page.tsx's own requireRole("admin") redirect.
+const ADMIN_ITEMS = [{ href: "/admin/users", label: "Users", icon: UserCog }];
 
 function NavSectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -42,7 +49,7 @@ function NavSectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function AdminNav() {
+export function AdminNav({ role }: { role: Role }) {
   const pathname = usePathname();
 
   function isActive(href: string) {
@@ -60,20 +67,6 @@ export function AdminNav() {
       {CONTENT_ITEMS.map((item) => (
         <NavLink key={item.href} {...item} active={isActive(item.href)} />
       ))}
-      {UPCOMING_ITEMS.map((item) => (
-        <div
-          key={item.label}
-          className="flex cursor-not-allowed items-center justify-between gap-2.5 rounded-lg border-l-2 border-transparent px-3 py-2 text-sm text-sidebar-foreground/30"
-        >
-          <span className="flex items-center gap-2.5">
-            <item.icon className="size-4" />
-            {item.label}
-          </span>
-          <span className="rounded bg-sidebar-accent/40 px-1.5 py-0.5 text-[9px] font-medium tracking-wide uppercase">
-            Soon
-          </span>
-        </div>
-      ))}
 
       <NavSectionLabel>Reports</NavSectionLabel>
       {REPORTS_ITEMS.map((item) => (
@@ -84,6 +77,15 @@ export function AdminNav() {
       {TOOLS_ITEMS.map((item) => (
         <NavLink key={item.href} {...item} active={isActive(item.href)} />
       ))}
+
+      {role === "admin" && (
+        <>
+          <NavSectionLabel>Team</NavSectionLabel>
+          {ADMIN_ITEMS.map((item) => (
+            <NavLink key={item.href} {...item} active={isActive(item.href)} />
+          ))}
+        </>
+      )}
     </nav>
   );
 }

@@ -9,7 +9,7 @@ export default async function RedirectsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Redirects</h1>
+        <h1 className="text-2xl font-semibold">Redirects</h1>
         <p className="mt-1 text-muted-foreground">Send old or changed URLs to their new destination instead of 404ing.</p>
       </div>
       <RedirectsTable initialRows={rows} />
