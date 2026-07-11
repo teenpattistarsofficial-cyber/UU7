@@ -13,7 +13,7 @@ const TRUST_POINTS = [
 /** Homepage teaser for the full About page — deliberately distinct copy
  * from about/page.tsx's own paragraphs (not a repeat of it), since its job
  * is to build enough trust and substance to earn the click through to
- * /about, not to restate the whole editorial methodology inline. The
+ * /about-uu7, not to restate the whole editorial methodology inline. The
  * second column reuses the same category list the header/footer nav
  * already draw from (lib/site-categories.ts) as a lightweight "what we
  * actually cover" list — real, useful content rather than a decorative
@@ -46,7 +46,7 @@ export function AboutSection() {
           </ul>
 
           <Link
-            href="/about"
+            href="/about-uu7"
             className="inline-flex items-center gap-1.5 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-brand-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_20px_-8px_rgba(0,0,0,0.3)] transition-transform hover:-translate-y-0.5 hover:bg-brand/90"
           >
             Learn more about us

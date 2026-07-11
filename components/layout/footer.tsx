@@ -3,7 +3,7 @@ import Image from "next/image";
 import { SITE_CATEGORIES } from "@/lib/site-categories";
 
 const COMPANY_LINKS = [
-  { href: "/about", label: "About" },
+  { href: "/about-uu7", label: "About" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
   { href: "/authors", label: "Authors" },

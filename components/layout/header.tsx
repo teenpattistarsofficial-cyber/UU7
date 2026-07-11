@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 // category badges (lib/site-categories.ts), plus an "About" entry that only
 // makes sense as a nav link, not a post category — appended here rather
 // than added to the shared list itself.
-const CATEGORY_LINKS = [...SITE_CATEGORIES, { slug: "about", label: "About", href: "/about", icon: Info }];
+const CATEGORY_LINKS = [...SITE_CATEGORIES, { slug: "about", label: "About", href: "/about-uu7", icon: Info }];
 
 // Fully transparent at the very top of the page — no tint of its own at
 // all. This is deliberate: even painting the *same gradient formula* here
