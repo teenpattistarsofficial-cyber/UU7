@@ -25,16 +25,27 @@ export function InternalLinkAssistant({
 }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<LinkSuggestion[]>([]);
+  // Distinguishes "never searched yet" from "searched and found nothing" —
+  // both start as an empty `results` array, so without this a genuine
+  // zero-result Suggest/search silently falls back to the same idle
+  // placeholder text as before any interaction, reading as "the button did
+  // nothing" (this is the actual bug reported: Suggest scores candidates by
+  // shared tags/category/title words and drops anything scoring 0 — a page
+  // with no tags/category, whose title shares no words with any post title,
+  // legitimately gets zero suggestions every time).
+  const [hasSearched, setHasSearched] = useState(false);
   const [pending, startTransition] = useTransition();
 
   function runSearch(q: string) {
     setQuery(q);
     if (!q.trim()) {
       setResults([]);
+      setHasSearched(false);
       return;
     }
     startTransition(async () => {
       setResults(await searchPosts(q, excludePostId));
+      setHasSearched(true);
     });
   }
 
@@ -48,6 +59,7 @@ export function InternalLinkAssistant({
           categoryId: currentCategoryId,
         }),
       );
+      setHasSearched(true);
     });
   }
 
@@ -65,7 +77,7 @@ export function InternalLinkAssistant({
         </div>
         <Button type="button" variant="outline" size="sm" onClick={runAutoSuggest} disabled={pending} className="shrink-0 gap-1.5">
           <Sparkles className="size-3.5" />
-          Suggest
+          {pending ? "Suggesting…" : "Suggest"}
         </Button>
       </div>
 
@@ -85,6 +97,10 @@ export function InternalLinkAssistant({
             </li>
           ))}
         </ul>
+      ) : hasSearched && !pending ? (
+        <p className="text-xs text-muted-foreground">
+          No related posts found. Try a manual search by topic instead.
+        </p>
       ) : (
         <p className="text-xs text-muted-foreground">
           Search by topic, or hit Suggest for posts related to this one — click a result to insert a link with its
