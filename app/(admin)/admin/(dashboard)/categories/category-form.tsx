@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SlugField } from "@/components/admin/slug-field";
 import { SeoFieldsPanel, type SeoFieldValues } from "@/components/admin/seo-fields-panel";
+import { SeoScorePill } from "@/components/admin/seo-score-badge";
+import { computeSeoScore } from "@/lib/seo/score";
 
 type CategoryDefaults = {
   id?: string;
@@ -90,43 +92,65 @@ export function CategoryForm({
     });
   }
 
+  // No `content`/`featuredImageUrl` args — categories have neither concept
+  // (see the comment on ChecklistArgs in lib/seo/score.ts), so the checklist
+  // this rolls up correctly skips heading/word-count/link/image checks
+  // instead of showing them as permanently, unfixably failed.
+  const liveScore = computeSeoScore({
+    title: form.watch("title"),
+    slug: form.watch("slug"),
+    content: undefined,
+    seo: {
+      seoTitle: form.watch("seoTitle"),
+      metaDescription: form.watch("metaDescription"),
+      focusKeyword: form.watch("focusKeyword"),
+    },
+  });
+
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="title">Name</Label>
-            <Input id="title" required {...form.register("title")} />
-          </div>
-
-          {/* Categories and pages share the same flat "/${slug}" URL — see
-             the comment on app/api/admin/slugs/check/route.ts for why this
-             has to check both tables, not just categories against
-             themselves. */}
-          <SlugField
-            value={form.watch("slug")}
-            onChange={(slug) => form.setValue("slug", slug, { shouldDirty: true })}
-            sourceTitle={form.watch("title")}
-            type="category"
-            excludeId={defaultValues?.id}
-          />
-
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea id="description" rows={3} {...form.register("description")} />
-          </div>
-
-          <Button type="submit" variant="brand" className="rounded-full px-6" disabled={pending}>
-            {pending ? "Saving…" : "Save"}
-          </Button>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <h1 className="text-2xl font-semibold">{defaultValues?.id ? "Edit Category" : "New Category"}</h1>
+          <SeoScorePill score={liveScore} />
         </div>
 
-        <div>
-          {/* No `content` prop — categories have no body-content concept
-             (see the comment on ChecklistArgs in lib/seo/score.ts), so the
-             checklist below correctly skips heading/word-count/link checks
-             instead of showing them as permanently, unfixably failed. */}
-          <SeoFieldsPanel pathPrefix="" />
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Name</Label>
+              <Input id="title" required {...form.register("title")} />
+            </div>
+
+            {/* Categories and pages share the same flat "/${slug}" URL — see
+               the comment on app/api/admin/slugs/check/route.ts for why this
+               has to check both tables, not just categories against
+               themselves. */}
+            <SlugField
+              value={form.watch("slug")}
+              onChange={(slug) => form.setValue("slug", slug, { shouldDirty: true })}
+              sourceTitle={form.watch("title")}
+              type="category"
+              excludeId={defaultValues?.id}
+            />
+
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea id="description" rows={3} {...form.register("description")} />
+            </div>
+
+            <Button type="submit" variant="brand" className="rounded-full px-6" disabled={pending}>
+              {pending ? "Saving…" : "Save"}
+            </Button>
+          </div>
+
+          <div>
+            {/* No `content` prop — categories have no body-content concept
+               (see the comment on ChecklistArgs in lib/seo/score.ts), so the
+               checklist below correctly skips heading/word-count/link checks
+               instead of showing them as permanently, unfixably failed. */}
+            <SeoFieldsPanel pathPrefix="" />
+          </div>
         </div>
       </form>
     </FormProvider>

@@ -24,10 +24,5 @@ export default async function EditCategoryPage({
   ]);
   if (!category) notFound();
 
-  return (
-    <div>
-      <h1 className="mb-6 text-2xl font-semibold">Edit category</h1>
-      <CategoryForm action={updateCategory.bind(null, id)} defaultValues={{ ...category, seo }} />
-    </div>
-  );
+  return <CategoryForm action={updateCategory.bind(null, id)} defaultValues={{ ...category, seo }} />;
 }
