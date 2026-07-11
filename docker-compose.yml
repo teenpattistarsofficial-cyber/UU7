@@ -50,7 +50,7 @@ services:
     ports:
       - "127.0.0.1:3006:3000"
     volumes:
-      - uploads:/app/public/uploads
+      - uploads:/app/uploads
     # Not published to the host either — nginx is the only public ingress.
 
   nginx:

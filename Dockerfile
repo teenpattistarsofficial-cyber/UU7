@@ -62,10 +62,14 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Mounted over by a named volume in docker-compose so uploaded media
-# survives container recreation — this just ensures the directory (and its
-# ownership) exists before that volume is mounted on top of it.
-RUN mkdir -p ./public/uploads && chown nextjs:nodejs ./public/uploads
+# Deliberately NOT under ./public — a route handler (app/uploads/[filename]/
+# route.ts) reads these files from disk on every request instead of relying
+# on Next's own static file serving, which resolves public/ against a list
+# built once at boot and never picks up files written after that (see that
+# route's own comment). Mounted over by a named volume in docker-compose so
+# uploaded media survives container recreation — this just ensures the
+# directory (and its ownership) exists before that volume is mounted on top.
+RUN mkdir -p ./uploads && chown nextjs:nodejs ./uploads
 
 USER nextjs
 EXPOSE 3000

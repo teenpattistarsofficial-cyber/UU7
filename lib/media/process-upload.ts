@@ -4,7 +4,10 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
+// Deliberately NOT under public/ — see app/uploads/[filename]/route.ts for
+// why files written here at runtime need a route handler instead of Next's
+// own static file serving.
+const UPLOAD_DIR = path.join(process.cwd(), "uploads");
 
 // Auto-orients from EXIF then strips it, caps width at 2000px (source images
 // are routinely much larger than any layout on the site needs), and

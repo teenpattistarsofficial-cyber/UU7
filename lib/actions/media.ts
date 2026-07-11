@@ -8,7 +8,8 @@ import { db } from "@/lib/db";
 import { media } from "@/lib/db/schema";
 import { requireRole } from "@/lib/auth/guards";
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
+// Kept in sync with lib/media/process-upload.ts's UPLOAD_DIR.
+const UPLOAD_DIR = path.join(process.cwd(), "uploads");
 
 export async function listMedia() {
   await requireRole("author");

@@ -31,24 +31,19 @@ const nextConfig: NextConfig = {
     // hero asset only ever changes via a redeploy of this file itself.
     minimumCacheTTL: 31536000,
   },
-  // Static assets (favicon/logo/hero image in /public, user-uploaded media
-  // in /uploads) get served by Next's own static file handler with no
-  // caching by default — PageSpeed's "efficient cache lifetimes" audit flags
-  // exactly this. /_next/static/* already gets a 1-year immutable header
-  // from Next itself (content-hashed filenames), so it isn't listed here.
+  // Static assets in /public (favicon/logo/hero image) get served by Next's
+  // own static file handler with no caching by default — PageSpeed's
+  // "efficient cache lifetimes" audit flags exactly this. /_next/static/*
+  // already gets a 1-year immutable header from Next itself (content-hashed
+  // filenames), so it isn't listed here. Uploaded media sets its own
+  // identical Cache-Control directly in app/uploads/[filename]/route.ts
+  // instead of a rule here, since it's served by that route handler now,
+  // not Next's static file handler — see that route's own comment.
   async headers() {
-    const longCache = {
-      key: "Cache-Control",
-      value: "public, max-age=31536000, immutable",
-    };
     return [
       {
         source: "/:path*.(svg|jpg|jpeg|png|webp|avif|gif|ico|woff|woff2)",
-        headers: [longCache],
-      },
-      {
-        source: "/uploads/:path*",
-        headers: [longCache],
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
     ];
   },
