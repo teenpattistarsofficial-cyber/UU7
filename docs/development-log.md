@@ -15,6 +15,32 @@ A running log of work completed on this project, grouped by date. Newest entries
 - Documented the real update workflow for this deployment going forward: pull → rebuild `migrate` with `--build` → apply migrations → rebuild `app` → recreate — with the `--build` flag being the detail that had been missing.
 - Stopped the bundled `docker-compose` `nginx`/`certbot` services entirely — aaPanel's own web server is what actually reverse-proxies `https://uu7.io` to the app container on `127.0.0.1:3006`, per the docker-compose.yml's own aaPanel-specific guidance; the bundled `nginx` container was crash-looping (Docker DNS couldn't resolve the `app` upstream) without ever actually serving live traffic.
 
+### Media upload bug hunt
+- Diagnosed and fixed a 4-layer cascading bug that made every production media upload 500: `pnpm-workspace.yaml` blocked sharp's install script → fixing that exposed corepack fetching an unpinned pnpm version → fixing that exposed a bogus `--trust-lockfile` flag that had never been real (previously masked by Docker's layer cache) → fixing that finally exposed the real root cause: Next's `output: "standalone"` file tracing misses sharp's dynamically-`dlopen`'d libvips shared library, fixed via `outputFileTracingIncludes` in `next.config.ts`.
+- Found a second, separate bug once uploads stopped 500ing: uploaded files still 404'd until the container was restarted. Root cause: uploads lived under `public/uploads`, and the standalone server resolves `public/` static files against a list built once at boot, so anything written to the volume-mounted uploads directory after that never became servable. Fixed by moving uploads out of `public/` entirely and adding `app/uploads/[filename]/route.ts`, a route handler that reads the file from disk on every request instead.
+
+### PageSpeed Insights & agentic browsing fixes
+- Fixed the hero search button having no accessible name (icon-only, no `aria-label`) — the one failing "Agentic Browsing" audit.
+- Added long-lived `Cache-Control` headers for static assets and uploaded media, and `images.formats`/`minimumCacheTTL` in `next.config.ts` — addressed the "efficient cache lifetimes" and "improve image delivery" audits.
+
+### Admin dashboard navigation lag
+- Added a `loading.tsx` under the admin `(dashboard)` route group so navigating between admin pages shows a fallback instead of sitting frozen on the old page.
+- Bumped the postgres.js connection pool from its default of 10 to 20 — the main dashboard page alone fires ~20 queries in one `Promise.all`, so roughly half were queuing for a free connection instead of running concurrently.
+
+### Publish-validation errors silently swallowed in production
+- Trying to publish a post blocked by a real validation rule (e.g. a featured image missing alt text) showed a useless generic "Server Components render" error instead of the actual message. Root cause: Next redacts thrown Server Action errors in production regardless of client-side `try/catch`. Fixed by having `createPost`/`updatePost`/`bulkSetPostStatus` return `{ error }` instead of throwing for this expected case, since return values aren't subject to that redaction.
+
+### SEO score + Internal Linking Assistant extended to Categories and Pages
+- Categories and Pages only had partial SEO tooling compared to Posts. Added the same live `SeoScorePill` to both edit forms, and added the Internal Linking Assistant (search/auto-suggest + insert-link-at-cursor) to Pages, reusing the existing posts-only implementation as-is since none of it actually required post-specific fields.
+- Fixed the Internal Linking Assistant silently looking unresponsive when a genuine search/suggest returns zero results (common for Pages, which have no tags/category to score against) — added an explicit "No related posts found" state instead of falling back to the same idle placeholder text.
+
+### SerpPreview hydration mismatch
+- The SERP preview's description text differed between server and client render. Root cause: pixel-width truncation measures via `<canvas>`, which doesn't exist server-side (falls back to a character-count heuristic there) but does exist client-side from the very first render — a real, deterministic mismatch on any long enough title/description, not a fluke. Fixed by gating canvas use behind a post-mount flag so the client's first render matches the server's heuristic output exactly, then upgrades to accurate measurement right after.
+
+### Content SEO pass across Categories and Posts
+- Fixed focus-keyword mismatches on 4 categories (Betting Guides, Statistics & Reports, App Tutorials, Bonuses) by revising each keyword to match its existing slug/title rather than renaming live URLs.
+- Expanded and fixed several posts against the SEO checklist: "UU7GAME Games Overview" and "The Ultimate UU7GAME Guide" (word count, focus keyword in content, external citations), "UU7GAME Login Guide" and "UU7GAME Registration Guide" (word count, focus keyword in slug/title/content, internal + external links, dropped `[VERIFY]` placeholders that no longer needed hedging), "UU7GAME APK Download Guide" (same, plus replaced a placeholder download-URL note with a real link to `uu7stars.com` once confirmed), and added an external citation (Wikipedia's Indian Rummy article) to "Online Rummy Guide."
+
 ---
 
 ## 2026-07-10
