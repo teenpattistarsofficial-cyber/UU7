@@ -17,7 +17,12 @@ function createDb(): PostgresJsDatabase<typeof schema> {
   if (!connectionString) {
     throw new Error("DATABASE_URL is not set");
   }
-  const client = globalForDb.__dbClient ?? postgres(connectionString);
+  // Default pool size (10) is narrower than the dashboard actually needs —
+  // its page.tsx fires ~20 queries in one Promise.all, plus the admin
+  // layout's own session+settings lookup on every navigation, so roughly
+  // half of that page's "concurrent" queries were queuing for a free
+  // connection instead of actually running in parallel.
+  const client = globalForDb.__dbClient ?? postgres(connectionString, { max: 20 });
   if (process.env.NODE_ENV !== "production") {
     globalForDb.__dbClient = client;
   }
