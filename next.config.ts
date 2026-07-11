@@ -17,6 +17,41 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/**": ["./node_modules/sharp/**/*", "./node_modules/@img/**/*"],
   },
+  images: {
+    // AVIF first — next/image already re-encodes every image it serves, this
+    // just lets it pick a smaller format than the webp-only default when the
+    // requesting browser supports it (Chrome/Firefox on PageSpeed's crawler
+    // do), which is what the "Improve image delivery" audit was measuring.
+    formats: ["image/avif", "image/webp"],
+    // The /_next/image optimizer endpoint defaults to a 60s Cache-Control,
+    // which is what "efficient cache lifetimes" was flagging for
+    // post-thumbnail/hero images served through it, not just the raw
+    // /uploads files. Safe to set to a year: uploads get a fresh randomUUID
+    // filename per upload (lib/media/process-upload.ts), and the one static
+    // hero asset only ever changes via a redeploy of this file itself.
+    minimumCacheTTL: 31536000,
+  },
+  // Static assets (favicon/logo/hero image in /public, user-uploaded media
+  // in /uploads) get served by Next's own static file handler with no
+  // caching by default — PageSpeed's "efficient cache lifetimes" audit flags
+  // exactly this. /_next/static/* already gets a 1-year immutable header
+  // from Next itself (content-hashed filenames), so it isn't listed here.
+  async headers() {
+    const longCache = {
+      key: "Cache-Control",
+      value: "public, max-age=31536000, immutable",
+    };
+    return [
+      {
+        source: "/:path*.(svg|jpg|jpeg|png|webp|avif|gif|ico|woff|woff2)",
+        headers: [longCache],
+      },
+      {
+        source: "/uploads/:path*",
+        headers: [longCache],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

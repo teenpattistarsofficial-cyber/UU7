@@ -175,7 +175,12 @@ export function Hero() {
             placeholder="Search guides…"
             className="border-0 bg-transparent text-black shadow-none placeholder:text-black/40 focus-visible:ring-0"
           />
-          <Button type="submit" size="icon" className="shrink-0 rounded-full bg-brand text-brand-foreground hover:bg-brand/90">
+          <Button
+            type="submit"
+            size="icon"
+            aria-label="Search"
+            className="shrink-0 rounded-full bg-brand text-brand-foreground hover:bg-brand/90"
+          >
             <Search className="size-4" />
           </Button>
         </form>
