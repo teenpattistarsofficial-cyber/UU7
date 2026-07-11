@@ -88,7 +88,7 @@ export function PostForm({
   authors,
   categories,
 }: {
-  action: (formData: FormData) => Promise<void>;
+  action: (formData: FormData) => Promise<{ error: string } | void>;
   defaultValues?: PostDefaults;
   authors: { id: string; displayName: string }[];
   categories: { id: string; name: string; slug: string }[];
@@ -160,7 +160,8 @@ export function PostForm({
 
     startTransition(async () => {
       try {
-        await action(fd);
+        const result = await action(fd);
+        if (result?.error) toast.error(result.error);
       } catch (err) {
         // `redirect()` inside the server action throws a special error to
         // signal navigation — it must propagate, not be treated as a

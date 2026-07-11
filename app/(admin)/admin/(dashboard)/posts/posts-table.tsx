@@ -74,6 +74,7 @@ export function PostsTable({ rows, isTrashView = false }: { rows: PostRow[]; isT
     const ids = [...selected];
     startTransition(async () => {
       try {
+        let result: { error: string } | void = undefined;
         if (bulkAction === "delete") {
           await bulkDeletePosts(ids);
         } else if (bulkAction === "restore") {
@@ -81,16 +82,20 @@ export function PostsTable({ rows, isTrashView = false }: { rows: PostRow[]; isT
         } else if (bulkAction === "delete-permanently") {
           await bulkPermanentlyDeletePosts(ids);
         } else if (bulkAction === "publish") {
-          await bulkSetPostStatus(ids, "published");
+          result = await bulkSetPostStatus(ids, "published");
         } else if (bulkAction === "draft") {
-          await bulkSetPostStatus(ids, "draft");
+          result = await bulkSetPostStatus(ids, "draft");
         } else if (bulkAction === "archive") {
-          await bulkSetPostStatus(ids, "archived");
+          result = await bulkSetPostStatus(ids, "archived");
         }
-        toast.success(`Applied "${actionOptions.find((a) => a.value === bulkAction)?.label}" to ${ids.length} post(s)`);
-        setSelected(new Set());
-        setBulkAction("");
-        setBulkConfirmOpen(false);
+        if (result?.error) {
+          toast.error(result.error);
+        } else {
+          toast.success(`Applied "${actionOptions.find((a) => a.value === bulkAction)?.label}" to ${ids.length} post(s)`);
+          setSelected(new Set());
+          setBulkAction("");
+          setBulkConfirmOpen(false);
+        }
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "Bulk action failed");
       }

@@ -226,13 +226,18 @@ async function syncPostStatsTables(postId: string, formData: FormData) {
   await db.insert(postStatsTables).values(items.map((t, position) => ({ postId, ...t, position })));
 }
 
-export async function createPost(formData: FormData) {
+// Returns { error } instead of throwing for the publish-blocker case — Next
+// redacts thrown Server Action errors to a generic "Server Components
+// render" message in production regardless of how the caller catches it, so
+// this specific, actionable message would never actually reach the editor's
+// toast. Returning it as a value sidesteps that redaction entirely.
+export async function createPost(formData: FormData): Promise<{ error: string } | void> {
   await requireRole("editor");
   const values = parsePostForm(formData);
 
   if (values.status === "published") {
     const blockers = await getPublishBlockers(values.content, values.featuredImageUrl);
-    if (blockers.length > 0) throw new Error(`Cannot publish: ${blockers.join("; ")}`);
+    if (blockers.length > 0) return { error: `Cannot publish: ${blockers.join("; ")}` };
   }
 
   const [{ id }] = await db
@@ -261,13 +266,14 @@ export async function createPost(formData: FormData) {
   redirect("/admin/posts");
 }
 
-export async function updatePost(id: string, formData: FormData) {
+// See createPost's comment on why this returns { error } instead of throwing.
+export async function updatePost(id: string, formData: FormData): Promise<{ error: string } | void> {
   await requireRole("editor");
   const values = parsePostForm(formData);
 
   if (values.status === "published") {
     const blockers = await getPublishBlockers(values.content, values.featuredImageUrl);
-    if (blockers.length > 0) throw new Error(`Cannot publish: ${blockers.join("; ")}`);
+    if (blockers.length > 0) return { error: `Cannot publish: ${blockers.join("; ")}` };
   }
 
   const existing = await db.query.posts.findFirst({ where: eq(posts.id, id) });
@@ -366,10 +372,11 @@ export async function bulkPermanentlyDeletePosts(ids: string[]) {
   revalidatePath("/admin/posts");
 }
 
+// See createPost's comment on why this returns { error } instead of throwing.
 export async function bulkSetPostStatus(
   ids: string[],
   status: (typeof postStatusEnum.enumValues)[number],
-) {
+): Promise<{ error: string } | void> {
   await requireRole("editor");
   if (ids.length === 0) return;
 
@@ -378,7 +385,7 @@ export async function bulkSetPostStatus(
     for (const post of targets) {
       const blockers = await getPublishBlockers(toTiptapDoc(post.content), post.featuredImageUrl);
       if (blockers.length > 0) {
-        throw new Error(`Cannot publish "${post.title}": ${blockers.join("; ")}`);
+        return { error: `Cannot publish "${post.title}": ${blockers.join("; ")}` };
       }
     }
   }
