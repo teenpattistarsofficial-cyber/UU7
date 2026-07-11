@@ -24,10 +24,5 @@ export default async function EditPagePage({
   ]);
   if (!page) notFound();
 
-  return (
-    <div>
-      <h1 className="mb-6 text-2xl font-semibold">Edit page</h1>
-      <PageForm action={updatePage.bind(null, id)} defaultValues={{ ...page, seo }} />
-    </div>
-  );
+  return <PageForm action={updatePage.bind(null, id)} defaultValues={{ ...page, seo }} />;
 }
