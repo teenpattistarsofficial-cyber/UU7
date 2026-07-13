@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { ImageOff, Pencil } from "lucide-react";
+import { ImageOff, Pencil, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MediaPicker, type MediaItem } from "@/components/admin/media-picker";
@@ -57,16 +57,26 @@ export function CoverImageField({ value, onChange }: { value: string; onChange: 
         {value ? (
           <>
             <Image src={value} alt={details?.alt ?? ""} width={320} height={180} unoptimized className="size-full object-cover" />
-            {details && (
+            <div className="absolute top-2 right-2 flex gap-1.5">
+              {details && (
+                <button
+                  type="button"
+                  onClick={() => setEditOpen(true)}
+                  className="flex size-7 items-center justify-center rounded-full bg-background/90 text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.15)] hover:bg-background"
+                  title="Edit image details"
+                >
+                  <Pencil className="size-3.5" />
+                </button>
+              )}
               <button
                 type="button"
-                onClick={() => setEditOpen(true)}
-                className="absolute top-2 right-2 flex size-7 items-center justify-center rounded-full bg-background/90 text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.15)] hover:bg-background"
-                title="Edit image details"
+                onClick={() => onChange("")}
+                className="flex size-7 items-center justify-center rounded-full bg-background/90 text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.15)] hover:bg-destructive hover:text-destructive-foreground"
+                title="Remove cover image"
               >
-                <Pencil className="size-3.5" />
+                <X className="size-3.5" />
               </button>
-            )}
+            </div>
             {missingAlt && (
               <span className="absolute bottom-2 left-2 rounded-full bg-destructive px-2 py-0.5 text-[10px] font-medium text-destructive-foreground">
                 Missing alt text
