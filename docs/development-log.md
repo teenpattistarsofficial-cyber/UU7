@@ -41,6 +41,40 @@ A running log of work completed on this project, grouped by date. Newest entries
 - Fixed focus-keyword mismatches on 4 categories (Betting Guides, Statistics & Reports, App Tutorials, Bonuses) by revising each keyword to match its existing slug/title rather than renaming live URLs.
 - Expanded and fixed several posts against the SEO checklist: "UU7GAME Games Overview" and "The Ultimate UU7GAME Guide" (word count, focus keyword in content, external citations), "UU7GAME Login Guide" and "UU7GAME Registration Guide" (word count, focus keyword in slug/title/content, internal + external links, dropped `[VERIFY]` placeholders that no longer needed hedging), "UU7GAME APK Download Guide" (same, plus replaced a placeholder download-URL note with a real link to `uu7stars.com` once confirmed), and added an external citation (Wikipedia's Indian Rummy article) to "Online Rummy Guide."
 
+### Site navigation bug
+- Fixed three hardcoded links (homepage About section CTA, footer, header nav) still pointing at `/about` after the About page's slug changed to `about-uu7`. Added a `308` redirect from the old URL so any existing bookmarks/indexed links land correctly instead of 404ing.
+
+---
+
+## 2026-07-12
+
+### UU7GAME Review 2026 — full build-out
+- Rewrote "UU7GAME Review 2026: Is It Legit?" from a `[VERIFY]`-placeholder draft into a real 800+ word review, using platform data verified directly by the site owner: full game catalog, all 7 bonus/promotion types, deposit/withdrawal minimums and processing times (presented as a real Stats Table, not just prose), and support channels. Licensing and security were deliberately left as an honestly-flagged pending item rather than filled in with unverified specifics, per the site's own editorial policy.
+- Added a CTA block ("Ready to Play?" → `uu7stars.com`) — the platform review is the highest-intent page on the site for a direct link to the commercial destination.
+- Built out the remaining AEO/GEO modules for the post: a 48-word Quick Answer, a dense AI Summary, 7 Key Takeaways, and an FAQ section — later extended with two more FAQs ("Is UU7GAME legit?", "Is UU7GAME safe to use?") placed first since they directly echo the post's own title question.
+- Added an external citation (UPI → Wikipedia's Unified Payments Interface article) and wove the focus keyword into the opening sentence, closing out the post's SEO checklist at 100%.
+- Updated the "Is UU7GAME legit?" FAQ answer to a direct "yes" per explicit direction, while keeping the Licensing/Security section's own hedge intact — flagged the resulting inconsistency between a confident FAQ answer and a still-pending verdict section for a later pass.
+
+---
+
+## 2026-07-13
+
+### Cover image editing moved into the post editor
+- Fixing a missing alt text on a post's featured image (required to publish — see the earlier publish-blocker fix) meant leaving the post, finding the same image in Media Library, editing it there, and coming back. Added a pencil-edit button directly on the Cover Image preview that opens the same alt/title/caption dialog Media Library uses, calling the same `updateMedia` action without leaving the post; extracted the dialog itself into a shared `edit-media-dialog.tsx` component since it's now used from two places. Added a "Missing alt text" badge so the gap is visible before publish is even attempted.
+- Added an explicit remove (✕) button next to it — previously the only way to clear a cover image was manually deleting the text in the "Image URL" field.
+
+### Sitewide bug: every link opened in a new tab
+- Root-caused a real bug: Tiptap's Link extension hardcodes `target="_blank"` as its own default `HTMLAttributes`, which silently overrode the `target: null` every link mark in this codebase actually stores — internal navigation links were opening in a new tab site-wide, not just the external citations that were supposed to. Fixed the extension's default in `lib/editor/extensions.ts`, then swept every existing post/page's stored content (locally and in production) so internal links keep `target: null` (same tab) while genuinely external links (Wikipedia citations, the `uu7stars.com` backlink) get `target: "_blank"` explicitly.
+
+### Pillar guide and Games Overview expanded to 2,000+ words
+- Expanded "The Ultimate UU7GAME Guide" (728 → 2,030 words) and "UU7GAME Games Overview" (747 → 2,014 words) with genuinely new sections (Skill vs. Luck, Fairness and Game Integrity, session-length comparisons, mini-FAQs) rather than padding. Reconciled both posts' game catalogs to the same verified 8-category list used in the Review (added Andar Bahar, Dragon Tiger, Fishing Games, Sports Betting; dropped Aviator, which wasn't in the verified list) — this had been flagged as an inconsistency earlier and is now resolved everywhere.
+- Sourced free-to-use stock cover images (Pexels License) for both posts as a placeholder, then replaced both once real uploaded images were provided — added `images.pexels.com` to `next.config.ts`'s allowed remote image hosts for the interim.
+
+### Local-to-production content sync
+- Discovered that an entire day-plus of content work (every word-count expansion, keyword fix, external citation, and the Review's AEO/GEO modules) had only ever been written to the local dev database — git tracks code, not database rows, so none of it had reached production on its own despite multiple `git push` cycles.
+- Built a slug-keyed export/import script pair (`export-content-sync.ts` / `apply-content-sync.ts`) to move this content to production correctly despite local dev and production being separate databases with independently generated row IDs. Caught two categories (App Tutorials, Bonuses) that had been missed during an earlier manual edit pass in the process.
+- Extended the same approach to uploaded cover images once those were added: committed the actual image files into the repo (`scripts/data/uploads-sync/`, since the uploads directory is a Docker volume git never sees either) plus a script to insert their `media` table rows, then used `docker cp` to place the files into the running app container's volume directly. Hit (and documented) the same "`docker compose run` reuses a stale cached image without `--build`" gotcha from the first production deployment, recurring here for the `migrate` container specifically.
+
 ---
 
 ## 2026-07-10
