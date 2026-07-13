@@ -17,6 +17,17 @@ export async function listMedia() {
   return rows.map((r) => ({ id: r.id, url: r.url, alt: r.alt, width: r.width, height: r.height }));
 }
 
+// Looks a media row up by its public URL rather than id — callers that only
+// hold a `featuredImageUrl` string (e.g. a post form loaded from a previous
+// session) have no id to look up by otherwise.
+export async function getMediaByUrl(url: string) {
+  await requireRole("author");
+  if (!url) return null;
+  const row = await db.query.media.findFirst({ where: eq(media.url, url) });
+  if (!row) return null;
+  return { id: row.id, url: row.url, alt: row.alt, caption: row.caption, title: row.title };
+}
+
 export async function updateMedia(id: string, values: { alt: string; caption: string; title: string }) {
   await requireRole("author");
   await db.update(media).set(values).where(eq(media.id, id));

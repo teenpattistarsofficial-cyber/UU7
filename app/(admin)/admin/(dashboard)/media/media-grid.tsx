@@ -6,13 +6,11 @@ import { toast } from "sonner";
 import { UploadCloud, Trash2, Pencil, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { updateMedia, deleteMedia, bulkDeleteMedia } from "@/lib/actions/media";
 import { cn } from "@/lib/utils";
 import { ADMIN_PAGE_SIZE, PER_PAGE_OPTIONS } from "@/components/admin/pagination";
 import { FormSelect } from "@/components/admin/form-select";
+import { EditMediaDialog } from "@/components/admin/edit-media-dialog";
 
 export type MediaRow = {
   id: string;
@@ -241,61 +239,5 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
 
       <EditMediaDialog media={editing} onClose={() => setEditing(null)} onSave={handleSaveEdit} />
     </div>
-  );
-}
-
-function EditMediaDialog({
-  media,
-  onClose,
-  onSave,
-}: {
-  media: MediaRow | null;
-  onClose: () => void;
-  onSave: (values: { alt: string; caption: string; title: string }) => void;
-}) {
-  return (
-    <Dialog open={!!media} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Image details</DialogTitle>
-        </DialogHeader>
-        {media && (
-          <form
-            key={media.id}
-            className="space-y-3"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const fd = new FormData(e.currentTarget);
-              onSave({
-                alt: String(fd.get("alt") ?? ""),
-                caption: String(fd.get("caption") ?? ""),
-                title: String(fd.get("title") ?? ""),
-              });
-            }}
-          >
-            <div className="relative aspect-video overflow-hidden rounded-lg bg-muted">
-              <Image src={media.url} alt={media.alt} fill unoptimized className="object-cover" />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="alt">Alt text</Label>
-              <Input id="alt" name="alt" defaultValue={media.alt} required />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="title">Title</Label>
-              <Input id="title" name="title" defaultValue={media.title ?? ""} />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="caption">Caption</Label>
-              <Textarea id="caption" name="caption" rows={2} defaultValue={media.caption ?? ""} />
-            </div>
-            <DialogFooter>
-              <Button type="submit" variant="brand" className="rounded-full px-5">
-                Save
-              </Button>
-            </DialogFooter>
-          </form>
-        )}
-      </DialogContent>
-    </Dialog>
   );
 }

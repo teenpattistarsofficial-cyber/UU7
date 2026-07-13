@@ -2,11 +2,10 @@
 
 import { useRef, useState, useTransition } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { FormProvider, useForm } from "react-hook-form";
 import type { JSONContent } from "@tiptap/react";
 import { toast } from "sonner";
-import { ArrowLeft, Save, ImageOff } from "lucide-react";
+import { ArrowLeft, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +16,7 @@ import { FormSelect } from "@/components/admin/form-select";
 import { TagsField } from "@/components/admin/tags-field";
 import { SeoFieldsPanel, type SeoFieldValues } from "@/components/admin/seo-fields-panel";
 import { SeoScorePill } from "@/components/admin/seo-score-badge";
-import { MediaPicker } from "@/components/admin/media-picker";
+import { CoverImageField } from "@/components/admin/cover-image-field";
 import { FaqBuilder, type FaqItem } from "@/components/admin/faq-builder";
 import { AiSummaryBuilder } from "@/components/admin/ai-summary-builder";
 import { QuickAnswerBuilder } from "@/components/admin/quick-answer-builder";
@@ -95,7 +94,6 @@ export function PostForm({
 }) {
   const [content, setContent] = useState<JSONContent>(toTiptapDoc(defaultValues?.content));
   const [tags, setTags] = useState<string[]>(defaultValues?.tags ?? []);
-  const [coverPickerOpen, setCoverPickerOpen] = useState(false);
   const [faqs, setFaqs] = useState<FaqItem[]>(defaultValues?.faqs ?? []);
   const [aiSummary, setAiSummary] = useState(defaultValues?.aiSummary ?? "");
   const [keyTakeaways, setKeyTakeaways] = useState<string[]>(defaultValues?.keyTakeaways ?? []);
@@ -304,19 +302,10 @@ export function PostForm({
 
             <div className={cn(cardClassName, "space-y-3")}>
               <h2 className="text-sm font-semibold">Cover Image</h2>
-              <div className="flex aspect-video items-center justify-center overflow-hidden rounded-lg bg-muted">
-                {featuredImageUrl ? (
-                  <Image src={featuredImageUrl} alt="" width={320} height={180} unoptimized className="size-full object-cover" />
-                ) : (
-                  <ImageOff className="size-6 text-brand/70" />
-                )}
-              </div>
-              <div className="flex gap-2">
-                <Input placeholder="Image URL" className="flex-1" {...form.register("featuredImageUrl")} />
-                <Button type="button" variant="outline" size="sm" onClick={() => setCoverPickerOpen(true)}>
-                  Upload
-                </Button>
-              </div>
+              <CoverImageField
+                value={featuredImageUrl}
+                onChange={(url) => form.setValue("featuredImageUrl", url, { shouldDirty: true })}
+              />
             </div>
 
             <div className={cn(cardClassName, "space-y-2")}>
@@ -380,12 +369,6 @@ export function PostForm({
             <SeoFieldsPanel pathPrefix={`/${selectedCategorySlug}`} content={content} featuredImageUrl={featuredImageUrl} />
           </div>
         </div>
-
-        <MediaPicker
-          open={coverPickerOpen}
-          onOpenChange={setCoverPickerOpen}
-          onSelect={(item) => form.setValue("featuredImageUrl", item.url, { shouldDirty: true })}
-        />
       </form>
     </FormProvider>
   );
