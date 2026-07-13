@@ -30,6 +30,12 @@ const nextConfig: NextConfig = {
     // filename per upload (lib/media/process-upload.ts), and the one static
     // hero asset only ever changes via a redeploy of this file itself.
     minimumCacheTTL: 31536000,
+    // Next's image optimizer refuses to fetch from a domain that isn't
+    // explicitly allowed here — a deliberate SSRF/abuse guard, not an
+    // oversight. Pexels is allowlisted for post cover images sourced as free-
+    // to-use stock photos (Pexels License: free for commercial use, no
+    // attribution required) rather than uploaded through Media Library.
+    remotePatterns: [{ protocol: "https", hostname: "images.pexels.com" }],
   },
   // Static assets in /public (favicon/logo/hero image) get served by Next's
   // own static file handler with no caching by default — PageSpeed's
