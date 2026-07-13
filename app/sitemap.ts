@@ -6,10 +6,10 @@ import { SITE_URL } from "@/lib/site";
 
 // The four pages with their own literal route file — kept live in the
 // sitemap even before an editor publishes a matching `pages` row (they
-// still render placeholder copy, see app/(site)/about/page.tsx etc.). Any
-// other published page renders through the [category] route's generic
+// still render placeholder copy, see app/(site)/about-uu7/page.tsx etc.).
+// Any other published page renders through the [category] route's generic
 // fallback and is added to the sitemap dynamically below.
-const CANONICAL_PAGE_SLUGS = new Set(["about", "contact", "editorial-policy", "responsible-gaming"]);
+const CANONICAL_PAGE_SLUGS = new Set(["about-uu7", "contact", "editorial-policy", "responsible-gaming"]);
 
 // Single sitemap for now — Google's per-file cap is 50k URLs, and this site
 // is nowhere near that. Shard via `generateSitemaps` if it ever gets there

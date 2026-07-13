@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { CmsPageBody } from "@/components/site/cms-page";
 import { PagePlaceholder } from "@/components/site/page-placeholder";
 
-const SLUG = "about";
+const SLUG = "about-uu7";
 const FALLBACK_TITLE = "About UU7";
 
 // No dynamic params here, so without `force-dynamic` Next would try to
@@ -20,8 +20,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // Falls back to placeholder copy until an editor actually publishes an
-// "about" page in the admin — the /admin/pages CRUD only just got wired to
-// this route; a fresh install has an empty `pages` table.
+// "about-uu7" page in the admin — the /admin/pages CRUD only just got wired
+// to this route; a fresh install has an empty `pages` table.
 export default async function AboutPage() {
   const result = await getPublishedPageBySlug(SLUG);
   if (!result) {
