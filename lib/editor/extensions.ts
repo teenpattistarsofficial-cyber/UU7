@@ -29,6 +29,14 @@ export const editorExtensions: Extensions = [
       openOnClick: false,
       autolink: true,
       defaultProtocol: "https",
+      // The extension's own default forces target="_blank" on every link
+      // regardless of the mark's own `target` attribute — every internal
+      // link across the site was opening in a new tab because of this, not
+      // because of anything authored. Overriding the default to null here
+      // means a link only opens in a new tab when a mark explicitly sets
+      // target: "_blank" (external citations/backlinks); internal links
+      // with no explicit target correctly stay in the same tab.
+      HTMLAttributes: { target: null },
     },
   }),
   Image,
