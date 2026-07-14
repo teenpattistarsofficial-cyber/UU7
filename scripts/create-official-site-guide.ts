@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { posts, seoMeta, postStatsTables, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs, postCtas } from "@/lib/db/schema";
+import { posts, categories, authors, seoMeta, postStatsTables, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs, postCtas } from "@/lib/db/schema";
 import { extractText } from "@/lib/editor/text";
 import type { JSONContent } from "@tiptap/core";
 import { slugify } from "@/lib/seo/slugify";
@@ -7,8 +7,8 @@ import { eq } from "drizzle-orm";
 
 const TITLE = "UU7GAME Official Site Guide";
 const SLUG = slugify(TITLE);
-const CATEGORY_ID = "a18e720a-7e5c-4ae7-9492-10eff8c201d7"; // App Tutorials
-const AUTHOR_ID = "1872efbc-b733-4717-983d-0cd9fe9726bd"; // Rohan Kapoor
+const CATEGORY_SLUG = "app-tutorials";
+const AUTHOR_SLUG = "rohan-kapoor";
 const IMAGE_URL = "https://images.pexels.com/photos/11391947/pexels-photo-11391947.jpeg?cs=srgb&dl=pexels-towfiqu-barbhuiya-3440682-11391947.jpg&fm=jpg";
 const FOCUS_KEYWORD = "uu7game official site";
 const SEO_TITLE = "UU7GAME Official Site Guide: Spot Fakes & Phishing Clones";
@@ -174,6 +174,17 @@ async function main() {
     process.exit(0);
   }
 
+  const category = await db.query.categories.findFirst({ where: eq(categories.slug, CATEGORY_SLUG) });
+  if (!category) {
+    console.log(`Category not found: ${CATEGORY_SLUG}`);
+    process.exit(1);
+  }
+  const author = await db.query.authors.findFirst({ where: eq(authors.slug, AUTHOR_SLUG) });
+  if (!author) {
+    console.log(`Author not found: ${AUTHOR_SLUG}`);
+    process.exit(1);
+  }
+
   const [post] = await db
     .insert(posts)
     .values({
@@ -181,8 +192,8 @@ async function main() {
       slug: SLUG,
       content,
       status: "published",
-      categoryId: CATEGORY_ID,
-      authorId: AUTHOR_ID,
+      categoryId: category.id,
+      authorId: author.id,
       featuredImageUrl: IMAGE_URL,
       excerpt: META_DESCRIPTION,
       readingTimeMinutes: Math.ceil(wordCount / 200),
