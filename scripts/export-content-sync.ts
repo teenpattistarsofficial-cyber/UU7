@@ -18,6 +18,7 @@ const POST_SLUGS = [
   "uu7game-deposit-and-withdrawal-guide",
   "uu7game-official-site-guide",
   "uu7game-casino-games-guide",
+  "uu7game-slots-guide",
 ];
 
 const CATEGORY_SLUGS = ["betting-guides", "statistics-reports", "app-tutorials", "bonuses"];
