@@ -7121,7 +7121,7 @@
                     "type": "link",
                     "attrs": {
                       "rel": "noopener noreferrer",
-                      "href": "/game-guides/online-rummy-guide",
+                      "href": "/game-guides/online-rummy-guide-rules-formats-and-strategy",
                       "class": null,
                       "title": null,
                       "target": null
@@ -7842,6 +7842,793 @@
       "featuredImageUrl": "https://images.pexels.com/photos/3021120/pexels-photo-3021120.jpeg?cs=srgb&dl=pexels-myatezhny39-3021120.jpg&fm=jpg",
       "focusKeyword": "uu7game slots",
       "seoTitle": "UU7GAME Slots Guide: RTP, Volatility, and Paylines"
+    },
+    {
+      "slug": "uu7game-rummy-guide",
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "UU7GAME rummy runs across the three formats most Indian real-money platforms offer — Points, Pool, and Deals Rummy — as our ",
+                "type": "text"
+              },
+              {
+                "text": "Games Overview",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-games-overview",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " briefly covers alongside the platform's seven other categories. This guide is specifically about the UU7GAME side of things: which formats you'll find, cash tables versus practice play, where rummy stands legally in India, and how to get from a fresh account to your first hand. For the actual rules of forming sequences and sets, joker usage, and hand-by-hand strategy, our ",
+                "type": "text"
+              },
+              {
+                "text": "Online Rummy Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/game-guides/online-rummy-guide-rules-formats-and-strategy",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " already covers that in full depth — this page won't repeat it.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Rummy Formats on UU7GAME",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Points, Pool, and Deals Rummy are the three formats you'll encounter, each suited to a different session length. Points Rummy settles after a single hand — each point carries a pre-agreed value, and whoever declares first collects points from every other player at the table based on the unmatched cards left in their hands. It's the fastest way to play a short session and the easiest format to learn on, since one hand fully resolves the round.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Pool Rummy extends across multiple hands, with players eliminated once their accumulated points cross a fixed threshold — commonly structured as 101-point or 201-point pools industry-wide, though the exact thresholds and stakes on any given table are set by the table itself, not fixed platform-wide. Deals Rummy instead fixes the number of hands in advance (commonly two, three, or six deals) and whoever holds the fewest points once every deal is played wins the game — a format that rewards consistent play across several hands rather than one lucky round.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Because Pool and Deals formats run longer per session than Points Rummy, they suit players who want an extended sitting rather than a quick single-hand result — worth factoring in alongside your own available time and bankroll before picking a table.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A worked example makes the points math concrete: in a 101-point pool, a player who reaches or crosses 101 accumulated points across hands is eliminated from the pool, while remaining players continue until only one is left (or until the pool's own end condition, set by the platform, is reached). Each hand's points are scored the same way as Points Rummy — based on the unmatched cards left in losing hands — they simply accumulate across the pool instead of resetting after a single hand.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Deals Rummy works differently again: rather than eliminating players, every player plays the same fixed number of hands (deals) regardless of how many points they accumulate along the way, and the player with the lowest total points once the last deal finishes wins the game. This makes Deals Rummy the most \"complete game\" of the three formats — a single bad hand doesn't end your participation the way crossing a pool threshold would, since there's no elimination mechanic at all.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Cash Tables vs. Practice Play",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Most Indian real-money rummy platforms — UU7GAME included — offer both free practice tables and real-cash tables side by side, letting new players learn a format's pacing and interface before wagering real money on it. Practice tables use play chips with no cash value, while cash tables involve real deposited funds and require the account verification (KYC) steps covered in our Registration Guide before you can join one.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "If you're new to a specific format — Pool Rummy's elimination mechanic in particular catches new players off guard the first time a threshold is crossed mid-session — a few practice hands before moving to a cash table is a low-cost way to get comfortable with the format's specific pacing rather than learning it with money on the line.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Practice tables also let you get used to the interface itself — how discards are shown, how the draw pile and discard pile are laid out, and how a declaration is submitted — before any of those interactions involve real money. This matters more for rummy than for a simpler format like a slot spin, since a mis-tap during a live cash hand (declaring early, discarding the wrong card) can't usually be undone once submitted.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Choosing Between Points, Pool, and Deals",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "If you only have a few minutes and want one quick, self-contained result, Points Rummy is the format built for that — a single hand, scored and settled immediately, with no ongoing commitment to future hands. If you want a longer session with a real chance to come back from an early bad hand, Deals Rummy's fixed-hand-count structure rewards consistency over a full sitting rather than eliminating you after one rough round. Pool Rummy sits in between: longer than a single hand but with real stakes attached to avoiding elimination, which suits players who want the tension of a knockout format without committing to a full fixed-length session.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "None of these formats change the underlying rummy rules — sequences, sets, and joker usage work identically across all three. What changes is purely the session structure and how points carry (or don't carry) between hands, which is why picking a format is really a question of how much time and how much risk-per-hand you want, not a question of learning different card rules for each one.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "It's also worth trying more than one format across your first few sessions rather than settling on whichever one you happen to open first — the pacing differences between a single Points Rummy hand and a full Deals Rummy session are large enough that most players end up with a clear format preference only after actually playing each one, not from reading a description of how they differ.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Is Rummy Legal to Play for Real Money in India?",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Indian courts have repeatedly classified rummy as a ",
+                "type": "text"
+              },
+              {
+                "text": "game of skill",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "https://en.wikipedia.org/wiki/Rummy#Rummy_as_a_game_of_skill",
+                      "class": null,
+                      "title": null,
+                      "target": "_blank"
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " rather than a game of chance, a distinction that matters because most Indian states' gambling laws specifically exempt skill-based games from their restrictions on games of chance. This classification has been upheld in multiple state high court rulings and is the legal basis most Indian real-money rummy platforms rely on. That said, a small number of states have their own specific restrictions or bans on real-money gaming that aren't necessarily carved out by the game-of-skill classification alone — checking your own state's current rules before depositing real money is worth doing regardless of which platform you're using, since this is a legal question that sits above any individual platform's own policies.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How to Start Playing Rummy on UU7GAME",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Getting from a fresh account to your first real-money rummy hand runs through the same steps as any other cash game on the platform. First, complete registration — our ",
+                "type": "text"
+              },
+              {
+                "text": "Registration Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-registration-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers the minimum legal age, KYC verification, and what to have ready beforehand. Once registered, log in (our ",
+                "type": "text"
+              },
+              {
+                "text": "Login Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-login-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers this if you run into any issues) and add funds through the deposit flow our ",
+                "type": "text"
+              },
+              {
+                "text": "Deposit and Withdrawal Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-deposit-and-withdrawal-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " walks through in detail.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "From there, navigate to the rummy category, pick a format (Points for a quick single hand, Pool or Deals for a longer session), and choose a table matching your intended stake — tables are typically organized by entry fee or points value, letting you match a table to your own bankroll before joining rather than committing to a stake level you're unsure about.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Choosing a Table That Fits Your Bankroll",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Entry fees and points values vary by table, and picking one that's a comfortable fraction of your total rummy bankroll — rather than the highest stake available — is the same bankroll-management principle that applies across every real-money format on the platform. A string of losses at a stake too high for your total bankroll ends a session early regardless of how good your actual rummy decisions were; a stake that's appropriately sized lets ordinary variance play out without threatening the whole session.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "It's also worth deciding in advance how many hands or how much time you intend to play before sitting down, the same habit our Deposit and Withdrawal Guide recommends generally — rummy hands resolve faster than a live-dealer round, which makes it easy to play more hands in an hour than you'd initially planned without a stopping point set ahead of time.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Table stakes on rummy platforms are typically shown as either a fixed entry fee (common in Pool and Deals formats) or a per-point value (common in Points Rummy, where your total win or loss for the hand is the point value multiplied by the points difference). Checking which of the two a specific table uses before joining avoids misjudging how much a single hand could actually cost relative to what the table's headline number implies.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Common Mistakes New Players Make",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Declaring without a pure sequence — even a hand where every card is technically placed into a sequence or set doesn't qualify as a valid declaration without at least one pure (no-joker) sequence, and an invalid declaration typically carries a scoring penalty.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Jumping straight to a cash table on an unfamiliar format — Pool Rummy's elimination threshold in particular is easy to misjudge the first few times, and a practice hand or two costs nothing.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Picking a stake based on what's available rather than what fits total bankroll — the highest-stake table isn't automatically the best one to sit down at.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Treating a long losing streak in Pool Rummy as a sign to change strategy mid-pool — ordinary variance across hands is normal, and no strategy adjustment reliably reverses a specific bad run of cards.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A Quick Rules Recap",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Each player is dealt 13 cards and must arrange them into valid sequences and sets, drawing one card and discarding one each turn, declaring once a valid hand is formed. At least one sequence must be a \"pure\" sequence — three or more consecutive cards of the same suit with no joker substituted in — a rule that trips up new players more than any other, since a hand with only impure sequences (jokers used) doesn't qualify as a valid declaration even if every card is technically placed. For the full breakdown of sequences, sets, joker rules, and turn-by-turn strategy, our Online Rummy Guide covers all of it in depth — this recap is only enough to follow the format descriptions above.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Common Questions",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What rummy formats does UU7GAME offer?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Points, Pool, and Deals Rummy — the three formats found across most Indian real-money rummy platforms, differing mainly in session length and how points carry between hands.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Is rummy legal to play for real money in India?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Indian courts have classified rummy as a game of skill rather than a game of chance in multiple rulings, which is the legal basis most platforms operate under — though a small number of states have their own specific restrictions worth checking independently.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Can I practice rummy before playing with real money?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Most real-money rummy platforms, including UU7GAME, offer free practice tables using play chips alongside real-cash tables, letting you learn a format's pacing before wagering real money.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What's a 'pure sequence' in rummy?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Three or more consecutive cards of the same suit with no joker substituted in — at least one is required in every valid declaration, even if the rest of the hand uses jokers.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Which rummy format should a beginner start with?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Points Rummy is generally the easiest entry point — a single hand with an immediate result — before moving to the longer session structures of Pool or Deals Rummy once the pacing and interface feel familiar.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What happens if I declare an invalid hand in rummy?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " An invalid declaration — most commonly missing the required pure sequence — typically carries a scoring penalty rather than simply being ignored, which is why checking for a pure sequence before declaring matters more than any other single check.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "For the full picture of UU7GAME's other game categories, see our ",
+                "type": "text"
+              },
+              {
+                "text": "Games Overview",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-games-overview",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ", for complete rummy rules and strategy our ",
+                "type": "text"
+              },
+              {
+                "text": "Online Rummy Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/game-guides/online-rummy-guide-rules-formats-and-strategy",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " is the deeper reference, and before your first real-money session our ",
+                "type": "text"
+              },
+              {
+                "text": "Registration Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-registration-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " and ",
+                "type": "text"
+              },
+              {
+                "text": "Deposit and Withdrawal Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-deposit-and-withdrawal-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " cover what you'll need. Whatever stakes you play, our ",
+                "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guidelines are worth reading first.",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "featuredImageUrl": "https://images.pexels.com/photos/2508565/pexels-photo-2508565.jpeg?cs=srgb&dl=pexels-didsss-2508565.jpg&fm=jpg",
+      "focusKeyword": "uu7game rummy",
+      "seoTitle": "UU7GAME Rummy Guide: Formats, Tables, and Getting Started"
     }
   ],
   "categories": [

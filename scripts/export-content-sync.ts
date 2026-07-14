@@ -19,6 +19,7 @@ const POST_SLUGS = [
   "uu7game-official-site-guide",
   "uu7game-casino-games-guide",
   "uu7game-slots-guide",
+  "uu7game-rummy-guide",
 ];
 
 const CATEGORY_SLUGS = ["betting-guides", "statistics-reports", "app-tutorials", "bonuses"];

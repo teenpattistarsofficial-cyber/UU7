@@ -120,7 +120,7 @@ const content: JSONContent = {
       "For the full picture of UU7GAME's other game categories, see our ",
       link("Games Overview", "/app-tutorials/uu7game-games-overview"),
       ", and for card-game rules specifically, our ",
-      link("Online Rummy Guide", "/game-guides/online-rummy-guide"),
+      link("Online Rummy Guide", "/game-guides/online-rummy-guide-rules-formats-and-strategy"),
       " covers rummy in the same depth this page covers live casino. Whatever you play, our ",
       link("Responsible Gaming", "/responsible-gaming"),
       " guidelines are worth reading first.",
