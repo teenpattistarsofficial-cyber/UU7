@@ -11,6 +11,12 @@ const POST_SLUGS = [
   "uu7game-registration-guide",
   "online-rummy-guide-rules-formats-and-strategy",
   "uu7game-review-2026-is-it-legit",
+  // Created via their own dedicated scripts (create-deposit-guide.ts,
+  // create-official-site-guide.ts) rather than this export/apply pair —
+  // listed here too so any *future* edit to either gets picked up by the
+  // ongoing sync once they exist on whichever database this runs against.
+  "uu7game-deposit-and-withdrawal-guide",
+  "uu7game-official-site-guide",
 ];
 
 const CATEGORY_SLUGS = ["betting-guides", "statistics-reports", "app-tutorials", "bonuses"];

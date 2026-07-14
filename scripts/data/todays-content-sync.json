@@ -2154,6 +2154,30 @@
               {
                 "text": " attempts too: messages or fake login pages designed to look like UU7GAME but built to steal your credentials. If a link arrives unexpectedly by SMS, email, or chat, don't log in through it—open the app directly instead.",
                 "type": "text"
+              },
+              {
+                "text": " ",
+                "type": "text"
+              },
+              {
+                "text": "Our Official Site Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-official-site-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers how to verify you're on the real one, not a clone.",
+                "type": "text"
               }
             ]
           },
@@ -2335,6 +2359,30 @@
               },
               {
                 "text": " — never from a third-party app store, a mirror site, or a link shared in a message, forum, or social media post. Modified APK files distributed outside official channels are a common way malware gets onto a device.",
+                "type": "text"
+              },
+              {
+                "text": " ",
+                "type": "text"
+              },
+              {
+                "text": "Our Official Site Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-official-site-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers how to spot a fake or cloned site in full.",
                 "type": "text"
               }
             ]
@@ -4677,6 +4725,1828 @@
           "buttonUrl": "https://uu7stars.com/"
         }
       ]
+    },
+    {
+      "slug": "uu7game-deposit-and-withdrawal-guide",
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Every UU7GAME deposit process and withdrawal eventually comes down to the same few questions: how much can you move, how long does it take, and what has to happen before the money actually lands. Our login and registration guides both promised this page—here's the full breakdown, covering payment method, limits, processing times, and the requirements that trip people up most often. None of this is unique to UU7GAME specifically; it's the same baseline every UPI-based real-money gaming platform in India works from, so understanding it here is useful well beyond this one app.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Deposit & Withdrawal Basics at a Glance",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The numbers below cover everything most players actually need before their first transaction—the same core details our Registration and Login guides each touch on briefly, gathered here in one place rather than spread across three separate pages.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How to Make a Deposit on UU7GAME",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The flow is the same one used by essentially every UPI-based real-money platform, so if you've deposited on any similar app before, this will feel familiar:",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "orderedList",
+            "attrs": {
+              "type": null,
+              "start": 1
+            },
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Open the UU7GAME app and go to the wallet or deposit section.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Select ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "UPI",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " as the payment method — currently the only method the platform supports.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Enter the amount you want to deposit (₹100 minimum).",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Confirm the payment in your UPI app (Google Pay, PhonePe, Paytm, or your bank's own app).",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Funds are typically credited within 1–5 minutes of confirming.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "First-time deposits sometimes take a little longer than the usual 1–5 minute window while the platform completes an initial verification pass on a new payment method—this is a one-time step, not the ongoing norm, and subsequent deposits from the same UPI account are typically faster.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "If a deposit doesn't reflect after several minutes, check your UPI app's own transaction history first — most delays are on the bank/UPI network side, not the platform, and the amount is usually still deducted and pending rather than lost. It's worth taking a screenshot of the UPI transaction reference number (a unique ID every UPI payment generates) before contacting support about a delayed deposit—it's the single most useful piece of information for tracing exactly where a payment is stuck.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Why UU7GAME Only Supports UPI",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "UPI has become the dominant payment method for real-money gaming platforms across India generally, not just on UU7GAME, for a few concrete reasons: it settles in real time rather than the 1–3 business days a card or net banking transaction can take, it carries lower processing costs than card networks, and it works directly against a bank account rather than requiring a separate stored-value wallet. Supporting a single, fast, low-cost rail instead of several slower ones is a common tradeoff industry-wide—the cost is less payment-method choice, and the benefit is the 1–5 minute deposit speed covered above.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Understanding UPI Payments",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "UPI (Unified Payments Interface)",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "https://en.wikipedia.org/wiki/Unified_Payments_Interface",
+                      "class": null,
+                      "title": null,
+                      "target": "_blank"
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " is India's real-time payment system, linking a bank account directly to a payment app without needing card details entered each time. It's why deposits process in minutes rather than the hours or days a traditional bank transfer can take. UU7GAME currently supports UPI as its only payment method—there's no card, net banking, or e-wallet option—so having a working UPI app linked to a funded bank account is a prerequisite before you can deposit at all.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "UPI Compared to Other Payment Methods",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "For context on why a UPI-only setup is a deliberate choice rather than a limitation: card payments typically settle in 1–3 business days and carry higher processing fees passed on somewhere in the system; net banking transfers are often same-day but rarely instant; e-wallets add an extra step of moving money into the wallet itself before it can be spent. UPI skips all of that—money moves directly bank-to-bank in real time, with no intermediate balance to fund first. The tradeoff is payment-method choice: if you don't already use UPI regularly, there's a small one-time setup cost (linking a bank account to a UPI app) before your first deposit, but no ongoing downside afterward.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "For players used to platforms that support multiple payment rails, a single-method setup can initially read as a limitation rather than a design choice. In practice, the speed and cost tradeoff is why UPI-only has become common across the Indian real-money gaming space specifically, rather than something UU7GAME does differently from its peers—a useful thing to know before assuming it's a gap unique to this one app.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How to Withdraw From UU7GAME",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Withdrawals follow the same UPI rail in reverse, but with two requirements that have to be met first, regardless of how much is in your balance. This two-step gate—a real deposit on record, plus a cleared turnover requirement—is standard across the industry specifically because bonus credit with no such gate is one of the most common ways real-money platforms get exploited: without it, someone could register, claim a welcome bonus, and cash it out immediately with zero actual play.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "At least one successful deposit",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " must be on record. A brand-new account with only bonus credit and no real deposit can't withdraw yet.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "The platform's turnover (wagering) requirement",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " must be completed — see the next section for what that actually means in practice.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Once both are satisfied, request the withdrawal from the wallet section the same way you'd initiate a deposit, and it processes to the same UPI-linked account you deposited from—the minimum withdrawal is also ₹100, and processing typically takes 5–30 minutes depending on your bank or payment provider.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Understanding Turnover (Wagering) Requirements",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A turnover requirement means a deposit (and any bonus attached to it) has to be wagered a set number of times before it—or winnings from it—counts as a withdrawable balance. This exists across the real-money gaming industry, not just on UU7GAME, specifically to stop bonus credit from being deposited and cashed out immediately with no actual play in between.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "In practice: if a deposit carries, say, a 3x turnover requirement, ₹1,000 deposited needs ₹3,000 in total wagers placed (across eligible games) before that ₹1,000—or any winnings sitting alongside it—can be withdrawn. The exact multiplier and which games count toward it vary by specific bonus and aren't something we've independently verified as a fixed platform-wide number, so check the terms attached to whichever deposit or bonus you're using rather than assuming a single rate applies everywhere.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A practical way to track this yourself: note your deposit amount and the stated multiplier (if shown) as soon as you deposit, then keep a rough running total of what you've wagered across sessions until you're confident you've cleared it, rather than trying to reconstruct it from memory the first time a withdrawal gets blocked. Not every game category necessarily contributes toward turnover at the same rate—some real-money platforms weight slots and live casino differently from card games like rummy or Teen Patti—so a specific bonus's terms are worth reading in full rather than assuming turnover clears at an even pace regardless of what you play.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Withdrawal Processing Times Explained",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The 5–30 minute window isn't arbitrary—it reflects a few things outside the platform's direct control. Your bank's own processing speed for incoming UPI credits varies; some banks post instantly, others batch transactions every few minutes. Network load on the UPI system itself (heaviest around peak hours) can add a short delay. And every withdrawal typically passes an automated verification check first, confirming the requesting account matches the deposit history on file, which adds a few seconds but is a genuine anti-fraud measure rather than deliberate friction.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "That verification step is also why a withdrawal has to go to the same UPI account a deposit came from, rather than any account you choose at withdrawal time—it's what lets the platform confirm the funds are actually going back to their original source rather than a third party, which is a meaningful anti-fraud safeguard even though it does mean you can't redirect withdrawals to a different account on a whim.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Common Deposit & Withdrawal Issues",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Deposit not showing up?",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " Check your UPI app's transaction history before assuming it failed — most delays clear within a few minutes, and the amount is rarely actually lost.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Withdrawal button greyed out or blocked?",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " Confirm you've met both requirements above — a completed deposit on record and the turnover requirement cleared — before assuming it's a bug.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Withdrawal taking longer than 30 minutes?",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " This is uncommon but not impossible during bank-side delays; wait a bit longer before contacting support, since most \"stuck\" withdrawals resolve on their own within the hour.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "UPI payment failing at the bank's end?",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " Confirm your UPI app itself is working correctly with a small test transaction elsewhere before assuming the issue is UU7GAME-specific—UPI outages happen at the bank or NPCI level more often than on any single platform.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Deposited, but the amount looks wrong?",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " Double-check whether a bonus was applied separately from the raw deposit—a bonus credit showing alongside your deposit isn't a billing error, but it does carry its own turnover requirement on top of the base deposit's.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Did the withdrawal request disappear or show no status?",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " Refresh the app rather than resubmitting the request—a duplicate withdrawal request for the same funds is a common self-inflicted delay, not a platform bug.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Security Tips for Deposits and Withdrawals",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Never share your UPI PIN with anyone, including someone claiming to be UU7GAME support—legitimate support will never ask for it, the same rule that applies to passwords and OTPs in our ",
+                "type": "text"
+              },
+              {
+                "text": "Login Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-login-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ". Double-check the UPI ID or QR code shown in-app before confirming any payment, and only ever deposit or withdraw through the official app itself, never through a link sent by message or email.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Keep a personal record of your own deposits and withdrawals — dates, amounts, and UPI reference numbers — separate from whatever the app itself shows. It costs nothing to maintain and is the fastest way to resolve any dispute about whether a specific transaction actually went through, rather than relying on memory or a support agent's own records alone. A simple notes-app entry after each transaction is enough; it doesn't need to be anything more formal than that.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Set your device's UPI app to require biometric or PIN confirmation for every transaction, not just app login—this is a device-level setting, not something UU7GAME controls, but it's the single most effective protection against someone else initiating a payment from your phone if it's ever lost or unlocked. It's a five-minute setup that most people skip simply because it isn't turned on by default, not because it's difficult.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Planning Sessions Around Processing Times",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The 1–5 minute deposit window is fast enough that it rarely affects session planning—you can top up mid-session without much of a wait. Withdrawals are the one to plan around since they can take up to half an hour; requesting a withdrawal isn't something to do at the exact moment you want the money for something else. A simple habit worth building is requesting withdrawals as soon as you've decided to stop for the session, rather than waiting until you actually need the funds elsewhere—that way the processing time overlaps with whatever you're doing next instead of becoming a wait you notice.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "This ties directly into budgeting generally: deciding your deposit amount and a stopping point before you start, rather than mid-session, is the same core habit our ",
+                "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guidelines recommend—knowing the deposit and withdrawal mechanics covered above just makes that plan easier to actually follow, since there's no guesswork about when money will be available.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Once you're set up, see ",
+                "type": "text"
+              },
+              {
+                "text": "The Ultimate UU7GAME Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/the-ultimate-uu7game-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " for the full picture of getting started, our ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME Review 2026",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-review-2026-is-it-legit",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " for our complete assessment of the platform, and our ",
+                "type": "text"
+              },
+              {
+                "text": "Registration Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-registration-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " if you haven't created an account yet. Whatever you deposit, our ",
+                "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guidelines are worth reading first: set a budget before you start and treat it as entertainment spending, not income.",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "featuredImageUrl": "/uploads/e7bc10d7-9dce-4be0-880e-3f8bffff73bc.webp",
+      "focusKeyword": "uu7game deposit",
+      "seoTitle": "UU7GAME Deposit & Withdrawal Guide: Times, Limits, Methods"
+    },
+    {
+      "slug": "uu7game-official-site-guide",
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Real-money gaming brands are one of the most commonly cloned categories of website — fake login pages, lookalike domains, and cloned APK download sites specifically designed to steal credentials or deposits. Our Login and APK Download guides both already warn about this in passing; this page is the full breakdown of how to actually confirm you're on the real UU7GAME official site before you register, log in, or deposit anywhere.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "UU7GAME's Official Website",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "UU7GAME's confirmed official website is ",
+                "type": "text"
+              },
+              {
+                "text": "https://uu7stars.com",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "https://uu7stars.com/",
+                      "class": null,
+                      "title": null,
+                      "target": "_blank"
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ". This is the source we've verified directly and the one our own ",
+                "type": "text"
+              },
+              {
+                "text": "APK Download Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-apk-download-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " points to for the actual app download. Bookmark it directly rather than relying on search results or links shared elsewhere — that alone avoids most of the risk covered in this guide.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Bookmarking matters more than it might seem: once a genuine bookmark exists, there's simply no reason to ever click a UU7GAME link from anywhere else again — a message, an ad, or a search result. Removing the need to re-find the site each time removes most of the opportunities a fake site has to intercept you in the first place.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Why Fake UU7GAME Sites Exist",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Cloning a popular real-money gaming site is a low-effort, high-reward scam: copy the visual design, register a similar-looking domain, and either harvest login credentials directly or trick people into \"depositing\" into an account that isn't actually connected to the real platform at all. This isn't specific to UU7GAME — it's a standing risk for any gaming or fintech brand with real money attached, which is exactly why verification habits matter regardless of which platform you're using.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The economics are simple: building a convincing clone takes a few hours of copying an existing design, while the potential payout is every deposit or credential harvested before the site gets taken down or word spreads that it's fake. That asymmetry — low cost to build, meaningful potential reward — is exactly why popular real-money gaming brands specifically attract this kind of clone, far more than a low-traffic hobby site would.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A site's own growing popularity is, somewhat perversely, exactly what makes it a more attractive clone target over time — more people searching for it and more people willing to click an unfamiliar link claiming to be it. That's not a reason to worry about a specific platform's legitimacy; it's simply a reason the verification habit becomes more relevant, not less, the more established a real-money brand gets.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How Fake Sites Get Distributed",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Fake UU7GAME sites rarely rank highly enough to appear at the top of an organic Google search, so they typically spread through other channels: paid social media ads (which can slip past ad-review checks with a convincing enough landing page), SMS or WhatsApp messages claiming to offer a \"new bonus\" or \"exclusive link,\" fake listings on third-party app marketplaces, and links shared in gaming-focused Telegram or Discord groups by accounts posing as other players. Recognizing that the fake almost never comes from a plain organic search result is itself a useful piece of context — the more unsolicited or too-convenient the way you encountered a link, the more scrutiny it deserves before you click it. A message that arrives out of nowhere promising something better than what you already know the platform offers is, on its own, reason enough to slow down before clicking through.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How to Spot a Fake or Cloned Site",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Check the domain carefully, not just the page design.",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " A cloned site can copy every visual detail perfectly while running on a domain that's one letter off from the real one — a classic ",
+                        "type": "text"
+                      },
+                      {
+                        "text": "typosquatting",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "link",
+                            "attrs": {
+                              "rel": "noopener noreferrer",
+                              "href": "https://en.wikipedia.org/wiki/Typosquatting",
+                              "class": null,
+                              "title": null,
+                              "target": "_blank"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "text": " tactic. Read the URL character by character rather than skimming it.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Look for a valid HTTPS connection.",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " A padlock icon and \"https://\" don't guarantee legitimacy on their own, but their absence is a hard red flag — no real financial platform operates without basic transport encryption.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Be suspicious of unusually generous bonus offers.",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " A \"deposit and get 10x back\" style offer that's dramatically better than anything on the real platform's own promotions is a common lure to get a first deposit onto a fake site.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Watch for immediate requests for sensitive information.",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " A genuine site doesn't need your password, OTP, or full bank details just to load the homepage — that request pattern is a phishing signal, not normal onboarding.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Check for consistent branding and basic polish.",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " Slightly-off logos, inconsistent fonts, or obvious spelling and grammar mistakes are common in rushed clone sites, even when the overall layout is copied convincingly.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Look for real support and company information.",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " A legitimate platform has actual, reachable support channels — see the next section. A site with no support contact beyond a single chat widget of unclear origin is worth treating cautiously.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Checking the App Itself",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The same verification logic applies to the app, not just the website. Our ",
+                "type": "text"
+              },
+              {
+                "text": "APK Download Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-apk-download-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers this in full, but the short version: download the APK only from the official website above, never from a third-party app store, a search-result ad, or a link shared in a message or forum post. A modified APK distributed outside official channels is one of the most common ways malware ends up on a device, and it's a completely separate risk from a fake website even though both exploit the same instinct to trust something that looks familiar.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Once installed, a genuine app should ask for only the permissions its actual functionality requires — storage access for downloads, network access to connect, and similar. A modified APK bundled with unrelated permission requests (reading contacts or SMS without a stated reason, for instance) is a signal worth taking seriously even after the file has already downloaded successfully, not just before.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "If anything about the install feels off after the fact — permissions that seem excessive, unexpected pop-ups, or behavior that doesn't match what our own guides describe — uninstalling and redownloading directly from the confirmed official site costs a few minutes and removes any doubt, rather than continuing to use an app you're not fully confident in.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What Legitimate UU7GAME Communications Look Like",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "According to our ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME Review 2026",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-review-2026-is-it-legit",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ", official support runs through three channels: 24/7 live chat inside the app, a Telegram support channel, and email. Legitimate support through any of these channels will never ask for your password or OTP — that rule holds regardless of how official the request sounds or how urgent it's framed. An unsolicited message claiming to be UU7GAME support, arriving outside these three channels, should be treated as a phishing attempt by default rather than given the benefit of the doubt.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A useful habit: if you're contacted first — by SMS, WhatsApp, or a social media message claiming to be from UU7GAME — rather than reaching out yourself, treat that as reason for extra caution regardless of channel. Legitimate platforms generally respond to support requests you initiate; they don't typically cold-message users about account issues, bonus offers, or \"verification\" requirements. If you're ever unsure whether a message is genuine, close it and reach out through the app's own support channel directly instead of replying to the message itself.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Why This Matters More for Real-Money Platforms",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A fake clone of a content-only website is mostly just annoying. A fake clone of a real-money gaming platform is a direct financial risk — every deposit made through it goes to whoever built the clone, not to any real account, and every credential entered can be reused elsewhere. This is exactly the same category of risk our ",
+                "type": "text"
+              },
+              {
+                "text": "Login Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-login-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " and ",
+                "type": "text"
+              },
+              {
+                "text": "Deposit and Withdrawal Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-deposit-and-withdrawal-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " both touch on from different angles — this page is the single place that pulls the verification habit itself together, rather than a footnote in guides about something else.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Quick Verification Checklist",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Before entering any login details or making a deposit, confirm all of the following:",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "The domain matches the official site exactly, with no extra characters, misspellings, or unfamiliar subdomains.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "The connection shows a valid HTTPS padlock.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "You reached the site by typing the address or a bookmark yourself, not by clicking a link from a message, ad, or unfamiliar search result.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Bonus offers look consistent with what's described in our own coverage, not dramatically more generous.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "No one is asking for your password, OTP, or full card/bank details before you've even logged in.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "The support channels match what's documented — 24/7 live chat, Telegram, and email — rather than a single unfamiliar contact method.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "If it's the app rather than the browser, the permissions requested match what a gaming app actually needs, with nothing unrelated bundled in.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "None of these checks take more than a minute individually, and running through all of them together before your first login or deposit on any device is a genuinely small time cost against the risk they cover. It's worth repeating this checklist any time you set up UU7GAME on a new device, too, rather than assuming a habit built on one phone automatically carries over to a new one.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What to Do If You Find a Fake Site",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Don't enter any information — close the tab immediately rather than \"just checking\" what it asks for. If you already entered a password or OTP on a suspected fake site, change that password immediately (and anywhere else you reused it), since credential reuse across sites is exactly what makes phishing profitable beyond a single account. Report the fake site or app listing where you found it if the platform allows it, since that helps get it taken down before the next person lands on it.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "If you entered payment details specifically — a UPI ID, PIN, or bank details — treat this more seriously than a password reset alone: contact your bank directly, watch your account for unfamiliar transactions over the following days, and consider whether that UPI ID or account needs to be reissued rather than just monitored. Acting within the first few hours matters considerably more than acting a week later, since most fraudulent use of stolen payment details happens quickly.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "It's also worth telling other players if you found the fake site through a group chat, forum, or social media post — the same link that reached you has likely reached others, and a quick warning in the same place can stop several more people from making the same mistake before the listing or ad actually gets taken down.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Verifying Through Independent Sources",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Beyond checking the domain itself, cross-referencing what you're seeing against independent coverage is a useful second layer of verification. Our own ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME Review 2026",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-review-2026-is-it-legit",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " describes the platform's actual game catalog, bonus structure, and support channels in detail — if a site claiming to be UU7GAME looks meaningfully different from what's described there (a completely different set of games, an unfamiliar bonus structure, or support channels that don't match), that mismatch is worth treating as a warning sign rather than assuming the platform simply changed recently.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A Note on Search Engine Results",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Search engines do attempt to filter out known phishing and clone sites, but this isn't foolproof, especially for a newly registered fake domain that hasn't been reported yet. Appearing in search results, even near the top, is not on its own proof of legitimacy — it just means the domain hasn't been flagged as malicious yet, which is a lower bar than actually being the real site. The domain-matching and HTTPS checks earlier in this guide remain necessary even when a link comes from a search engine rather than a message or ad.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Paid search ads deserve particular caution here — an ad slot is bought, not earned through the same trust signals as an organic ranking, and ad review processes don't always catch a well-disguised clone landing page before it goes live. Preferring a genuine organic result or, better, a saved bookmark, over clicking a sponsored ad result is a small habit that meaningfully reduces this specific risk.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Once you're confident you're on the real site, our ",
+                "type": "text"
+              },
+              {
+                "text": "The Ultimate UU7GAME Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/the-ultimate-uu7game-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers getting started end to end, our ",
+                "type": "text"
+              },
+              {
+                "text": "Login Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-login-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " and ",
+                "type": "text"
+              },
+              {
+                "text": "Registration Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-registration-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " cover signing in and creating an account, and our ",
+                "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guidelines are worth reading before you deposit anything.",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "featuredImageUrl": "https://images.pexels.com/photos/11391947/pexels-photo-11391947.jpeg?cs=srgb&dl=pexels-towfiqu-barbhuiya-3440682-11391947.jpg&fm=jpg",
+      "focusKeyword": "uu7game official site",
+      "seoTitle": "UU7GAME Official Site Guide: Spot Fakes & Phishing Clones"
     }
   ],
   "categories": [
