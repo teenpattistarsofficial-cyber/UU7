@@ -12,22 +12,22 @@ import { POST_SUMMARY_COLUMNS, toPostSummary, type PostSummary } from "@/lib/pos
 // canonical pillar slugs from docs/seo-content-strategy-plan.md §3/§11 —
 // each one appears here automatically the day it's published, with zero
 // further code changes.
+// NOTE: keep in sync with whatever slug a new pillar guide actually
+// publishes under — these lists silently render nothing for any slug that
+// doesn't match a real published post (see loadPublishedPillars below), so
+// a renamed or newly-shipped pillar needs its real slug added here, not
+// just published.
 const FEATURED_PILLAR_SLUGS = [
   "the-ultimate-uu7game-guide",
-  "uu7game-bonus-guide",
-  "online-rummy-guide",
-  "teen-patti-guide",
-  "online-slots-guide",
-  "aviator-game-guide",
-  "live-casino-guide",
+  "online-rummy-guide-rules-formats-and-strategy",
+  "uu7game-slots-guide",
+  "uu7game-casino-games-guide",
 ];
 
 const POPULAR_GAME_SLUGS = [
-  "online-rummy-guide",
-  "teen-patti-guide",
-  "online-slots-guide",
-  "aviator-game-guide",
-  "live-casino-guide",
+  "online-rummy-guide-rules-formats-and-strategy",
+  "uu7game-slots-guide",
+  "uu7game-casino-games-guide",
 ];
 
 // Re-exported under this homepage-specific name since every home/*

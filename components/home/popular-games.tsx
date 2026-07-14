@@ -1,19 +1,19 @@
 import Link from "next/link";
-import { ArrowUpRight, Dices, PlaneTakeoff, Spade, Club, Video, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, Dices, Spade, Video, type LucideIcon } from "lucide-react";
 import type { FeaturedPost } from "@/lib/home/featured-content";
 import { SectionHeading } from "@/components/home/section-heading";
 
 // Per-game icons rather than reusing the (identical, "Game Guides")
-// category icon on every chip — these five pillar slugs are specific
-// enough to warrant their own, and it's what actually makes a row of
-// otherwise-identical badges scannable at a glance. Slug-keyed rather than
+// category icon on every chip — these pillar slugs are specific enough to
+// warrant their own, and it's what actually makes a row of otherwise-
+// identical badges scannable at a glance. Slug-keyed rather than
 // title-keyed so a copy edit to the post title doesn't silently break it.
+// Add an entry here (and to POPULAR_GAME_SLUGS in featured-content.ts)
+// once Teen Patti / Aviator pillar guides actually exist.
 const GAME_ICONS: Record<string, LucideIcon> = {
-  "online-rummy-guide": Spade,
-  "teen-patti-guide": Club,
-  "online-slots-guide": Dices,
-  "aviator-game-guide": PlaneTakeoff,
-  "live-casino-guide": Video,
+  "online-rummy-guide-rules-formats-and-strategy": Spade,
+  "uu7game-slots-guide": Dices,
+  "uu7game-casino-games-guide": Video,
 };
 
 export function PopularGames({ games }: { games: FeaturedPost[] }) {
