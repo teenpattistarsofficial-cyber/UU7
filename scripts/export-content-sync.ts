@@ -17,6 +17,7 @@ const POST_SLUGS = [
   // ongoing sync once they exist on whichever database this runs against.
   "uu7game-deposit-and-withdrawal-guide",
   "uu7game-official-site-guide",
+  "uu7game-casino-games-guide",
 ];
 
 const CATEGORY_SLUGS = ["betting-guides", "statistics-reports", "app-tutorials", "bonuses"];
