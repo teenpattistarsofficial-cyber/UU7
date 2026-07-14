@@ -1,8 +1,9 @@
 import "server-only";
-import { and, desc, eq, inArray, isNull } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { posts, categories, postFaqs } from "@/lib/db/schema";
 import { POST_SUMMARY_COLUMNS, toPostSummary, type PostSummary } from "@/lib/posts/post-summary";
+import { SITE_CATEGORIES } from "@/lib/site-categories";
 
 // Curated pillar posts for the homepage's Featured Guides / Popular Games
 // sections — a plain hardcoded list of slugs rather than a `featured` DB
@@ -82,6 +83,30 @@ export async function getLatestPosts(limit = 6): Promise<PostSummary[]> {
     .limit(limit);
 
   return rows.filter((r): r is typeof r & { categorySlug: string; categoryName: string } => Boolean(r.categorySlug)).map(toPostSummary);
+}
+
+/** Real published-post counts per top-level category, for the homepage's
+ * traffic-independent "Browse by Category" section — unlike Featured
+ * Guides/Popular Games above, this needs no curated slug list and can't go
+ * stale the same way: it just reflects whatever's actually published
+ * against `SITE_CATEGORIES` (lib/site-categories.ts), the same shared list
+ * the header nav uses. */
+export async function getCategoryOverview() {
+  const rows = await db
+    .select({ categoryId: posts.categoryId, count: sql<number>`count(*)::int` })
+    .from(posts)
+    .where(and(eq(posts.status, "published"), isNull(posts.deletedAt)))
+    .groupBy(posts.categoryId);
+
+  const allCategories = await db.select({ id: categories.id, slug: categories.slug }).from(categories).where(isNull(categories.deletedAt));
+  const slugById = new Map(allCategories.map((c) => [c.id, c.slug]));
+  const countBySlug = new Map<string, number>();
+  for (const row of rows) {
+    const slug = row.categoryId ? slugById.get(row.categoryId) : undefined;
+    if (slug) countBySlug.set(slug, row.count);
+  }
+
+  return SITE_CATEGORIES.map((c) => ({ ...c, count: countBySlug.get(c.slug) ?? 0 }));
 }
 
 /** Pulls FAQ entries straight from whichever featured pillars are actually

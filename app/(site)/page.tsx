@@ -1,7 +1,8 @@
-import { getFeaturedGuides, getPopularGames, getHomepageFaqs, getLatestPosts } from "@/lib/home/featured-content";
+import { getFeaturedGuides, getPopularGames, getCategoryOverview, getHomepageFaqs, getLatestPosts } from "@/lib/home/featured-content";
 import { Hero } from "@/components/home/hero";
 import { FeaturedGuides } from "@/components/home/featured-guides";
 import { PopularGames } from "@/components/home/popular-games";
+import { BrowseCategories } from "@/components/home/browse-categories";
 import { LatestPosts } from "@/components/home/latest-posts";
 import { AboutSection } from "@/components/home/about-section";
 import { HomepageFaqs } from "@/components/home/homepage-faqs";
@@ -15,9 +16,10 @@ import { SiteCta } from "@/components/home/site-cta";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [featuredGuides, popularGames, latestPosts, homepageFaqs] = await Promise.all([
+  const [featuredGuides, popularGames, categoryOverview, latestPosts, homepageFaqs] = await Promise.all([
     getFeaturedGuides(),
     getPopularGames(),
+    getCategoryOverview(),
     getLatestPosts(),
     getHomepageFaqs(),
   ]);
@@ -29,14 +31,16 @@ export default async function HomePage() {
       <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
         <FeaturedGuides posts={featuredGuides} />
         <PopularGames games={popularGames} />
+        <BrowseCategories categories={categoryOverview} />
         <LatestPosts posts={latestPosts} />
         <AboutSection />
         <HomepageFaqs faqs={homepageFaqs} />
         <SiteCta />
 
-        {/* Trending Articles is deliberately not built — a real "trending"
-            signal needs actual pageview data (Phase 7 Analytics, currently
-            paused). See docs/seo-content-strategy-plan.md §8. */}
+        {/* Trending Articles is deliberately not built yet — page views are
+            tracked (lib/tracking/log-page-view.ts), but with no bot
+            filtering, so the data is currently dominated by crawler
+            traffic rather than real readers. See docs/seo-content-strategy-plan.md §8. */}
       </div>
     </>
   );
