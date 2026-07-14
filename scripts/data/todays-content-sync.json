@@ -1438,6 +1438,30 @@
               {
                 "text": " as its payment method, with a minimum deposit and minimum withdrawal of ₹100 each. Deposits typically process within 1–5 minutes; withdrawals typically take 5–30 minutes, depending on the receiving bank or payment provider. Before requesting a withdrawal, you'll need at least one successful deposit on record and to have completed the platform's turnover (wagering) requirement—standard practice across the industry, not something specific to UU7GAME.",
                 "type": "text"
+              },
+              {
+                "text": " See our ",
+                "type": "text"
+              },
+              {
+                "text": "Deposit and Withdrawal Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-deposit-and-withdrawal-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " for the full breakdown, including how turnover requirements actually work.",
+                "type": "text"
               }
             ]
           },
@@ -2941,7 +2965,27 @@
                 ]
               },
               {
-                "text": " for signing back in, and our upcoming Deposit Guide for funding your account.",
+                "text": " for signing back in, and our ",
+                "type": "text"
+              },
+              {
+                "text": "Deposit and Withdrawal Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-deposit-and-withdrawal-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " for funding your account.",
                 "type": "text"
               }
             ]
