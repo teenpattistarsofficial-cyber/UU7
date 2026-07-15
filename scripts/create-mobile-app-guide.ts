@@ -31,6 +31,7 @@ function bulletItem(parts: (JSONContent | string)[]): JSONContent {
 function bulletList(items: JSONContent[]): JSONContent {
   return { type: "bulletList", content: items };
 }
+const image = (src: string, alt: string): JSONContent => ({ type: "image", attrs: { src, alt, title: null } });
 
 const content: JSONContent = {
   type: "doc",
@@ -52,6 +53,7 @@ const content: JSONContent = {
     p(
       "The specific banners rotating through the home screen change over time as campaigns start and end — at one point this included a time-boxed leaderboard event (\"Rise to the Top 10, Claim Your Fortune,\" running a specific two-week window) and an agent-recruitment banner advertising a commission-income promotion. Treat any specific figure in a rotating banner as a temporary marketing claim tied to that campaign's own terms, not a permanent platform feature — the VIP and rebate structures covered later in this guide are the more stable, ongoing mechanics.",
     ),
+    image("/uploads/79bee96a-6782-4f2d-98c2-dad53ad1b9c0.webp", "UU7GAME app home screen showing the game category rail and bottom navigation"),
     h2("Game Categories Inside the App"),
     p(
       "Each of the five home-screen tabs surfaces a different slice of the platform's game library, and several third-party game providers are visibly integrated rather than everything being built in-house:",
@@ -90,6 +92,7 @@ const content: JSONContent = {
       link("UPI", "https://en.wikipedia.org/wiki/Unified_Payments_Interface", true),
       " account for a later payment — each deposit should use a freshly generated payment method. The screen also states a \"platform withdrawal timeout guarantee\" of up to 100% order-amount compensation if a withdrawal times out.",
     ]),
+    image("/uploads/80327e95-b9dd-48f4-a857-18584193db92.webp", "UU7GAME app deposit screen showing minimum, maximum, and quick-select deposit amounts"),
     mixedPara([
       "For the fuller picture of deposit/withdrawal mechanics beyond what's on this one screen, our ",
       link("Deposit and Withdrawal Guide", "/app-tutorials/uu7game-deposit-and-withdrawal-guide"),
@@ -99,6 +102,7 @@ const content: JSONContent = {
     p(
       "The app prompts you to \"Bind\" a phone number tied to a +91 country code, sending a one-time verification code by SMS to confirm it. The app frames this explicitly as a funds-security step rather than an optional add-on — worth completing early, since it's tied to account and withdrawal security rather than being a marketing opt-in.",
     ),
+    image("/uploads/6691583d-154a-4a4d-9bd1-e9a942f10062.webp", "UU7GAME app phone number verification modal"),
     h2("Rewards and Promotions Inside the App"),
     p(
       "The Promo tab organizes its own sidebar into five sections — Hot, Deposit, Agent, Ranking, and VIP — each surfacing a different set of active campaigns. Based on what's actually shown in the app, the promotional mechanics include:",
@@ -114,6 +118,7 @@ const content: JSONContent = {
     p(
       "As with any bonus offer, the specific terms (wagering multiples, expiry, eligible games) are set per-promotion and shown at the point of opting in — the numbers above are what the app itself advertises, not independently verified payout data. Reading a promotion's own terms before opting in matters more than the headline number, since the wagering requirement attached to a bonus determines how easily (or not) it actually converts into withdrawable balance.",
     ),
+    image("/uploads/b87de7ae-e887-415a-8f47-e40048ce4b97.webp", "UU7GAME app promo tab sidebar showing Ranking and VIP bonus banners"),
     h2("VIP Tiers and the Agent/Club System"),
     p(
       "The Mine (profile) tab shows a VIP progress card — for example, a VIP0 account might show \"Upgrade to VIP1 with ₹100 left,\" indicating VIP tier progress is tied to a cumulative deposit or turnover threshold rather than time-based loyalty alone. Separately, the Earn tab runs a \"club\" style referral/agent system: a \"My team club\" panel tracks Club Stars, a club member count (shown as a fraction, e.g., 0/5 slots filled), and a club bet target (e.g., ₹0 of a ₹200,000 target).",
@@ -131,6 +136,7 @@ const content: JSONContent = {
     p(
       "Live Support is worth knowing the location of before you actually need it — if a deposit runs past the 30-minute window mentioned on the deposit screen, or a withdrawal times out, this is the fastest path to a human rather than searching through the Promo or Earn tabs. Balance Details separately gives a transaction-level view distinct from the single headline Total Balance / Withdrawable figures shown elsewhere, useful for reconciling exactly which deposit or bonus a given balance change came from.",
     ),
+    image("/uploads/14fc3a18-ac1d-4a74-bf9c-122e9dc183f7.webp", "UU7GAME app profile screen showing VIP tier progress and account menu"),
     h2("Common Questions"),
     mixedPara([bold("What's the minimum and maximum deposit in the UU7GAME app?"), " ₹100 minimum and ₹50,000 maximum per transaction, based on the app's own deposit screen."]),
     mixedPara([bold("Does the UU7GAME app require phone verification?"), " Yes — the app prompts you to bind a +91 phone number with an SMS-delivered verification code, framed as a funds-security requirement."]),
