@@ -28,7 +28,11 @@ export function PopularGames({ games }: { games: FeaturedPost[] }) {
            columns, which with only a handful of pillars published so far
            left this section's decorative band mostly blank. Flex items
            just cluster to the left instead, so it looks intentional at any
-           count from 1 to a full curated list of 5. */}
+           count from 1 to a full curated list of 5. Below `sm`, width is a
+           calc()'d ~50% basis (2-up) rather than a fixed px width — a fixed
+           160px card on a ~360px viewport left a single lonely card per row
+           with a wide dead gap next to it instead of actually using the
+           space. */}
         <div className="flex flex-wrap gap-3">
           {games.map((game) => {
             const Icon = GAME_ICONS[game.url.split("/").pop() ?? ""] ?? Dices;
@@ -36,7 +40,7 @@ export function PopularGames({ games }: { games: FeaturedPost[] }) {
               <Link
                 key={game.id}
                 href={game.url}
-                className="group flex w-40 shrink-0 flex-col gap-3 rounded-2xl border border-border/70 bg-card p-4 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_24px_-12px_rgba(0,0,0,0.12)] sm:w-44"
+                className="group flex w-[calc(50%-0.375rem)] shrink-0 flex-col gap-3 rounded-2xl border border-border/70 bg-card p-4 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_24px_-12px_rgba(0,0,0,0.12)] sm:w-44"
               >
                 <span className="flex size-10 items-center justify-center rounded-xl bg-brand/10 text-brand">
                   <Icon className="size-5" />
