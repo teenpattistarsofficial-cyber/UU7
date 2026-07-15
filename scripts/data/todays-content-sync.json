@@ -2695,6 +2695,30 @@
               {
                 "text": " for the full picture of getting started — registration, logging in, and what games are on offer.",
                 "type": "text"
+              },
+              {
+                "text": " For a full walkthrough of what's actually inside the app — navigation, game categories, the deposit screen, and the rewards system — see our ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME Mobile App",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-mobile-app",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guide.",
+                "type": "text"
               }
             ]
           }
@@ -7839,7 +7863,7 @@
           }
         ]
       },
-      "featuredImageUrl": "https://images.pexels.com/photos/3021120/pexels-photo-3021120.jpeg?cs=srgb&dl=pexels-myatezhny39-3021120.jpg&fm=jpg",
+      "featuredImageUrl": "/uploads/62c0d968-a72e-4559-bd8e-d5d4ce658e11.webp",
       "focusKeyword": "uu7game slots",
       "seoTitle": "UU7GAME Slots Guide: RTP, Volatility, and Paylines"
     },
@@ -8626,9 +8650,1042 @@
           }
         ]
       },
-      "featuredImageUrl": "https://images.pexels.com/photos/2508565/pexels-photo-2508565.jpeg?cs=srgb&dl=pexels-didsss-2508565.jpg&fm=jpg",
+      "featuredImageUrl": "/uploads/e11a767d-3a61-4720-84c0-0ea590a84aff.webp",
       "focusKeyword": "uu7game rummy",
       "seoTitle": "UU7GAME Rummy Guide: Formats, Tables, and Getting Started"
+    },
+    {
+      "slug": "uu7game-mobile-app",
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The UU7GAME mobile app is built around five bottom-navigation tabs — Home, Promo, a central rewards wheel, Earn, and Mine — with games organized into a left-hand rail of categories on the home screen. This guide walks through what's actually inside the app: navigation, game categories, the deposit screen's real numbers, and the rewards/VIP system, all based on the app's own interface rather than a general description. For getting the app installed in the first place, our ",
+                "type": "text"
+              },
+              {
+                "text": "APK Download Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-apk-download-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers that separately, and our ",
+                "type": "text"
+              },
+              {
+                "text": "Games Overview",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-games-overview",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers the game categories at a higher level across the whole platform.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Home Screen and Navigation",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The bottom navigation bar has five entries: Home, Promo, a central \"Get ₹200\" wheel icon, Earn, and Mine (account/profile). The top bar carries the logo, a customer support icon, a Lucky Wheel shortcut, a message inbox icon, and the current wallet balance. On the home screen itself, a left-hand vertical rail switches between five game-category tabs: Hot, Casino, Slot, Games, and Fishing, each swapping the main content area to that category's titles without leaving the home screen.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A rotating ticker near the top of the home screen shows recent withdrawal activity (e.g., \"PlayerXXXXXXXX successfully withdraws ₹500\") — a live social-proof element rather than a personal notification, and promotional banners for whatever the platform's current campaigns are (VIP bonuses, invitation challenges, ranking events) rotate above it.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The specific banners rotating through the home screen change over time as campaigns start and end — at one point this included a time-boxed leaderboard event (\"Rise to the Top 10, Claim Your Fortune,\" running a specific two-week window) and an agent-recruitment banner advertising a commission-income promotion. Treat any specific figure in a rotating banner as a temporary marketing claim tied to that campaign's own terms, not a permanent platform feature — the VIP and rebate structures covered later in this guide are the more stable, ongoing mechanics.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Game Categories Inside the App",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Each of the five home-screen tabs surfaces a different slice of the platform's game library, and several third-party game providers are visibly integrated rather than everything being built in-house:",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Hot",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — a mixed shelf of currently-promoted titles across categories, including crash-style games (Crash, Aviator Pro), and provider banners for KoolBet, Evolution, and JILI.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Casino",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — live-dealer and sports content specifically, with SABA Sports, Evolution (including its Crazy Time game show), a generic Sports banner, and Ezugi all appearing as distinct provider sections.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Slot",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — slot-specific provider shelves, including JILI, PG (Pocket Games Soft), Microgaming, and JDB.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Games",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — card and board titles: Rummy, Teen Patti (including a \"Teenpatti 20-20\" variant and an \"AK47 Teen Patti\" variant), Ludo Quick, Pusoy Go, Callbreak Quick, and Tongits Go.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Fishing",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — arcade fishing titles including Mega Fishing, Jackpot Fishing, Cai Shen Fishing, and Dragon Fishing II.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Rummy sits alongside several other card formats in the Games tab rather than standing alone — Teen Patti's multiple named variants in particular suggest the app treats it as its own mini-category rather than a single fixed game. Our ",
+                "type": "text"
+              },
+              {
+                "text": "Rummy Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-rummy-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers the specific formats, tables, and getting-started flow for rummy in full depth; this guide only covers where it sits inside the app's navigation.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The presence of named third-party studios (Evolution, Ezugi, JILI, PG, Microgaming, JDB, SABA Sports) confirms the app aggregates content from multiple established providers rather than running a single in-house engine — a common structure across Indian real-money gaming apps, and worth knowing since it means game rules/RTP/volatility genuinely vary title to title even within one category, the same point our Slots Guide and Casino Games Guide make about the platform's slot and live-casino content generally.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Aviator and Other Crash-Style Games",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Crash-format games appear under the Hot tab specifically as \"Crash\" and \"Aviator Pro,\" alongside other multiplier-style titles like Fortune Gems 2, Chicken Road 2, Fortune Garuda 500, 7Up 7Down, and Squid Gamebler. These sit in the same broad genre as Aviator — a rising multiplier you cash out of before it crashes — though exact mechanics (multiplier curve, provable-fairness method) vary by the specific title and provider, and we haven't independently verified the fine details of each one individually.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Making Your First Deposit In the App",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The deposit screen shows two separate balance figures — Total Balance and Withdrawable — a distinction worth understanding before your first deposit, since bonus funds and withdrawable cash aren't automatically the same thing. Total Balance reflects everything in your account, including any bonus credit still working through a wagering requirement; Withdrawable is specifically what you could cash out right now. Watching both numbers separately is the easiest way to tell whether a deposit bonus has actually cleared, rather than assuming the whole Total Balance figure is available to withdraw.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The deposit amount field enforces a minimum of ₹100 and a maximum of ₹50,000 per transaction, with quick-select buttons at ₹100, ₹200, ₹300, ₹500, ₹1,000, ₹2,000, ₹3,000, ₹5,000, ₹10,000, ₹20,000, ₹30,000, and ₹50,000. Picking a quick-select amount rather than typing a custom figure is purely a convenience — the same minimum and maximum apply either way, and a custom amount between the listed tiers is accepted as long as it's within that ₹100–₹50,000 range.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Every quick-select amount displays a matching bonus tag (e.g., a ₹1,000 deposit shows \"+1000\") — the app's First Deposit Event credits a 100% match on a first deposit. That bonus comes with a stated wagering requirement of 3 times the deposit amount before it can be withdrawn, and is credited to a separate \"Gullak\" (a piggy-bank-style bonus wallet distinct from your main withdrawable balance) — the app explicitly states this bonus can be cancelled if you don't want it, rather than being forced on every deposit.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The deposit screen's own tips are worth repeating exactly as shown: deposits are credited within 1–5 minutes normally; after paying, returning to the deposit page and entering your payment's UTR number can expedite processing; and if a deposit hasn't credited within 30 minutes, the stated options are contacting customer service or uploading the UTR for self-service processing. Two explicit warnings also appear on this screen: don't alter the payment amount from what the app generated, and don't reuse a previously-saved QR code or ",
+                "type": "text"
+              },
+              {
+                "text": "UPI",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "https://en.wikipedia.org/wiki/Unified_Payments_Interface",
+                      "class": null,
+                      "title": null,
+                      "target": "_blank"
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " account for a later payment — each deposit should use a freshly generated payment method. The screen also states a \"platform withdrawal timeout guarantee\" of up to 100% order-amount compensation if a withdrawal times out.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "For the fuller picture of deposit/withdrawal mechanics beyond what's on this one screen, our ",
+                "type": "text"
+              },
+              {
+                "text": "Deposit and Withdrawal Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-deposit-and-withdrawal-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers processing times and payment methods in more depth.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Phone Number Verification",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The app prompts you to \"Bind\" a phone number tied to a +91 country code, sending a one-time verification code by SMS to confirm it. The app frames this explicitly as a funds-security step rather than an optional add-on — worth completing early, since it's tied to account and withdrawal security rather than being a marketing opt-in.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Rewards and Promotions Inside the App",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The Promo tab organizes its own sidebar into five sections — Hot, Deposit, Agent, Ranking, and VIP — each surfacing a different set of active campaigns. Based on what's actually shown in the app, the promotional mechanics include:",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Lucky Wheel",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — a daily spin (labeled \"Cash Everyday\") with a choose-your-reward gift-box step, landing on a wheel with cash segments and a countdown timer to the next free spin; winnings accumulate into a small on-screen balance with a Cash Out option.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Get ₹200 invitation challenge",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — a shareable invitation code and referral-bonus mechanic, described in-app as \"no limit.\"",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "First Deposit Bonus",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — the 100% first-deposit match already covered above, advertised up to ₹50,000.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "VIP program",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — bonuses advertised up to ₹57,777 with stated rebates of 0.1% plus 0.3%.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Ranking/leaderboard events",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — time-boxed leaderboard competitions (one observed running from mid-May to late-May 2026) with daily rewards advertised up to ₹1,000,000 and personal rewards over ₹100,000.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Promo code redemption",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": " — codes distributed through the platform's official Telegram channel, with in-app redemption values advertised between ₹7 and ₹7,777.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "As with any bonus offer, the specific terms (wagering multiples, expiry, eligible games) are set per-promotion and shown at the point of opting in — the numbers above are what the app itself advertises, not independently verified payout data. Reading a promotion's own terms before opting in matters more than the headline number, since the wagering requirement attached to a bonus determines how easily (or not) it actually converts into withdrawable balance.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "VIP Tiers and the Agent/Club System",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The Mine (profile) tab shows a VIP progress card — for example, a VIP0 account might show \"Upgrade to VIP1 with ₹100 left,\" indicating VIP tier progress is tied to a cumulative deposit or turnover threshold rather than time-based loyalty alone. Separately, the Earn tab runs a \"club\" style referral/agent system: a \"My team club\" panel tracks Club Stars, a club member count (shown as a fraction, e.g., 0/5 slots filled), and a club bet target (e.g., ₹0 of a ₹200,000 target).",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Underneath that sits a rebate structure: a bet rebate of up to 0.3%, a first-deposit rebate of 2%, and invite rewards advertised up to ₹6,000. Rewards are split into a withdrawable balance (with its own Claim/Detail actions) and running Total Rewards / Today's Rewards figures, and the app provides direct one-tap sharing to Telegram, WhatsApp, and Instagram to invite others into your club.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The club member slot count (shown as a fraction like 0/5) and the club bet target (shown as a running total against a fixed goal like ₹200,000) both suggest the club/agent system rewards scale with group activity rather than paying out purely on your own individual play — the more people in your club and the more they collectively wager, the more the club-level rewards move. This is a separate track from the VIP tier system on the profile tab, which tracks your own account's deposit/turnover progress specifically rather than group activity.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Managing Your Account",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The Mine (profile) tab's menu covers the standard account-management set: Notifications, My Info, Balance Details, Live Support, Gifts, About Us, and a Logout action. Deposit and Withdraw shortcuts sit at the top of this screen alongside your VIP tier badge, so the two most common actions don't require navigating back to the home screen first.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Live Support is worth knowing the location of before you actually need it — if a deposit runs past the 30-minute window mentioned on the deposit screen, or a withdrawal times out, this is the fastest path to a human rather than searching through the Promo or Earn tabs. Balance Details separately gives a transaction-level view distinct from the single headline Total Balance / Withdrawable figures shown elsewhere, useful for reconciling exactly which deposit or bonus a given balance change came from.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Common Questions",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What's the minimum and maximum deposit in the UU7GAME app?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " ₹100 minimum and ₹50,000 maximum per transaction, based on the app's own deposit screen.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Does the UU7GAME app require phone verification?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Yes — the app prompts you to bind a +91 phone number with an SMS-delivered verification code, framed as a funds-security requirement.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What game providers are integrated into the UU7GAME app?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Provider banners visible in the app include Evolution, Ezugi, JILI, PG (Pocket Games Soft), Microgaming, JDB, and SABA Sports, spread across the Casino and Slot tabs specifically.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Is the first deposit bonus automatic?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " The app shows a 100% first-deposit match by default on the deposit screen, credited to a separate \"Gullak\" bonus wallet with a 3x wagering requirement — the app states this can be cancelled if you don't want it.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What's the difference between Total Balance and Withdrawable balance?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Total Balance reflects everything in the account, including bonus credit still under a wagering requirement; Withdrawable is specifically what can be cashed out right now.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "For installing the app itself, see our ",
+                "type": "text"
+              },
+              {
+                "text": "APK Download Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-apk-download-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": "; for the full deposit and withdrawal mechanics, our ",
+                "type": "text"
+              },
+              {
+                "text": "Deposit and Withdrawal Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-deposit-and-withdrawal-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " goes deeper; and for a category-by-category look at the games themselves, our ",
+                "type": "text"
+              },
+              {
+                "text": "Games Overview",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-games-overview",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ", ",
+                "type": "text"
+              },
+              {
+                "text": "Slots Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-slots-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ", ",
+                "type": "text"
+              },
+              {
+                "text": "Casino Games Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-casino-games-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ", and ",
+                "type": "text"
+              },
+              {
+                "text": "Rummy Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-rummy-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " each cover one category in full depth. Whatever you play, our ",
+                "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guidelines are worth reading first.",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "featuredImageUrl": "https://images.pexels.com/photos/4526481/pexels-photo-4526481.jpeg?cs=srgb&dl=pexels-zion-4526481.jpg&fm=jpg",
+      "focusKeyword": "uu7game mobile app",
+      "seoTitle": "UU7GAME Mobile App: Full Feature Walkthrough"
     }
   ],
   "categories": [
