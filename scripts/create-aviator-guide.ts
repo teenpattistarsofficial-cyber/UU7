@@ -31,6 +31,7 @@ function bulletItem(parts: (JSONContent | string)[]): JSONContent {
 function bulletList(items: JSONContent[]): JSONContent {
   return { type: "bulletList", content: items };
 }
+const image = (src: string, alt: string): JSONContent => ({ type: "image", attrs: { src, alt, title: null } });
 
 const content: JSONContent = {
   type: "doc",
@@ -49,6 +50,7 @@ const content: JSONContent = {
     p(
       "The rising-multiplier, cash-out-before-it-crashes mechanic was popularized by the original Aviator (created by the studio Spribe) and has since been widely cloned and re-skinned across the online gaming industry under many different names and visual themes. No provider logo or studio name appears on UU7GAME's rules screen or gameplay UI specifically, so this guide describes the mechanics exactly as they appear in the app rather than assuming which underlying studio built it.",
     ),
+    image("/uploads/e5bc5415-4838-4554-bbe0-7c84d8821b6e.webp", "UU7GAME Aviator's Game Rules screen, stating the game runs on a provably fair system"),
     h2("Where Aviator Lives in the App"),
     p(
       "Aviator is placed prominently on the main lobby grid, tagged with a large \"99,999x\" callout on its tile — a maximum-multiplier figure the platform advertises, not a per-round guarantee. It's reachable from the \"ALL\" tab (the lobby's default view) and also sits under the dedicated \"GAMES\" category icon in the left-hand sidebar alongside Teen Patti and similar titles, rather than being filed under Slots or Live Casino specifically.",
@@ -59,6 +61,7 @@ const content: JSONContent = {
     p(
       "A separate \"Crash\" title also appears in the same Hot tab lobby shelf as Aviator — the two are distinct entries with their own tiles and artwork rather than the same game under two names, though both belong to the same broad crash-format genre described above.",
     ),
+    image("/uploads/6a10f4ef-7fb6-47d9-b395-ce1fcb9940a1.webp", "UU7GAME lobby screen showing Aviator's tile placement on the main game grid"),
     h2("Placing a Bet: Dual Betting Panels"),
     p(
       "The live game screen runs two identical betting panels side by side, each with its own stake amount and its own Bet/Auto toggle — meaning you can run two separate bets on the same round at once, each with its own plan (for example, cashing one out early for a small guaranteed win while letting the second ride for a bigger multiplier). Each panel defaults to a stake of 10, adjustable with a plus/minus stepper or one of four quick-select amounts: 100.00, 200.00, 500.00, and 1000.00.",
@@ -72,6 +75,7 @@ const content: JSONContent = {
     p(
       "There's no requirement to use both panels every round either — placing a bet on only one and leaving the second empty is a normal way to play, and the dual-panel layout is best read as an option for running two strategies at once rather than a mandatory feature of every round.",
     ),
+    image("/uploads/50d8b169-be9a-4d28-844b-aac676e3df6a.webp", "UU7GAME Aviator's live betting screen showing the two dual betting panels, round-history strip, and All Bets feed"),
     h2("Auto Mode: Automated Betting and Cash-Out"),
     p(
       "Each of the two betting panels has its own \"Auto\" tab next to the standard \"Bet\" tab. Auto mode is the standard crash-game mechanism for setting a target multiplier in advance and having the panel cash out automatically the instant the round reaches it, removing the need to react manually every round — useful for a consistent, repeatable strategy or simply for stepping away without missing a cash-out window entirely.",
