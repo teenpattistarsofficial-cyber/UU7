@@ -26,8 +26,19 @@ export function PostCard({ post, priority = false }: { post: FeaturedPost; prior
               src={post.featuredImageUrl}
               alt=""
               fill
-              priority={priority}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              // Next 16 deprecated `priority` — it no longer sets
+              // `fetchpriority` on its own, so the boolean has to fan out
+              // into `loading`/`fetchPriority` explicitly here instead of
+              // just forwarding a single prop.
+              loading={priority ? "eager" : "lazy"}
+              fetchPriority={priority ? "high" : undefined}
+              // Tightened to the actual grid math (max-w-6xl container,
+              // px-4 page padding, gap-6 between cards, 1/2/3 columns below
+              // sm/lg) instead of a generic 100vw/50vw/33vw — the untethered
+              // 33vw was requesting a candidate roughly 2x wider than the
+              // card ever renders at once the 3-column grid's container
+              // hits its max-width, per PageSpeed's oversized-image audit.
+              sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) calc(50vw - 28px), 380px"
               className="object-cover transition-transform duration-500 group-hover/post-card:scale-105"
             />
           ) : (

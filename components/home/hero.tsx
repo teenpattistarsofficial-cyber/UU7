@@ -14,8 +14,10 @@ import { Button } from "@/components/ui/button";
  * own gradient still shows through the image's transparent regions with no
  * color-matching or edge-fade masking needed. `next/image` (not a CSS
  * background) is deliberate too: it gets real responsive `srcset`s and
- * priority-preload treatment for what's the page's LCP element, rather than
- * shipping one full-size file to every viewport unconditionally. The
+ * `loading="eager"` + `fetchPriority="high"` treatment for what's the
+ * page's LCP element (Next 16 deprecated the old `priority` prop, which no
+ * longer sets `fetchpriority` on its own — see the bundled Image docs),
+ * rather than shipping one full-size file to every viewport unconditionally. The
  * radial gradient below is kept as the section's own background so there's
  * no flash/mismatch before the image loads. The section is pulled up with a
  * negative top margin (and given matching extra top padding so the copy
@@ -106,7 +108,8 @@ export function Hero() {
             src="/Base image transparent.webp"
             alt=""
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             sizes="(max-width: 640px) 90vw, 700px"
             className="object-contain"
           />
