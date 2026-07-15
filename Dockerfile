@@ -71,6 +71,18 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # directory (and its ownership) exists before that volume is mounted on top.
 RUN mkdir -p ./uploads && chown nextjs:nodejs ./uploads
 
+# Next's image optimizer caches transformed images to `<distDir>/cache/images`
+# (lib: server/image-optimizer.js resolves this as `path.join(distDir, 'cache',
+# 'images')`) — but `standalone` output never creates or copies `.next/cache`,
+# and the `.next` tree copied above is owned by nextjs:nodejs only as deep as
+# the files that were actually copied, not this not-yet-existing subdirectory.
+# Without this, every image request silently fails to persist its cache write
+# and falls back to re-running the full sharp transform from scratch on every
+# single request (confirmed via `x-nextjs-cache: MISS` on back-to-back
+# identical requests in production) — real, avoidable CPU cost and latency on
+# every image load, not just the first one after a deploy.
+RUN mkdir -p ./.next/cache/images && chown -R nextjs:nodejs ./.next/cache
+
 USER nextjs
 EXPOSE 3000
 CMD ["node", "server.js"]
