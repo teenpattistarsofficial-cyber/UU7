@@ -8994,6 +8994,30 @@
               {
                 "text": "Crash-format games appear under the Hot tab specifically as \"Crash\" and \"Aviator Pro,\" alongside other multiplier-style titles like Fortune Gems 2, Chicken Road 2, Fortune Garuda 500, 7Up 7Down, and Squid Gamebler. These sit in the same broad genre as Aviator — a rising multiplier you cash out of before it crashes — though exact mechanics (multiplier curve, provable-fairness method) vary by the specific title and provider, and we haven't independently verified the fine details of each one individually.",
                 "type": "text"
+              },
+              {
+                "text": " Our ",
+                "type": "text"
+              },
+              {
+                "text": "Aviator Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-aviator-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers Aviator specifically in full depth — dual betting, auto cash-out, and bet limits.",
+                "type": "text"
               }
             ]
           },
@@ -9723,9 +9747,713 @@
           }
         ]
       },
-      "featuredImageUrl": "https://images.pexels.com/photos/4526481/pexels-photo-4526481.jpeg?cs=srgb&dl=pexels-zion-4526481.jpg&fm=jpg",
+      "featuredImageUrl": "/uploads/7dc00b3f-30cd-4806-87fb-b2b3ea2d1ebc.webp",
       "focusKeyword": "uu7game mobile app",
       "seoTitle": "UU7GAME Mobile App: Full Feature Walkthrough"
+    },
+    {
+      "slug": "uu7game-aviator-guide",
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "UU7GAME Aviator is a crash-format game — place a bet, watch a multiplier climb, and cash out before the round ends or lose the stake. Our ",
+                "type": "text"
+              },
+              {
+                "text": "Mobile App",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-mobile-app",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guide covers it briefly as one of several crash-style titles in the Hot tab; this guide is the deep dive, based directly on the game's own lobby placement, rules screen, and live betting interface.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What Is Aviator?",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Aviator belongs to the \"crash game\" genre: every round starts at a 1.00x multiplier that climbs for as long as the round runs, and the only decision is when to cash out before it inevitably crashes. Cash out before the crash and you win your stake times whatever multiplier you cashed out at; still in when it crashes and the stake is lost. UU7GAME's own in-game rules screen describes it as being \"built on a ",
+                "type": "text"
+              },
+              {
+                "text": "provably fair",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "https://www.webopedia.com/crypto/learn/provably-fair/",
+                      "class": null,
+                      "title": null,
+                      "target": "_blank"
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " system, which is currently the only real guarantee of honesty in the gambling industry\" — a cryptographic verification method that lets a player confirm a round's outcome wasn't altered after the bet was placed, rather than just trusting the platform's word for it. A \"This game is Provably Fair\" badge sits at the bottom of the live betting screen as well.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The rising-multiplier, cash-out-before-it-crashes mechanic was popularized by the original Aviator (created by the studio Spribe) and has since been widely cloned and re-skinned across the online gaming industry under many different names and visual themes. No provider logo or studio name appears on UU7GAME's rules screen or gameplay UI specifically, so this guide describes the mechanics exactly as they appear in the app rather than assuming which underlying studio built it.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Where Aviator Lives in the App",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Aviator is placed prominently on the main lobby grid, tagged with a large \"99,999x\" callout on its tile — a maximum-multiplier figure the platform advertises, not a per-round guarantee. It's reachable from the \"ALL\" tab (the lobby's default view) and also sits under the dedicated \"GAMES\" category icon in the left-hand sidebar alongside Teen Patti and similar titles, rather than being filed under Slots or Live Casino specifically.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "That category placement is worth noting for anyone browsing by format: a player specifically looking for RNG slot titles or live-dealer tables could easily scroll past Aviator if they don't check the Games tab or the lobby's front page, since it isn't grouped alongside the platform's other crash-adjacent or slot content. The \"99,999x\" figure on the lobby tile is the same kind of headline number as a slot's advertised maximum win multiplier — a theoretical ceiling built into the underlying math, not a realistic expectation for any individual round.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A separate \"Crash\" title also appears in the same Hot tab lobby shelf as Aviator — the two are distinct entries with their own tiles and artwork rather than the same game under two names, though both belong to the same broad crash-format genre described above.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Placing a Bet: Dual Betting Panels",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The live game screen runs two identical betting panels side by side, each with its own stake amount and its own Bet/Auto toggle — meaning you can run two separate bets on the same round at once, each with its own plan (for example, cashing one out early for a small guaranteed win while letting the second ride for a bigger multiplier). Each panel defaults to a stake of 10, adjustable with a plus/minus stepper or one of four quick-select amounts: 100.00, 200.00, 500.00, and 1000.00.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Once a bet is placed, that panel's button switches to a Cash Out action showing the current live multiplier and payout in real time — tapping it locks in whatever multiplier is showing at that instant. Missing the window means the round crashes with that panel's stake lost, same as not cashing out at all.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Running two panels also means two entirely independent outcomes on the same round — one panel cashing out successfully doesn't affect the other, and it's entirely possible (and common, based on the live all-bets feed) for a player to win on one panel and lose on the other within the same few seconds. Treat each panel as its own bet with its own bankroll allocation rather than one combined stake split in half.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "There's no requirement to use both panels every round either — placing a bet on only one and leaving the second empty is a normal way to play, and the dual-panel layout is best read as an option for running two strategies at once rather than a mandatory feature of every round.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Auto Mode: Automated Betting and Cash-Out",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Each of the two betting panels has its own \"Auto\" tab next to the standard \"Bet\" tab. Auto mode is the standard crash-game mechanism for setting a target multiplier in advance and having the panel cash out automatically the instant the round reaches it, removing the need to react manually every round — useful for a consistent, repeatable strategy or simply for stepping away without missing a cash-out window entirely.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "In most crash games built around this mechanic, Auto mode typically also supports repeating the same stake automatically for a set number of rounds or until a stop condition is hit (a balance threshold reached, or a certain number of losses in a row) — since the exact set of Auto options wasn't fully visible in the specific screens reviewed for this guide, treat the target-multiplier behavior described above as confirmed and check the panel's own Auto tab directly for the full list of options it currently offers.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A lower auto-cashout target (say, 1.5x) hits far more often than a high one (say, 5x or above), simply because most rounds crash before reaching a high multiplier — the round-history example later in this guide shows that pattern directly. Setting Auto targets on both panels at different levels is one direct way to use the dual-panel layout: a low, frequent target on one panel and a higher, rarer target on the other, rather than running the same target twice.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Bet Limits",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The default bet on each panel is 10, adjustable up or down with the stepper alongside the 100/200/500/1000 quick-select amounts. No explicit maximum bet figure is displayed on screen, but the live \"All Bets\" ledger — which lists every player's stake for the current round in real time — regularly shows individual bets in the 2,000 range, giving a practical sense of typical stakes even without a stated cap.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Since both panels run independently, the real per-round maximum you could stake is effectively double whatever single-panel limit exists, split across two separate bets rather than one combined one. Budgeting per-panel rather than assuming a single combined figure avoids under- or over-estimating how much a full round with both panels active actually risks — worth working out before your first real-money round rather than mid-session.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Reading a Live Round",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A strip of past results sits above the main multiplier display, showing a running history of how recent rounds crashed — a real observed sequence looked like: 67x, 1.85x, 3.05x, 1.63x, 1.34x, 3.98x, 1.09x, 4.02x, 1.00x, 1.40x, 2.17x, 2.62x, 1.36x, 5.15x. That spread illustrates the format's actual shape: most rounds crash at low multipliers (many under 2x, and one at exactly 1.00x — an instant crash with no time to cash out at all), with occasional much larger multipliers appearing rarely. No amount of pattern-reading across this history changes the odds of the next round — each one is an independent event, the same principle that applies to slots and other RNG-driven formats.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "When a round ends, the screen displays \"FLEW AWAY!\" alongside the final crash multiplier. The \"All Bets\" panel (with \"My Bets\" and \"Top\" tabs alongside it) lists every player's stake and cash-out multiplier for that round, plus a running count of total bets placed — real entries show players cashing out at multipliers like 1.22x or 1.45x for a modest profit, while others show a 0.00 result, meaning they were still in when the round crashed. A \"Previous hand\" control lets you review the round before the current one.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The \"My Bets\" tab filters that same feed down to just your own current and recent rounds, useful for reviewing your own results without scrolling past every other player's entry, while \"Top\" surfaces the highest multipliers or biggest payouts recently recorded — closer to a highlights reel than a representative sample of typical results, since by definition it only shows the rare large outcomes rather than the much more common small ones visible in the round-history strip.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Tips for New Aviator Players",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Use the two betting panels for two different plans rather than identical bets — for example, a smaller stake with a low auto-cashout target for a steadier, more frequent return, alongside a second stake left to run manually for a shot at a bigger multiplier.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Decide a cash-out target (or set it via Auto) before the round starts rather than reacting in the moment — crash games move fast, and hesitating to \"wait for a bit more\" is exactly how a round that was profitable ends in a loss.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Treat the multiplier history as a record, not a prediction — a run of low crashes doesn't make a big one \"due,\" and a recent big multiplier doesn't make the next round riskier.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Practice reading the interface (Bet vs. Auto tabs, the stepper, the Cash Out button's live position) with small stakes before committing larger amounts, given how fast a round can end.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Set a session budget before you start rather than deciding round by round — crash games run fast enough that it's easy to place far more rounds per hour than a slower format like live casino, the same reason our Deposit and Withdrawal Guide recommends deciding a stopping point in advance for any real-money format.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How Aviator Compares to UU7GAME's Other Formats",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Aviator's round length sits closer to a slot spin than a live-dealer hand — each round resolves in seconds, and the two-panel layout means a single round can already involve two independent decisions rather than one. That combination (fast rounds, two simultaneous bets) can add up to considerably more total wagers per hour than a single-panel slot session or a live blackjack table, which is worth factoring into a session budget specifically for Aviator rather than assuming the same pace as other formats covered in our Slots Guide or Casino Games Guide.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Common Questions",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What is UU7GAME Aviator?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " A crash-format game where a multiplier climbs from 1.00x and you cash out before it crashes — win your stake times the multiplier you cashed out at, or lose it if the round crashes first.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Does UU7GAME Aviator support betting on two panels at once?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Yes — the live game screen runs two identical, independent betting panels side by side, each with its own stake and Bet/Auto controls.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Is there an auto cash-out feature?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Yes — each betting panel has its own Auto tab for setting a target multiplier in advance, cashing out automatically once the round reaches it.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What is the minimum bet in UU7GAME Aviator?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " The default and minimum shown on each panel is 10, adjustable with a stepper or quick-select amounts of 100, 200, 500, and 1000.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Is UU7GAME Aviator provably fair?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " The game's own rules screen states it runs on a provably fair system, and a \"Provably Fair\" badge appears on the live betting screen — a verification method that lets a result be independently checked rather than just trusted.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Can I see what other players are betting in real time?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Yes — the \"All Bets\" feed lists every player's stake and cash-out multiplier for the current round as it happens, with separate \"My Bets\" and \"Top\" tabs for your own history and the biggest recent results.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "For the full picture of UU7GAME's other game categories, see our ",
+                "type": "text"
+              },
+              {
+                "text": "Games Overview",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-games-overview",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " and ",
+                "type": "text"
+              },
+              {
+                "text": "Mobile App",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-mobile-app",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guide, and for the platform's live-dealer table games specifically, our ",
+                "type": "text"
+              },
+              {
+                "text": "Casino Games Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-casino-games-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers roulette, blackjack, and baccarat in the same depth this page covers Aviator. Whatever you play, our ",
+                "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guidelines are worth reading first.",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "featuredImageUrl": "https://images.pexels.com/photos/5206079/pexels-photo-5206079.jpeg?cs=srgb&dl=pexels-arnaud24-5206079.jpg&fm=jpg",
+      "focusKeyword": "uu7game aviator",
+      "seoTitle": "UU7GAME Aviator Guide: How to Play, Bet, and Cash Out"
     }
   ],
   "categories": [
