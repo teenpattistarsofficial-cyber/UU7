@@ -21,6 +21,13 @@ const ROWS = [
   { filename: "c424df81-51b6-4b85-9f57-514b97593c11.webp", alt: "UU7GAME Registration Guide", caption: "", title: "", width: 1600, height: 900, size: 168136, mimeType: "image/webp" },
   { filename: "b9062e0a-d1d5-41cf-8687-8c4b08e66f82.webp", alt: "Online Rummy Guide", caption: "", title: "", width: 1600, height: 900, size: 187596, mimeType: "image/webp" },
   { filename: "2cf092db-5c57-401f-adec-29eee4070142.webp", alt: "UU7GAME Review 2026", caption: "", title: "", width: 1600, height: 900, size: 100550, mimeType: "image/webp" },
+  // UU7GAME Mobile App guide's 5 inline screenshots (real app UI, uploaded
+  // via the admin Media Library rather than sourced as stock photos).
+  { filename: "79bee96a-6782-4f2d-98c2-dad53ad1b9c0.webp", alt: "UU7GAME app home screen showing the game category rail and bottom navigation", caption: "", title: "", width: 576, height: 1280, size: 110116, mimeType: "image/webp" },
+  { filename: "80327e95-b9dd-48f4-a857-18584193db92.webp", alt: "UU7GAME app deposit screen showing minimum, maximum, and quick-select deposit amounts", caption: "", title: "", width: 576, height: 1280, size: 59500, mimeType: "image/webp" },
+  { filename: "6691583d-154a-4a4d-9bd1-e9a942f10062.webp", alt: "UU7GAME app phone number verification modal", caption: "", title: "", width: 576, height: 1280, size: 42012, mimeType: "image/webp" },
+  { filename: "b87de7ae-e887-415a-8f47-e40048ce4b97.webp", alt: "UU7GAME app promo tab sidebar showing Ranking and VIP bonus banners", caption: "", title: "", width: 576, height: 1280, size: 77006, mimeType: "image/webp" },
+  { filename: "14fc3a18-ac1d-4a74-bf9c-122e9dc183f7.webp", alt: "UU7GAME app profile screen showing VIP tier progress and account menu", caption: "", title: "", width: 576, height: 1280, size: 29450, mimeType: "image/webp" },
 ];
 
 async function main() {

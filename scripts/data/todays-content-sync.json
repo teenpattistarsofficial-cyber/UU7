@@ -8761,6 +8761,14 @@
             ]
           },
           {
+            "type": "image",
+            "attrs": {
+              "alt": "UU7GAME app home screen showing the game category rail and bottom navigation",
+              "src": "/uploads/79bee96a-6782-4f2d-98c2-dad53ad1b9c0.webp",
+              "title": null
+            }
+          },
+          {
             "type": "heading",
             "attrs": {
               "level": 2,
@@ -9071,6 +9079,14 @@
             ]
           },
           {
+            "type": "image",
+            "attrs": {
+              "alt": "UU7GAME app deposit screen showing minimum, maximum, and quick-select deposit amounts",
+              "src": "/uploads/80327e95-b9dd-48f4-a857-18584193db92.webp",
+              "title": null
+            }
+          },
+          {
             "type": "paragraph",
             "attrs": {
               "textAlign": null
@@ -9126,6 +9142,14 @@
                 "type": "text"
               }
             ]
+          },
+          {
+            "type": "image",
+            "attrs": {
+              "alt": "UU7GAME app phone number verification modal",
+              "src": "/uploads/6691583d-154a-4a4d-9bd1-e9a942f10062.webp",
+              "title": null
+            }
           },
           {
             "type": "heading",
@@ -9326,6 +9350,14 @@
             ]
           },
           {
+            "type": "image",
+            "attrs": {
+              "alt": "UU7GAME app promo tab sidebar showing Ranking and VIP bonus banners",
+              "src": "/uploads/b87de7ae-e887-415a-8f47-e40048ce4b97.webp",
+              "title": null
+            }
+          },
+          {
             "type": "heading",
             "attrs": {
               "level": 2,
@@ -9410,6 +9442,14 @@
                 "type": "text"
               }
             ]
+          },
+          {
+            "type": "image",
+            "attrs": {
+              "alt": "UU7GAME app profile screen showing VIP tier progress and account menu",
+              "src": "/uploads/14fc3a18-ac1d-4a74-bf9c-122e9dc183f7.webp",
+              "title": null
+            }
           },
           {
             "type": "heading",
