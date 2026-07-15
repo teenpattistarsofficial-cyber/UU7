@@ -23,6 +23,18 @@ const nextConfig: NextConfig = {
     // requesting browser supports it (Chrome/Firefox on PageSpeed's crawler
     // do), which is what the "Improve image delivery" audit was measuring.
     formats: ["image/avif", "image/webp"],
+    // Next's default deviceSizes tops out at 3840 — sized for a full-bleed
+    // 4K hero image. Nothing on this site ever renders an image wider than
+    // ~768px (the article cover image's own `sizes`, the widest case on the
+    // whole site — see app/(site)/[category]/[slug]/page.tsx), so the
+    // 1920/2048/3840 buckets can only ever be selected by a mis-evaluated
+    // `sizes` hint, never a real layout need. Capping at 1920 (covers even a
+    // 768px-wide box at ~2.5x DPR) bounds worst-case payload regardless of
+    // why a candidate gets picked, rather than only fixing the `sizes`
+    // string and hoping every browser resolves it the same way. imageSizes
+    // (small, non-viewport-relative images like the header logo) is left at
+    // Next's default — those were never the problem.
+    deviceSizes: [384, 640, 750, 828, 1080, 1200, 1920],
     // The /_next/image optimizer endpoint defaults to a 60s Cache-Control,
     // which is what "efficient cache lifetimes" was flagging for
     // post-thumbnail/hero images served through it, not just the raw
