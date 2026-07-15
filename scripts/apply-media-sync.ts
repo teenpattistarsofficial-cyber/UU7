@@ -28,6 +28,13 @@ const ROWS = [
   { filename: "6691583d-154a-4a4d-9bd1-e9a942f10062.webp", alt: "UU7GAME app phone number verification modal", caption: "", title: "", width: 576, height: 1280, size: 42012, mimeType: "image/webp" },
   { filename: "b87de7ae-e887-415a-8f47-e40048ce4b97.webp", alt: "UU7GAME app promo tab sidebar showing Ranking and VIP bonus banners", caption: "", title: "", width: 576, height: 1280, size: 77006, mimeType: "image/webp" },
   { filename: "14fc3a18-ac1d-4a74-bf9c-122e9dc183f7.webp", alt: "UU7GAME app profile screen showing VIP tier progress and account menu", caption: "", title: "", width: 576, height: 1280, size: 29450, mimeType: "image/webp" },
+  // Replacement cover image for the Mobile App guide (set directly via the
+  // admin panel, replacing the original Pexels stock photo).
+  { filename: "7dc00b3f-30cd-4806-87fb-b2b3ea2d1ebc.webp", alt: "UU7GAME Mobile App cover", caption: "", title: "", width: 1536, height: 1024, size: 220202, mimeType: "image/webp" },
+  // UU7GAME Aviator Guide's 3 inline screenshots (real app UI).
+  { filename: "6a10f4ef-7fb6-47d9-b395-ce1fcb9940a1.webp", alt: "UU7GAME lobby screen showing Aviator's tile placement on the main game grid", caption: "", title: "", width: 1280, height: 618, size: 130284, mimeType: "image/webp" },
+  { filename: "e5bc5415-4838-4554-bbe0-7c84d8821b6e.webp", alt: "UU7GAME Aviator's Game Rules screen, stating the game runs on a provably fair system", caption: "", title: "", width: 1280, height: 709, size: 34938, mimeType: "image/webp" },
+  { filename: "50d8b169-be9a-4d28-844b-aac676e3df6a.webp", alt: "UU7GAME Aviator's live betting screen showing the two dual betting panels, round-history strip, and All Bets feed", caption: "", title: "", width: 1280, height: 697, size: 39610, mimeType: "image/webp" },
 ];
 
 async function main() {

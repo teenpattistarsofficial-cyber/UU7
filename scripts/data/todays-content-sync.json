@@ -9846,6 +9846,14 @@
             ]
           },
           {
+            "type": "image",
+            "attrs": {
+              "alt": "UU7GAME Aviator's Game Rules screen, stating the game runs on a provably fair system",
+              "src": "/uploads/e5bc5415-4838-4554-bbe0-7c84d8821b6e.webp",
+              "title": null
+            }
+          },
+          {
             "type": "heading",
             "attrs": {
               "level": 2,
@@ -9893,6 +9901,14 @@
                 "type": "text"
               }
             ]
+          },
+          {
+            "type": "image",
+            "attrs": {
+              "alt": "UU7GAME lobby screen showing Aviator's tile placement on the main game grid",
+              "src": "/uploads/6a10f4ef-7fb6-47d9-b395-ce1fcb9940a1.webp",
+              "title": null
+            }
           },
           {
             "type": "heading",
@@ -9954,6 +9970,14 @@
                 "type": "text"
               }
             ]
+          },
+          {
+            "type": "image",
+            "attrs": {
+              "alt": "UU7GAME Aviator's live betting screen showing the two dual betting panels, round-history strip, and All Bets feed",
+              "src": "/uploads/50d8b169-be9a-4d28-844b-aac676e3df6a.webp",
+              "title": null
+            }
           },
           {
             "type": "heading",
