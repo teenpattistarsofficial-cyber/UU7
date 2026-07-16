@@ -27,6 +27,18 @@ const ROWS = [
   { filename: "4f075f02-9ddb-4cfc-875d-f94d3181d4ce.webp", alt: "UU7GAME Casino Games Guide", caption: "", title: "", width: 2000, height: 1333, size: 290626, mimeType: "image/webp" },
   { filename: "e7bc10d7-9dce-4be0-880e-3f8bffff73bc.webp", alt: "UU7GAME Deposit and Withdrawal Guide", caption: "", title: "", width: 2000, height: 1333, size: 105020, mimeType: "image/webp" },
   { filename: "e11a767d-3a61-4720-84c0-0ea590a84aff.webp", alt: "UU7GAME Rummy Guide", caption: "", title: "", width: 2000, height: 1337, size: 170128, mimeType: "image/webp" },
+  // Those same 4 images, re-hosted under new filenames: Cloudflare had
+  // already cached a permanent 404 for the original filenames (requested
+  // before the files existed on production, before the headers() fix in
+  // next.config.ts) and a query-string cache-buster isn't viable for local
+  // paths (hits Next's images.localPatterns restriction). A brand-new,
+  // never-before-requested filename sidesteps the stale cache entirely.
+  // The posts now point at these; the old rows/files above are harmless
+  // leftovers, not deleted to keep this script a pure additive log.
+  { filename: "f9d4e2a8-c869-4733-8669-f46b2c7196af.webp", alt: "UU7GAME Rummy Guide", caption: "", title: "", width: 2000, height: 1337, size: 170128, mimeType: "image/webp" },
+  { filename: "7783bab6-955b-4f09-820c-b1a48662d1b3.webp", alt: "UU7GAME Slots Guide", caption: "", title: "", width: 2000, height: 1326, size: 208622, mimeType: "image/webp" },
+  { filename: "32342f5b-937e-4ad5-88cc-bb2b5e8df844.webp", alt: "UU7GAME Casino Games Guide", caption: "", title: "", width: 2000, height: 1333, size: 290626, mimeType: "image/webp" },
+  { filename: "58162914-a7fb-4701-baf4-b6b8cab6d933.webp", alt: "UU7GAME Deposit and Withdrawal Guide", caption: "", title: "", width: 2000, height: 1333, size: 105020, mimeType: "image/webp" },
   // UU7GAME Mobile App guide's 5 inline screenshots (real app UI, uploaded
   // via the admin Media Library rather than sourced as stock photos).
   { filename: "79bee96a-6782-4f2d-98c2-dad53ad1b9c0.webp", alt: "UU7GAME app home screen showing the game category rail and bottom navigation", caption: "", title: "", width: 576, height: 1280, size: 110116, mimeType: "image/webp" },
