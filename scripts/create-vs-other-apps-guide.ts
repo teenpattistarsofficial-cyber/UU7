@@ -9,7 +9,7 @@ const TITLE = "UU7GAME vs. Other Gaming Apps";
 const SLUG = slugify(TITLE);
 const CATEGORY_SLUG = "betting-guides";
 const AUTHOR_SLUG = "rohan-kapoor";
-const IMAGE_URL = "https://images.pexels.com/photos/28739330/pexels-photo-28739330.jpeg?cs=srgb&dl=pexels-zeleboba-28739330.jpg&fm=jpg";
+const IMAGE_URL = "https://images.pexels.com/photos/269630/pexels-photo-269630.jpeg?cs=srgb&dl=pexels-pixabay-269630.jpg&fm=jpg";
 const FOCUS_KEYWORD = "uu7game vs other gaming apps";
 const SEO_TITLE = "UU7GAME vs Other Gaming Apps: What Actually Differs";
 const META_DESCRIPTION = "How UU7GAME compares to typical real-money gaming apps on game variety, payout speed, fairness signals, and bonus structure — without naming unverified rivals.";
