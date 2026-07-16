@@ -57,10 +57,21 @@ const nextConfig: NextConfig = {
   // identical Cache-Control directly in app/uploads/[filename]/route.ts
   // instead of a rule here, since it's served by that route handler now,
   // not Next's static file handler — see that route's own comment.
+  //
+  // `:file` (no `*`/`+` modifier) matches exactly one path segment, i.e.
+  // only root-level files like /favicon.ico or /Base image transparent.webp
+  // — deliberately NOT `/:path*.(ext)`, which also matched /uploads/*.webp
+  // and, worse, applied this same immutable 1-year header to that route's
+  // 404 responses too (headers() applies by path regardless of status
+  // code). Cloudflare then permanently cached a "file not found yet" 404
+  // for a full year the moment anything referenced an upload before it was
+  // actually written — confirmed live for a cover image swapped in before
+  // its file existed on production. The uploads route is the sole owner of
+  // its own Cache-Control now, for both the 200 and 404 cases.
   async headers() {
     return [
       {
-        source: "/:path*.(svg|jpg|jpeg|png|webp|avif|gif|ico|woff|woff2)",
+        source: "/:file.(svg|jpg|jpeg|png|webp|avif|gif|ico|woff|woff2)",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
     ];

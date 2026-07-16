@@ -34,6 +34,11 @@ export async function GET(_request: Request, { params }: { params: Promise<{ fil
       },
     });
   } catch {
-    return new NextResponse(null, { status: 404 });
+    // Explicit no-store so a CDN never entombs a transient "file not
+    // uploaded yet" 404 — this used to inherit next.config.ts's blanket
+    // 1-year immutable header (matched by path regardless of status code),
+    // which meant Cloudflare would permanently cache a 404 for any upload
+    // referenced even a moment before its file actually landed on disk.
+    return new NextResponse(null, { status: 404, headers: { "Cache-Control": "no-store" } });
   }
 }
