@@ -12855,6 +12855,26 @@
               {
                 "text": "Beyond a single session's stop-loss, it's worth watching for broader signs that betting has stopped being an entertainment expense with a defined budget: playing to recover losses across multiple sessions rather than within one, spending more time or money than planned on a regular basis, or feeling unable to stop at a predefined point you set for yourself. Our ",
                 "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " page covers this in more depth, including where to find independent support resources — worth reading before your first real-money session, not just if a problem has already developed.",
+                "type": "text"
               }
             ]
           },
@@ -13050,7 +13070,7 @@
           }
         ]
       },
-      "featuredImageUrl": "/uploads/3e0ae8b5-a6c0-49eb-8ed2-705e2f84ac9d.webp",
+      "featuredImageUrl": "https://images.pexels.com/photos/6203470/pexels-photo-6203470.jpeg",
       "focusKeyword": "aviator betting strategy",
       "seoTitle": "Aviator Betting Strategy: Real Risk Management, Not a System"
     },
@@ -14573,6 +14593,26 @@
               {
                 "text": "Bankroll management assumes gaming is being treated as a bounded entertainment expense with a defined budget — it isn't a solution for a deeper pattern of playing to recover losses across multiple periods, spending more time or money than planned on a regular basis, or being unable to stop at a point you set for yourself. Our ",
                 "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " page covers these broader signs in more depth, including where to find independent support resources — worth reading alongside these bankroll rules, not as a separate, later concern.",
+                "type": "text"
               }
             ]
           },
@@ -14768,7 +14808,7 @@
           }
         ]
       },
-      "featuredImageUrl": "/uploads/3a8ff28c-da4b-4f57-aae2-057d44286151.webp",
+      "featuredImageUrl": "https://images.pexels.com/photos/6863252/pexels-photo-6863252.jpeg?cs=srgb&dl=pexels-n-voitkevich-6863252.jpg&fm=jpg",
       "focusKeyword": "bankroll management gaming",
       "seoTitle": "Bankroll Management Gaming: Rules That Actually Work"
     }

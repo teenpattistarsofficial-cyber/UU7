@@ -124,11 +124,11 @@ const content: JSONContent = {
     ]),
 
     h2("When to Stop Entirely"),
-    p(
+    mixedPara([
       "Beyond a single session's stop-loss, it's worth watching for broader signs that betting has stopped being an entertainment expense with a defined budget: playing to recover losses across multiple sessions rather than within one, spending more time or money than planned on a regular basis, or feeling unable to stop at a predefined point you set for yourself. Our ",
       link("Responsible Gaming", "/responsible-gaming"),
       " page covers this in more depth, including where to find independent support resources — worth reading before your first real-money session, not just if a problem has already developed.",
-    ),
+    ]),
 
     h2("Common Questions"),
     mixedPara([bold("Is there a betting strategy that beats Aviator?"), " No — the game states it runs on a provably fair system, meaning each round's outcome is fixed before you bet and isn't influenced by betting patterns or history. A genuine \"aviator betting strategy\" is about bankroll and risk management, not beating the underlying math."]),

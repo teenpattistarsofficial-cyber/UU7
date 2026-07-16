@@ -124,11 +124,11 @@ const content: JSONContent = {
     ]),
 
     h2("When Bankroll Rules Alone Aren't Enough"),
-    p(
+    mixedPara([
       "Bankroll management assumes gaming is being treated as a bounded entertainment expense with a defined budget — it isn't a solution for a deeper pattern of playing to recover losses across multiple periods, spending more time or money than planned on a regular basis, or being unable to stop at a point you set for yourself. Our ",
       link("Responsible Gaming", "/responsible-gaming"),
       " page covers these broader signs in more depth, including where to find independent support resources — worth reading alongside these bankroll rules, not as a separate, later concern.",
-    ),
+    ]),
 
     h2("Common Questions"),
     mixedPara([bold("What is bankroll management in gaming?"), " The set of rules determining how much money you risk at any one time — a total bankroll, session budgets split from it, unit sizes appropriate to the format, and stop-loss/stop-win points — so that ordinary variance doesn't end your ability to play within your own plan."]),
