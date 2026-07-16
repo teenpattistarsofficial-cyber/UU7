@@ -41,11 +41,20 @@ const ROWS = [
   { filename: "58162914-a7fb-4701-baf4-b6b8cab6d933.webp", alt: "UU7GAME Deposit and Withdrawal Guide", caption: "", title: "", width: 2000, height: 1333, size: 105020, mimeType: "image/webp" },
   // UU7GAME Mobile App guide's 5 inline screenshots (real app UI, uploaded
   // via the admin Media Library rather than sourced as stock photos).
+  // Original filenames below were requested by Cloudflare (crawled/rendered)
+  // before the files existed on production, permanently caching a 404 —
+  // same root cause as the 4 cover-image replacements above. Re-hosted
+  // under brand-new filenames; old rows kept as harmless orphaned entries.
   { filename: "79bee96a-6782-4f2d-98c2-dad53ad1b9c0.webp", alt: "UU7GAME app home screen showing the game category rail and bottom navigation", caption: "", title: "", width: 576, height: 1280, size: 110116, mimeType: "image/webp" },
   { filename: "80327e95-b9dd-48f4-a857-18584193db92.webp", alt: "UU7GAME app deposit screen showing minimum, maximum, and quick-select deposit amounts", caption: "", title: "", width: 576, height: 1280, size: 59500, mimeType: "image/webp" },
   { filename: "6691583d-154a-4a4d-9bd1-e9a942f10062.webp", alt: "UU7GAME app phone number verification modal", caption: "", title: "", width: 576, height: 1280, size: 42012, mimeType: "image/webp" },
   { filename: "b87de7ae-e887-415a-8f47-e40048ce4b97.webp", alt: "UU7GAME app promo tab sidebar showing Ranking and VIP bonus banners", caption: "", title: "", width: 576, height: 1280, size: 77006, mimeType: "image/webp" },
   { filename: "14fc3a18-ac1d-4a74-bf9c-122e9dc183f7.webp", alt: "UU7GAME app profile screen showing VIP tier progress and account menu", caption: "", title: "", width: 576, height: 1280, size: 29450, mimeType: "image/webp" },
+  { filename: "0192819a-b221-42ec-bbbd-610045541fe8.webp", alt: "UU7GAME app home screen showing the game category rail and bottom navigation", caption: "", title: "", width: 576, height: 1280, size: 110116, mimeType: "image/webp" },
+  { filename: "d6817fb9-7dac-4933-b978-de879df1ed96.webp", alt: "UU7GAME app deposit screen showing minimum, maximum, and quick-select deposit amounts", caption: "", title: "", width: 576, height: 1280, size: 59500, mimeType: "image/webp" },
+  { filename: "cbc4649a-9aa3-4691-9531-33700baa47c9.webp", alt: "UU7GAME app phone number verification modal", caption: "", title: "", width: 576, height: 1280, size: 42012, mimeType: "image/webp" },
+  { filename: "6fdb243e-cccc-412b-acaa-9502f385d911.webp", alt: "UU7GAME app promo tab sidebar showing Ranking and VIP bonus banners", caption: "", title: "", width: 576, height: 1280, size: 77006, mimeType: "image/webp" },
+  { filename: "bc9441a6-fda1-45b2-9ab5-ee006dfa9795.webp", alt: "UU7GAME app profile screen showing VIP tier progress and account menu", caption: "", title: "", width: 576, height: 1280, size: 29450, mimeType: "image/webp" },
   // Replacement cover image for the Mobile App guide (set directly via the
   // admin panel, replacing the original Pexels stock photo).
   { filename: "7dc00b3f-30cd-4806-87fb-b2b3ea2d1ebc.webp", alt: "UU7GAME Mobile App cover", caption: "", title: "", width: 1536, height: 1024, size: 220202, mimeType: "image/webp" },
