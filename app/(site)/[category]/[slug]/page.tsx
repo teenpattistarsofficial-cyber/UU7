@@ -154,7 +154,7 @@ export default async function ArticlePage({
       : scoreRelatedPosts(
           { id: post.id, title: post.title, categoryId: post.categoryId, tagNames: currentTagRows.map((t) => t.name) },
           candidates,
-          3,
+          4,
         ).map((c) => c.id);
   const relatedPosts = await getPostSummariesByIds(relatedPostIds);
 
