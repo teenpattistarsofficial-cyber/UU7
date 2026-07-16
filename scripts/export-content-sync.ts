@@ -26,6 +26,7 @@ const POST_SLUGS = [
   "uu7game-vs-other-gaming-apps",
   "aviator-betting-strategy-and-risk-management",
   "fastest-withdrawal-gaming-apps",
+  "bankroll-management-gaming-guide",
 ];
 
 const CATEGORY_SLUGS = ["betting-guides", "statistics-reports", "app-tutorials", "bonuses"];
