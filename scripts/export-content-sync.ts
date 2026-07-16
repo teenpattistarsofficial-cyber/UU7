@@ -24,6 +24,7 @@ const POST_SLUGS = [
   "uu7game-aviator-guide",
   "best-real-money-gaming-apps-in-india-2026",
   "uu7game-vs-other-gaming-apps",
+  "aviator-betting-strategy-and-risk-management",
 ];
 
 const CATEGORY_SLUGS = ["betting-guides", "statistics-reports", "app-tutorials", "bonuses"];
