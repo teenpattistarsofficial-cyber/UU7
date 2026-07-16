@@ -20,9 +20,11 @@ import { SITE_CATEGORIES } from "@/lib/site-categories";
 // just published.
 const FEATURED_PILLAR_SLUGS = [
   "the-ultimate-uu7game-guide",
-  "online-rummy-guide-rules-formats-and-strategy",
-  "uu7game-slots-guide",
+  "uu7game-games-overview",
+  "uu7game-mobile-app",
+  "uu7game-aviator-guide",
   "uu7game-casino-games-guide",
+  "uu7game-slots-guide",
 ];
 
 const POPULAR_GAME_SLUGS = [
