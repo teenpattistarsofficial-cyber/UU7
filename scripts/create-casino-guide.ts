@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { posts, categories, authors, seoMeta, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs } from "@/lib/db/schema";
+import { posts, categories, authors, seoMeta, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs, postCtas } from "@/lib/db/schema";
 import { extractText } from "@/lib/editor/text";
 import type { JSONContent } from "@tiptap/core";
 import { slugify } from "@/lib/seo/slugify";
@@ -13,6 +13,7 @@ const IMAGE_URL = "https://images.pexels.com/photos/6664249/pexels-photo-6664249
 const FOCUS_KEYWORD = "uu7game casino";
 const SEO_TITLE = "UU7GAME Casino Games Guide: Roulette, Blackjack, Baccarat";
 const META_DESCRIPTION = "Rules and strategy for UU7GAME's live casino games — roulette, blackjack, baccarat, and poker — explained clearly for players new to live-dealer formats.";
+const OFFICIAL_URL = "https://uu7stars.com/";
 
 const p = (text: string): JSONContent => ({ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "text", text }] });
 const h2 = (text: string): JSONContent => ({ type: "heading", attrs: { level: 2, textAlign: null }, content: [{ type: "text", text }] });
@@ -184,6 +185,15 @@ async function main() {
     focusKeyword: FOCUS_KEYWORD,
     robotsIndex: true,
     robotsFollow: true,
+  });
+
+  await db.insert(postCtas).values({
+    postId: post.id,
+    heading: "Ready for the Tables?",
+    description: "Play live roulette, blackjack, and baccarat on UU7GAME.",
+    buttonText: "Visit UU7GAME",
+    buttonUrl: OFFICIAL_URL,
+    position: 0,
   });
 
   await db.insert(postQuickAnswer).values({

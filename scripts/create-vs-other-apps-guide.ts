@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { posts, categories, authors, seoMeta, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs } from "@/lib/db/schema";
+import { posts, categories, authors, seoMeta, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs, postCtas } from "@/lib/db/schema";
 import { extractText } from "@/lib/editor/text";
 import type { JSONContent } from "@tiptap/core";
 import { slugify } from "@/lib/seo/slugify";
@@ -13,6 +13,7 @@ const IMAGE_URL = "https://images.pexels.com/photos/269630/pexels-photo-269630.j
 const FOCUS_KEYWORD = "uu7game vs other gaming apps";
 const SEO_TITLE = "UU7GAME vs Other Gaming Apps: What Actually Differs";
 const META_DESCRIPTION = "How UU7GAME compares to typical real-money gaming apps on game variety, payout speed, fairness signals, and bonus structure — without naming unverified rivals.";
+const OFFICIAL_URL = "https://uu7stars.com/";
 
 const p = (text: string): JSONContent => ({ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "text", text }] });
 const h2 = (text: string): JSONContent => ({ type: "heading", attrs: { level: 2, textAlign: null }, content: [{ type: "text", text }] });
@@ -205,6 +206,15 @@ async function main() {
     focusKeyword: FOCUS_KEYWORD,
     robotsIndex: true,
     robotsFollow: true,
+  });
+
+  await db.insert(postCtas).values({
+    postId: post.id,
+    heading: "Ready to See for Yourself?",
+    description: "Compare UU7GAME's own interface and stated numbers directly.",
+    buttonText: "Visit UU7GAME",
+    buttonUrl: OFFICIAL_URL,
+    position: 0,
   });
 
   await db.insert(postQuickAnswer).values({

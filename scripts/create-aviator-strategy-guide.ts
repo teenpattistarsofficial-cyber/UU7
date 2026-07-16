@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { posts, categories, authors, seoMeta, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs } from "@/lib/db/schema";
+import { posts, categories, authors, seoMeta, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs, postCtas } from "@/lib/db/schema";
 import { extractText } from "@/lib/editor/text";
 import type { JSONContent } from "@tiptap/core";
 import { slugify } from "@/lib/seo/slugify";
@@ -13,6 +13,7 @@ const IMAGE_URL = "https://images.pexels.com/photos/6203470/pexels-photo-6203470
 const FOCUS_KEYWORD = "aviator betting strategy";
 const SEO_TITLE = "Aviator Betting Strategy: Real Risk Management, Not a System";
 const META_DESCRIPTION = "An honest aviator betting strategy guide: bankroll rules, dual-panel allocation, and auto cash-out — since no system changes a provably fair game's math.";
+const OFFICIAL_URL = "https://uu7stars.com/";
 
 const p = (text: string): JSONContent => ({ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "text", text }] });
 const h2 = (text: string): JSONContent => ({ type: "heading", attrs: { level: 2, textAlign: null }, content: [{ type: "text", text }] });
@@ -204,6 +205,15 @@ async function main() {
     focusKeyword: FOCUS_KEYWORD,
     robotsIndex: true,
     robotsFollow: true,
+  });
+
+  await db.insert(postCtas).values({
+    postId: post.id,
+    heading: "Set Your Budget Before You Fly",
+    description: "Bring these risk-management rules with you to UU7GAME's Aviator.",
+    buttonText: "Visit UU7GAME",
+    buttonUrl: OFFICIAL_URL,
+    position: 0,
   });
 
   await db.insert(postQuickAnswer).values({

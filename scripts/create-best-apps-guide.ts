@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { posts, categories, authors, seoMeta, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs } from "@/lib/db/schema";
+import { posts, categories, authors, seoMeta, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs, postCtas } from "@/lib/db/schema";
 import { extractText } from "@/lib/editor/text";
 import type { JSONContent } from "@tiptap/core";
 import { slugify } from "@/lib/seo/slugify";
@@ -13,6 +13,7 @@ const IMAGE_URL = "https://images.pexels.com/photos/4114787/pexels-photo-4114787
 const FOCUS_KEYWORD = "best real money gaming apps";
 const SEO_TITLE = "Best Real Money Gaming Apps in India (2026)";
 const META_DESCRIPTION = "What actually separates a good real-money gaming app from a risky one — game variety, payout speed, licensing signals, and bonus terms.";
+const OFFICIAL_URL = "https://uu7stars.com/";
 
 const p = (text: string): JSONContent => ({ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "text", text }] });
 const h2 = (text: string): JSONContent => ({ type: "heading", attrs: { level: 2, textAlign: null }, content: [{ type: "text", text }] });
@@ -225,6 +226,15 @@ async function main() {
     focusKeyword: FOCUS_KEYWORD,
     robotsIndex: true,
     robotsFollow: true,
+  });
+
+  await db.insert(postCtas).values({
+    postId: post.id,
+    heading: "Ready to Apply This Framework?",
+    description: "See how UU7GAME measures up against these five criteria firsthand.",
+    buttonText: "Visit UU7GAME",
+    buttonUrl: OFFICIAL_URL,
+    position: 0,
   });
 
   await db.insert(postQuickAnswer).values({

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { posts, categories, authors, seoMeta, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs } from "@/lib/db/schema";
+import { posts, categories, authors, seoMeta, postQuickAnswer, postAiSummary, postKeyTakeaways, postFaqs, postCtas } from "@/lib/db/schema";
 import { extractText } from "@/lib/editor/text";
 import type { JSONContent } from "@tiptap/core";
 import { slugify } from "@/lib/seo/slugify";
@@ -13,6 +13,7 @@ const IMAGE_URL = "https://images.pexels.com/photos/6289070/pexels-photo-6289070
 const FOCUS_KEYWORD = "fastest withdrawal gaming app";
 const SEO_TITLE = "Fastest Withdrawal Gaming App: What Actually Decides Speed";
 const META_DESCRIPTION = "What genuinely determines withdrawal speed on a gaming app — payment rail, verification, turnover gates — plus UU7GAME's own stated numbers as a worked example.";
+const OFFICIAL_URL = "https://uu7stars.com/";
 
 const p = (text: string): JSONContent => ({ type: "paragraph", attrs: { textAlign: null }, content: [{ type: "text", text }] });
 const h2 = (text: string): JSONContent => ({ type: "heading", attrs: { level: 2, textAlign: null }, content: [{ type: "text", text }] });
@@ -199,6 +200,15 @@ async function main() {
     focusKeyword: FOCUS_KEYWORD,
     robotsIndex: true,
     robotsFollow: true,
+  });
+
+  await db.insert(postCtas).values({
+    postId: post.id,
+    heading: "Ready to Test Withdrawal Speed?",
+    description: "See UU7GAME's stated 5–30 minute withdrawal window for yourself.",
+    buttonText: "Visit UU7GAME",
+    buttonUrl: OFFICIAL_URL,
+    position: 0,
   });
 
   await db.insert(postQuickAnswer).values({
