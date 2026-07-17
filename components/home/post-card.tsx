@@ -46,7 +46,14 @@ export function PostCard({ post, priority = false }: { post: FeaturedPost; prior
               <Dices className="size-10 text-brand/40" />
             </div>
           )}
-          <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-2.5 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm">
+          {/* No backdrop-blur here on purpose — this card renders in grids of
+             10-20+ (category/search pages), and each `backdrop-filter`
+             instance is its own per-frame GPU compositing cost during
+             scroll (see header.tsx's notes on the same trade-off for a
+             single instance). The badge's bg-background/90 is already
+             near-opaque, so blur added negligible visual effect for a cost
+             that multiplies badly here. */}
+          <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-2.5 py-1 text-xs font-medium text-foreground shadow-sm">
             {CategoryIcon && <CategoryIcon className="size-3.5 text-brand" />}
             {category.label}
           </span>
