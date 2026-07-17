@@ -9,7 +9,7 @@ const TITLE = "UU7GAME VIP Program and Rebates Explained";
 const SLUG = slugify(TITLE);
 const CATEGORY_SLUG = "bonuses";
 const AUTHOR_SLUG = "rohan-kapoor";
-const IMAGE_URL = "https://images.pexels.com/photos/9821386/pexels-photo-9821386.jpeg?cs=srgb&dl=pexels-towfiqu-barbhuiya-3440682-9821386.jpg&fm=jpg";
+const IMAGE_URL = "https://images.pexels.com/photos/7594196/pexels-photo-7594196.jpeg?cs=srgb&dl=pexels-pavel-danilyuk-7594196.jpg&fm=jpg";
 const FOCUS_KEYWORD = "uu7game vip program";
 const SEO_TITLE = "UU7GAME VIP Program: Tiers and Rebates Explained";
 const META_DESCRIPTION = "How UU7GAME's VIP program actually works — tier progress, advertised rebates, and how it differs from the platform's separate referral system.";

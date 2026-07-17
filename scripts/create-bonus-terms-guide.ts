@@ -9,7 +9,7 @@ const TITLE = "UU7GAME Bonus Terms and Wagering Requirements Explained";
 const SLUG = slugify(TITLE);
 const CATEGORY_SLUG = "bonuses";
 const AUTHOR_SLUG = "rohan-kapoor";
-const IMAGE_URL = "https://images.pexels.com/photos/7821937/pexels-photo-7821937.jpeg?cs=srgb&dl=pexels-rdne-7821937.jpg&fm=jpg";
+const IMAGE_URL = "https://images.pexels.com/photos/3678384/pexels-photo-3678384.jpeg?cs=srgb&dl=pexels-aperture-pro-2032212-3678384.jpg&fm=jpg";
 const FOCUS_KEYWORD = "uu7game bonus terms";
 const SEO_TITLE = "UU7GAME Bonus Terms: How to Actually Read Them";
 const META_DESCRIPTION = "How to read any bonus's fine print — wagering requirements, game weighting, expiry, and opt-in rules — using UU7GAME's own stated terms as the worked example.";

@@ -9,7 +9,7 @@ const TITLE = "UU7GAME Referral Program Guide";
 const SLUG = slugify(TITLE);
 const CATEGORY_SLUG = "bonuses";
 const AUTHOR_SLUG = "rohan-kapoor";
-const IMAGE_URL = "https://images.pexels.com/photos/6564339/pexels-photo-6564339.jpeg?cs=srgb&dl=pexels-timmoor-6564339.jpg&fm=jpg";
+const IMAGE_URL = "https://images.pexels.com/photos/36776648/pexels-photo-36776648.jpeg?cs=srgb&dl=pexels-stephen-leonardi-587681991-36776648.jpg&fm=jpg";
 const FOCUS_KEYWORD = "uu7game referral program";
 const SEO_TITLE = "UU7GAME Referral Program: Club Rewards Explained";
 const META_DESCRIPTION = "How UU7GAME's club/referral system actually works — the invitation bonus, rebate rates, and how it differs from the platform's separate VIP program.";
