@@ -16600,9 +16600,724 @@
           }
         ]
       },
-      "featuredImageUrl": "https://images.pexels.com/photos/7231804/pexels-photo-7231804.jpeg?cs=srgb&dl=pexels-mart-production-7231804.jpg&fm=jpg",
+      "featuredImageUrl": "/uploads/b84d2001-bda4-4f27-b112-97956cf2627f.webp",
       "focusKeyword": "uu7game welcome bonus",
       "seoTitle": "UU7GAME Welcome Bonus Guide: How to Claim It Step by Step"
+    },
+    {
+      "slug": "uu7game-vip-program-and-rebates-explained",
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "UU7GAME runs two separate ongoing reward systems that are easy to confuse: a VIP tier program tracking your own account's activity, and a club/referral system tracking activity from players you've invited. Our ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME Bonus Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/bonuses/uu7game-bonus-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers both alongside the first-deposit bonus; this guide is the dedicated deep dive on VIP specifically — how tiers progress, what they unlock, and how to think about whether chasing them is worth it.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How VIP Tier Progress Actually Works",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The Mine (profile) tab shows a VIP progress card tracking tier advancement directly — a VIP0 account might show something like \"Upgrade to VIP1 with ₹100 left,\" indicating progress is tied to a cumulative deposit or turnover threshold rather than how long an account has existed. This is a meaningfully different mechanic from a time-based loyalty program: an account active for a single busy week can outpace one that's been open for months but deposited or wagered little, since the tier threshold responds to activity volume, not tenure.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The exact threshold for each tier isn't published as a single fixed table in the interface reviewed for this guide — the progress card shows how much is left to the next tier from wherever your account currently sits, which is the practical number that actually matters day to day rather than a full schedule of every tier's exact requirement.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Checking this screen after a deposit or a session, rather than only when curious, is the practical habit worth building: since the figure updates based on real activity, it's a genuine live readout of progress rather than a static number that only makes sense to check once. A player who deposits and plays regularly will typically see this figure move down toward the next tier steadily across sessions, without needing to track it manually elsewhere. A player whose activity is sporadic may see it move in irregular jumps instead — neither pattern indicates anything wrong with the account, since the figure simply reflects however activity has actually happened.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What VIP Tiers Advertise",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The app advertises VIP bonuses up to ₹57,777 across the tier system, with stated rebates of 0.1% plus 0.3% at higher tiers. Since tier thresholds and rebate percentages can shift between promotional periods, treat the account's own current VIP screen as the authoritative source for your specific numbers rather than a fixed figure that never changes.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The practical mechanism is a rebate: a small percentage of qualifying activity paid back automatically as you progress through tiers, rather than a single lump-sum bonus claimed once. This is a fundamentally different shape from the first-deposit bonus (a one-time trigger with a wagering requirement attached) — VIP rebates accrue passively from continued play with no separate wagering condition described for the rebate itself.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "This absence of an additional wagering requirement on the rebate itself is worth noting specifically, since it's a genuine structural difference from the first-deposit bonus covered in our ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME Welcome Bonus Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/bonuses/uu7game-welcome-bonus-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " — that bonus locks behind a 3x wagering multiple before converting to withdrawable balance, while a VIP rebate, once credited, doesn't appear to carry that same additional gate in the interface reviewed for this guide. Confirming this on your own account's VIP screen before assuming it applies identically is still worth doing, since terms can vary by account or promotional period.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Why VIP Rebates Are Passive Value",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The genuine practical value of a rebate-based system is that it pays back a percentage of activity you were likely doing anyway, rather than requiring a distinct action to earn it. Unlike the first-deposit bonus (triggered once, by a specific deposit) or the club system (requiring you to actually refer other players), VIP progress moves simply from continuing to deposit and play — no extra step, no separate claim process described beyond what's shown on the tier card itself.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "That makes the VIP screen worth checking periodically even for a player with no specific interest in chasing tier upgrades: a rebate percentage already being earned through ordinary play is value sitting there regardless of intent, and not checking the screen doesn't stop it accruing — it just means not noticing it.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A worked illustration of the scale involved: at a stated 0.3% rebate rate, ₹10,000 in qualifying turnover returns roughly ₹30 back as rebate value — a genuinely small figure in isolation, but one that accrues automatically across every session rather than requiring a separate claim each time. Across many sessions over an extended period, a passive rebate like this adds up in a way a single one-time bonus doesn't, which is the actual case for treating VIP progress as a background benefit of ordinary play rather than something to chase directly. At the lower stated 0.1% rate, the same ₹10,000 in turnover returns roughly ₹10 — the exact figure depends on which tier an account currently sits at, which is exactly why checking the live VIP screen for the current active rate matters more than assuming either published percentage applies universally.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "VIP vs. the Club/Referral System: Two Separate Tracks",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "These are commonly conflated since both appear in similar areas of the app, but they measure genuinely different things. VIP tier progress is tied to your own account's cumulative deposit/turnover activity — nothing about referring other players affects it. The separate club/agent system, covered in its own dedicated guide, tracks group activity: rewards there scale with how many people you've invited and how much they collectively wager, not your own personal deposit history.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A single account can hold VIP tier progress from personal play and club rebates from referred players' activity at the same time, each tracked through its own screen — confusing which reward came from which system is a common source of new-player confusion, avoidable by checking the VIP progress card and the club/team panel separately rather than assuming one figure explains both.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A useful mental model: VIP asks \"how much have I personally deposited and wagered,\" while the club system asks \"how much have the people I invited deposited and wagered.\" Both can run at zero, both can run simultaneously, and neither one's progress affects the other's threshold or rebate rate at all — they're genuinely independent systems that happen to share the same broad \"ongoing rewards\" category on the Bonus Guide's overview, which is likely why they get conflated in the first place despite measuring entirely different activity.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Reading the VIP Screen Correctly",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Beyond the headline progress figure, the VIP screen is worth reading for three specific things: the current tier's active rebate rate (since 0.1% and 0.3% apply at different points in the structure, not simultaneously), how much activity separates the account from the next tier, and whether any tier-specific bonus is currently available to claim versus simply accruing as rebate. Treating these as three separate data points, rather than one combined \"VIP status\" impression, gives a clearer picture of what tier progress is actually worth at any given moment.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Since the specific numbers shown update with account activity, a screenshot or note taken once isn't a reliable long-term reference — checking the live screen periodically, particularly after a deposit or a longer session, is more accurate than relying on a remembered figure from a previous check-in, especially once a promotional period changes any of the underlying thresholds.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Is Chasing VIP Tiers Worth It?",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The honest answer depends entirely on whether tier progress changes your actual behavior. If you'd be depositing and playing at roughly the same volume regardless, VIP rebates are close to free value accumulating passively — worth checking on, not worth changing your plans for. If reaching the next tier would mean depositing more than you'd otherwise plan to, or extending a session specifically to hit a threshold, that's a meaningfully different and riskier decision — the rebate percentage on offer is real, but it's small relative to the deposit/wagering volume required to unlock it, and spending beyond your own planned budget to chase it works against the bankroll-management basics covered in our ",
+                "type": "text"
+              },
+              {
+                "text": "Bankroll Management Gaming Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/betting-guides/bankroll-management-gaming-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ".",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A simple test before deliberately chasing a tier: would you be making this specific deposit or playing this specific session anyway, independent of the VIP threshold? If yes, the tier progress is a genuine bonus on top of a decision you'd already made. If the tier is the reason for the decision itself, treat that as a flag worth pausing on rather than following through automatically.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How This Compares to a Typical VIP/Loyalty Structure",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Tiered rebate programs tracking cumulative deposit or turnover activity are a standard ",
+                "type": "text"
+              },
+              {
+                "text": "loyalty program",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "https://en.wikipedia.org/wiki/Loyalty_program",
+                      "class": null,
+                      "title": null,
+                      "target": "_blank"
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " structure across the real-money gaming category generally, not something unique to any single platform. What's worth comparing across platforms is whether tier progress is genuinely activity-based (as UU7GAME's own progress-card language suggests) or opaque and arbitrarily assigned, and whether the rebate percentages are disclosed plainly on the account's own screen rather than requiring a support request to find out.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A platform that shows exact progress toward the next tier, the way UU7GAME's profile screen does, is giving you a genuinely checkable figure rather than a vague \"loyalty rewards\" promise — worth using as a comparison point against any other platform's own VIP or loyalty system.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "It's also worth checking whether a platform's advertised maximum figure (UU7GAME states up to ₹57,777) reflects the realistic top of the tier structure or an aspirational number reachable only at an extreme, unrealistic activity level. Neither is necessarily dishonest — a genuine top-tier ceiling is expected to require substantial cumulative activity by design — but understanding that the advertised maximum and a typical player's realistic rebate value are two different figures avoids treating the headline number as a representative expectation. The same distinction is worth applying to any platform's advertised VIP ceiling, not just UU7GAME's specific figure.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Common Mistakes Players Make With VIP Programs",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Confusing VIP rebates with the club/referral system's rebates — the two use similarly-sized percentages in places, but come from entirely different activity (personal play vs. referred players' activity) and are tracked on separate screens.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Depositing or extending a session specifically to cross a tier threshold, rather than letting tier progress move as a byproduct of activity already planned.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Assuming a single fixed rebate percentage applies at every tier — the stated 0.1% and 0.3% figures apply at different tier levels, not simultaneously or as a flat rate across the whole system.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Treating the advertised maximum bonus figure (up to ₹57,777) as a realistic expectation for typical play, rather than a ceiling reflecting the top of the tier structure.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Not checking the VIP screen at all, and therefore not noticing rebate value that's already accruing from ordinary activity regardless of whether it's actively tracked.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Common Questions",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How does the UU7GAME VIP program work?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Tier progress is tied to cumulative deposit/turnover activity (not time on the platform), tracked via a progress card on the Mine (profile) tab showing exactly how much activity remains to the next tier.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What do UU7GAME VIP tiers actually give you?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " The app advertises bonuses up to ₹57,777 across the tier system, with stated rebates of 0.1% plus 0.3% at higher tiers, paid as a percentage of qualifying activity rather than a single lump sum.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Is the VIP program the same as the referral/club system?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " No — VIP tracks your own account's deposit/turnover activity specifically; the separate club/agent system tracks activity from players you've referred. They run independently and are tracked on different screens.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Do I need to do anything extra to earn VIP rebates?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " No — rebates accrue passively from continued deposit/play activity, unlike the first-deposit bonus (a one-time trigger) or the club system (which requires actually referring players).",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Should I deposit more just to reach the next VIP tier?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Only if you'd be making that deposit anyway regardless of the tier — depositing beyond your planned budget specifically to unlock a rebate percentage works against basic bankroll management, since the rebate is small relative to the activity required to earn it.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "For the platform's other bonus mechanics, see our ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME Bonus Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/bonuses/uu7game-bonus-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ", and for the deposit numbers underpinning tier progress, our ",
+                "type": "text"
+              },
+              {
+                "text": "Deposit and Withdrawal Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-deposit-and-withdrawal-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers the full mechanics. Whatever tier you're at, our ",
+                "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guidelines are worth reading first.",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "featuredImageUrl": "https://images.pexels.com/photos/9821386/pexels-photo-9821386.jpeg?cs=srgb&dl=pexels-towfiqu-barbhuiya-3440682-9821386.jpg&fm=jpg",
+      "focusKeyword": "uu7game vip program",
+      "seoTitle": "UU7GAME VIP Program: Tiers and Rebates Explained"
     }
   ],
   "categories": [

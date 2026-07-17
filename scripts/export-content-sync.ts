@@ -29,6 +29,7 @@ const POST_SLUGS = [
   "bankroll-management-gaming-guide",
   "uu7game-bonus-guide",
   "uu7game-welcome-bonus-guide",
+  "uu7game-vip-program-and-rebates-explained",
 ];
 
 const CATEGORY_SLUGS = ["betting-guides", "statistics-reports", "app-tutorials", "bonuses"];
