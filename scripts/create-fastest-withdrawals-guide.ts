@@ -9,7 +9,7 @@ const TITLE = "Fastest Withdrawal Gaming Apps";
 const SLUG = slugify(TITLE);
 const CATEGORY_SLUG = "betting-guides";
 const AUTHOR_SLUG = "rohan-kapoor";
-const IMAGE_URL = "https://images.pexels.com/photos/6289070/pexels-photo-6289070.jpeg?cs=srgb&dl=pexels-gabby-k-6289070.jpg&fm=jpg";
+const IMAGE_URL = "/uploads/5ac69495-02a4-4e20-a5aa-e2c5f9c27ea9.webp";
 const FOCUS_KEYWORD = "fastest withdrawal gaming app";
 const SEO_TITLE = "Fastest Withdrawal Gaming App: What Actually Decides Speed";
 const META_DESCRIPTION = "What genuinely determines withdrawal speed on a gaming app — payment rail, verification, turnover gates — plus UU7GAME's own stated numbers as a worked example.";

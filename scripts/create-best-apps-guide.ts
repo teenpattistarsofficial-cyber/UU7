@@ -9,7 +9,7 @@ const TITLE = "Best Real Money Gaming Apps in India (2026)";
 const SLUG = slugify(TITLE);
 const CATEGORY_SLUG = "betting-guides";
 const AUTHOR_SLUG = "rohan-kapoor";
-const IMAGE_URL = "https://images.pexels.com/photos/4114787/pexels-photo-4114787.jpeg?cs=srgb&dl=pexels-castorlystock-4114787.jpg&fm=jpg";
+const IMAGE_URL = "/uploads/709b129e-ec76-4831-8b6e-445768f72678.webp";
 const FOCUS_KEYWORD = "best real money gaming apps";
 const SEO_TITLE = "Best Real Money Gaming Apps in India (2026)";
 const META_DESCRIPTION = "What actually separates a good real-money gaming app from a risky one — game variety, payout speed, licensing signals, and bonus terms.";

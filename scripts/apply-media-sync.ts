@@ -62,6 +62,11 @@ const ROWS = [
   { filename: "6a10f4ef-7fb6-47d9-b395-ce1fcb9940a1.webp", alt: "UU7GAME lobby screen showing Aviator's tile placement on the main game grid", caption: "", title: "", width: 1280, height: 618, size: 130284, mimeType: "image/webp" },
   { filename: "e5bc5415-4838-4554-bbe0-7c84d8821b6e.webp", alt: "UU7GAME Aviator's Game Rules screen, stating the game runs on a provably fair system", caption: "", title: "", width: 1280, height: 709, size: 34938, mimeType: "image/webp" },
   { filename: "50d8b169-be9a-4d28-844b-aac676e3df6a.webp", alt: "UU7GAME Aviator's live betting screen showing the two dual betting panels, round-history strip, and All Bets feed", caption: "", title: "", width: 1280, height: 697, size: 39610, mimeType: "image/webp" },
+  // Replacement cover images for Fastest Withdrawal Gaming Apps and Best
+  // Real Money Gaming Apps (same Pexels photos as originally chosen,
+  // re-hosted locally rather than hotlinked).
+  { filename: "5ac69495-02a4-4e20-a5aa-e2c5f9c27ea9.webp", alt: "Fastest Withdrawal Gaming Apps", caption: "", title: "", width: 2000, height: 3556, size: 156852, mimeType: "image/webp" },
+  { filename: "709b129e-ec76-4831-8b6e-445768f72678.webp", alt: "Best Real Money Gaming Apps", caption: "", title: "", width: 2000, height: 1333, size: 72374, mimeType: "image/webp" },
 ];
 
 async function main() {
