@@ -9723,7 +9723,7 @@
           }
         ]
       },
-      "featuredImageUrl": "https://images.pexels.com/photos/4526481/pexels-photo-4526481.jpeg?cs=srgb&dl=pexels-zion-4526481.jpg&fm=jpg",
+      "featuredImageUrl": "/uploads/7dc00b3f-30cd-4806-87fb-b2b3ea2d1ebc.webp",
       "focusKeyword": "uu7game mobile app",
       "seoTitle": "UU7GAME Mobile App: Full Feature Walkthrough"
     },
@@ -14811,6 +14811,910 @@
       "featuredImageUrl": "https://images.pexels.com/photos/6863252/pexels-photo-6863252.jpeg?cs=srgb&dl=pexels-n-voitkevich-6863252.jpg&fm=jpg",
       "focusKeyword": "bankroll management gaming",
       "seoTitle": "Bankroll Management Gaming: Rules That Actually Work"
+    },
+    {
+      "slug": "uu7game-bonus-guide",
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A UU7GAME bonus isn't a single offer — the app runs at least four distinct, ongoing mechanics at once: a first-deposit match, a VIP tier system, a club/referral rebate structure, and rotating time-boxed promotions. This guide covers what each one actually is, using the app's own stated numbers rather than marketing copy, and how to read any bonus's real terms before opting in. Our ",
+                "type": "text"
+              },
+              {
+                "text": "Mobile App",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-mobile-app",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guide covers where each of these lives in the actual interface; this page is the dedicated depth on the mechanics themselves.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "First Deposit Bonus: The Headline Offer",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "UU7GAME's deposit screen shows a 100% match on a first deposit — every quick-select deposit amount displays a matching bonus tag (for example, a ₹1,000 deposit shows \"+1000\"), advertised up to ₹50,000. That bonus is credited to a separate \"Gullak\" wallet — a piggy-bank-style bonus balance distinct from your main withdrawable balance — carrying a stated 3x wagering requirement before it converts to withdrawable funds. The app explicitly states this bonus can be cancelled if you don't want it, rather than being forced onto every deposit regardless of preference.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Deposits run a ₹100 minimum to a ₹50,000 maximum per transaction. The deposit screen also separates Total Balance from Withdrawable balance — Total Balance includes bonus credit still working through its wagering requirement, while Withdrawable is specifically what you could cash out right now. Watching both figures separately is the fastest way to tell whether a bonus has actually cleared.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Understanding the 3x Wagering Requirement",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A wagering (turnover) requirement means the bonus — or winnings sitting alongside it — has to be wagered a set number of times before it counts as withdrawable balance. On a 3x requirement, a ₹1,000 bonus needs ₹3,000 in total wagers placed across eligible games before it clears. This exists across the real-money gaming industry generally, not just on UU7GAME, specifically to prevent bonus credit from being claimed and cashed out immediately with no actual play in between.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Our ",
+                "type": "text"
+              },
+              {
+                "text": "Deposit and Withdrawal Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-deposit-and-withdrawal-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers this mechanic in more depth. The wagering multiple is the number that actually determines how easily a bonus converts to real, withdrawable money — always worth checking before assuming a headline percentage is the whole story.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Worked example with the deposit-screen numbers above: deposit ₹2,000 and the matching first-deposit bonus credits ₹2,000 to the Gullak wallet. At a 3x wagering requirement, that ₹2,000 bonus needs ₹6,000 in total eligible wagers placed before it — or any winnings sitting alongside it in Total Balance — becomes part of your Withdrawable balance. Placing a single ₹6,000 bet doesn't automatically clear it either, unless the specific bonus terms count a single large wager the same as the equivalent total spread across many smaller ones; reading the actual terms shown at the point of opting in avoids assuming either interpretation applies by default.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A practical habit: note the deposit amount and the stated multiplier the moment a bonus credits, then keep a running total of wagers placed until you're confident the requirement is cleared — checking Total Balance versus Withdrawable balance periodically is a faster way to confirm progress than reconstructing it from memory the first time a withdrawal attempt gets blocked.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Gullak: Why a Separate Bonus Wallet Matters",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Crediting a bonus to a separate wallet rather than the main balance is a meaningful structural choice, not just a cosmetic detail. It means your own deposited cash (assuming no bonus was applied, or once any attached bonus has cleared) stays withdrawable on its own timeline, unaffected by whatever wagering requirement the bonus portion is still working through. It's also what makes the bonus genuinely cancellable — declining or clearing out a Gullak balance doesn't touch the separate Withdrawable figure tracking your real cash.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Compare this to a platform that credits a bonus directly onto the main balance with no separation: every rupee showing in the account balance becomes ambiguous about whether it's genuinely withdrawable or still tied to an unmet wagering condition, which is exactly the confusion the Total Balance/Withdrawable split (and the separate Gullak wallet) is designed to avoid.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "VIP Tier Program",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The Mine (profile) tab shows a VIP progress card tracking tier advancement — for example, a VIP0 account might show \"Upgrade to VIP1 with ₹100 left,\" indicating tier progress is tied to a cumulative deposit or turnover threshold rather than time spent on the platform. The app advertises VIP bonuses up to ₹57,777, with stated rebates of 0.1% plus 0.3% at higher tiers.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "This is a fairly standard ",
+                "type": "text"
+              },
+              {
+                "text": "loyalty program",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "https://en.wikipedia.org/wiki/Loyalty_program",
+                      "class": null,
+                      "title": null,
+                      "target": "_blank"
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " structure: rebates and bonus value scale with how much you've deposited or wagered over time, rewarding continued play rather than a single deposit. Since tier thresholds and rebate percentages can change between promotional periods, check the app's own VIP screen for your account's current numbers rather than treating any figure here as permanently fixed.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The practical value of a rebate-based VIP system is that it pays back a small percentage of activity you were already going to do, rather than requiring a separate action to earn it — unlike the first-deposit bonus (a one-time trigger) or the club system (requiring you to actually refer people), VIP rebates accrue passively just from continuing to play. That makes the VIP screen worth checking periodically even if you never intentionally chase tier upgrades, since a rebate percentage you're already qualifying for is effectively free value sitting unclaimed if it isn't being tracked.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The Club/Referral Rebate System",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Separately from VIP tiers, the Earn tab runs a \"club\" style referral system. A \"My Team Club\" panel tracks Club Stars, a club member count (shown as a fraction, e.g., 0/5 slots filled), and a club bet target (e.g., ₹0 of a ₹200,000 target) — the club member slot count and bet target together suggest this system rewards scale with group activity, not just your own individual play.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Invitation challenge: ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "a shareable referral code advertised as \"Get ₹200,\" described in-app as \"no limit\" — one-tap sharing to Telegram, WhatsApp, and Instagram is built directly into the Earn tab.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Bet rebate: ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "up to 0.3% on qualifying wagers, tracked alongside your club's collective bet target.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "First-deposit rebate: ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "2% on a new referral's first deposit, credited to your own rewards balance.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Invite rewards: ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "advertised up to ₹6,000 across the full referral structure.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Rewards from this system are split into a withdrawable balance (with its own Claim/Detail actions) and running Total Rewards / Today's Rewards figures — a genuinely separate track from the VIP tier system, which measures your own account's activity rather than your club's collective total.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Other Ongoing Rewards",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A rewards wheel sits in the bottom navigation for a daily spin — a recurring, low-effort reward mechanic distinct from the deposit-triggered bonuses above. Time-boxed leaderboard events also rotate through the Promo tab's Ranking section periodically (one observed example ran under the banner \"Rise to the Top 10, Claim Your Fortune\" across a specific two-week window) — treat any specific figure in a rotating campaign banner as tied to that campaign's own terms and dates, not a permanent platform feature.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Comparing the Three Ongoing Programs",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "First-deposit bonus: ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "one-time, triggered specifically by your first deposit — a 100% match up to ₹50,000 with a 3x wagering requirement, credited to the cancellable Gullak wallet.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "VIP tier program: ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "ongoing, tracks your own account's cumulative deposit/turnover activity — advertised bonuses up to ₹57,777 with rebates of 0.1% plus 0.3% that scale as your tier rises.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Club/referral system: ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "ongoing, tracks group activity across everyone you've referred — a ₹200 invitation bonus, up to 0.3% bet rebate, 2% first-deposit rebate on referrals, and up to ₹6,000 in invite rewards.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "These three run independently and aren't mutually exclusive — a single account can hold first-deposit bonus credit still clearing its wagering requirement, VIP rebates accruing from personal play, and club rebates accruing from referred players' activity, all at the same time, each tracked through its own screen in the app. Confusing which balance a specific reward landed in is a common source of confusion for new players; checking each screen (Gullak, VIP progress, club rewards) individually rather than assuming one Total Balance figure explains everything avoids that confusion.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How to Read Any Bonus Before Opting In",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Find the actual wagering multiple, not just the headline match percentage — a smaller match with a lower multiple can convert to withdrawable cash more easily than a larger match buried under a steeper requirement.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Check whether the bonus credits to a separate, cancellable wallet (like Gullak) or gets forced onto your main balance regardless of preference.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Check for an expiry window and which specific games count toward clearing the wagering requirement — not every game category necessarily contributes at the same rate.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Treat rotating campaign banners (leaderboard events, seasonal promotions) as temporary, time-boxed offers — the ongoing mechanics (first-deposit match, VIP, club rebates) are the more stable, always-available structure.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A Red Flag Worth Knowing",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "An offer dramatically more generous than anything described in this guide or shown in the official app — a \"deposit and get 10x back\" style claim, for instance — is a common lure used by fake clone sites, not a real UU7GAME promotion. Our ",
+                "type": "text"
+              },
+              {
+                "text": "Official Site Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-official-site-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " covers how to verify you're actually on the legitimate platform before ever entering payment details in response to an unusually generous bonus claim.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A message that arrives unsolicited — by SMS, WhatsApp, or a social media DM claiming a special or exclusive bonus link — deserves the same scrutiny regardless of how convincing the offer looks. Legitimate bonus terms are visible directly inside the official app itself; a bonus you can only access by clicking a link sent to you first, rather than one you found inside the app's own Promo tab, is worth verifying independently before acting on it. The safest check costs nothing: close the message, open the official app directly, and look for the same offer in the Promo tab yourself rather than tapping through a link.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Why This Approach Applies Beyond UU7GAME",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Every real-money gaming platform runs some version of these same mechanics — a first-deposit incentive, an ongoing loyalty structure, and often a referral system — dressed up under different names and figures. The genuinely useful skill isn't memorizing any one platform's specific numbers; it's knowing which three or four questions to ask of any bonus before opting in: what's the actual wagering multiple, is it credited to a separate cancellable balance, what's the expiry window, and which games count toward clearing it. Those four answers tell you more about a bonus's real value than any headline percentage a promotions page leads with.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Common Questions",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What is UU7GAME's first deposit bonus?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " A 100% match on a first deposit, advertised up to ₹50,000, credited to a separate cancellable \"Gullak\" wallet with a stated 3x wagering requirement before it converts to withdrawable balance.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How does the UU7GAME VIP program work?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " VIP tier progress is tied to cumulative deposit/turnover activity (not time on the platform), with the app advertising bonuses up to ₹57,777 and rebates of 0.1% plus 0.3% at higher tiers.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What is the UU7GAME referral/club system?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " A separate rewards track from VIP: a shareable invitation code (advertised \"Get ₹200,\" no limit), a bet rebate up to 0.3%, a 2% first-deposit rebate on referrals, and invite rewards advertised up to ₹6,000 — scaling with group activity rather than individual play alone.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Can I decline the first-deposit bonus?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " Yes — the app explicitly states the first-deposit bonus can be cancelled if you don't want it, rather than being forced onto every deposit.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What matters more, the bonus percentage or the wagering requirement?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " The wagering requirement multiple — it determines how much has to be wagered before a bonus converts to real, withdrawable money, and a smaller match with a lower multiple can be a genuinely better deal than a larger one with steeper terms.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "For the deposit mechanics these bonuses attach to, see our ",
+                "type": "text"
+              },
+              {
+                "text": "Deposit and Withdrawal Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-deposit-and-withdrawal-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ", and for the full app walkthrough including where each bonus screen actually lives, our ",
+                "type": "text"
+              },
+              {
+                "text": "Mobile App",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/app-tutorials/uu7game-mobile-app",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guide covers it in depth. Whatever bonus you use, our ",
+                "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guidelines are worth reading first.",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "featuredImageUrl": "https://images.pexels.com/photos/34972173/pexels-photo-34972173.jpeg?cs=srgb&dl=pexels-jessbaileydesign-34972173.jpg&fm=jpg",
+      "focusKeyword": "uu7game bonus",
+      "seoTitle": "UU7GAME Bonus Guide: Deposit, VIP & Referral Rewards"
     }
   ],
   "categories": [
