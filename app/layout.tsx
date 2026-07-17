@@ -4,6 +4,7 @@ import { SITE_URL, DEFAULT_LOGO_URL, DEFAULT_FAVICON_URL } from "@/lib/site";
 import { getSiteSettings } from "@/lib/settings";
 import { buildOrganizationSchema, buildWebsiteSchema } from "@/lib/seo/jsonld";
 import { JsonLd } from "@/components/article/json-ld";
+import { PageViewTracker } from "@/components/tracking/page-view-tracker";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -100,6 +101,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col">
         {children}
         <JsonLd blocks={[organizationSchema, websiteSchema]} />
+        <PageViewTracker />
       </body>
     </html>
   );

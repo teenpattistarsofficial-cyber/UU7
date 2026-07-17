@@ -4,13 +4,9 @@ import { getSessionCookie } from "better-auth/cookies";
 import { auth } from "@/lib/auth";
 import { getRedirectFor } from "@/lib/redirects/cache";
 import { getMaintenanceState } from "@/lib/maintenance-cache";
-import { logPageView } from "@/lib/tracking/log-page-view";
 import { DEFAULT_LOGO_URL, DEFAULT_FAVICON_URL } from "@/lib/site";
 
 const DEFAULT_MAINTENANCE_MESSAGE = "We'll be back shortly. Thanks for your patience.";
-// Anonymous, non-identifying — just enough to count "unique sessions" and
-// group a visitor's recent page views together. No account/login involved.
-const VISITOR_COOKIE = "uu7_vid";
 
 function escapeHtml(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -165,30 +161,15 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(redirect.toPath, request.url), redirect.statusCode);
   }
 
-  const response = NextResponse.next();
-
-  // Page-view tracking — only real page loads (GET, not /api/*), and only
-  // once redirects/maintenance are ruled out above, so a redirected or
-  // maintenance-blocked request never counts as a view of content that
-  // wasn't actually served.
-  if (request.method === "GET" && !pathname.startsWith("/api/")) {
-    let visitorId = request.cookies.get(VISITOR_COOKIE)?.value;
-    if (!visitorId) {
-      visitorId = crypto.randomUUID();
-      response.cookies.set(VISITOR_COOKIE, visitorId, {
-        maxAge: 60 * 60 * 24 * 365,
-        sameSite: "lax",
-      });
-    }
-    await logPageView({
-      path: pathname,
-      visitorId,
-      ip: request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null,
-      userAgent: request.headers.get("user-agent"),
-    });
-  }
-
-  return response;
+  // Page-view tracking moved to a client-side beacon (see
+  // components/tracking/page-view-tracker.tsx + app/api/track/pageview) —
+  // this used to run here on every page response, but setting a Set-Cookie
+  // header (for the anonymous visitor id) on every response makes Cloudflare
+  // treat the whole page as private and never edge-cache it, and the
+  // awaited DB insert added a blocking round-trip to every page load.
+  // Neither cost belongs on the response path for a page that's otherwise
+  // perfectly cacheable.
+  return NextResponse.next();
 }
 
 export const config = {
