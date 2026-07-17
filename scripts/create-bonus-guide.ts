@@ -9,7 +9,7 @@ const TITLE = "UU7GAME Bonus Guide";
 const SLUG = slugify(TITLE);
 const CATEGORY_SLUG = "bonuses";
 const AUTHOR_SLUG = "rohan-kapoor";
-const IMAGE_URL = "https://images.pexels.com/photos/34972173/pexels-photo-34972173.jpeg?cs=srgb&dl=pexels-jessbaileydesign-34972173.jpg&fm=jpg";
+const IMAGE_URL = "https://images.pexels.com/photos/35926283/pexels-photo-35926283.jpeg?cs=srgb&dl=pexels-stephen-leonardi-587681991-35926283.jpg&fm=jpg";
 const FOCUS_KEYWORD = "uu7game bonus";
 const SEO_TITLE = "UU7GAME Bonus Guide: Deposit, VIP & Referral Rewards";
 const META_DESCRIPTION = "Every UU7GAME bonus explained with the app's own numbers — first-deposit match, VIP tiers, the club/referral system, and how to read any offer's real terms.";
