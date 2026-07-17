@@ -28,6 +28,7 @@ const POST_SLUGS = [
   "fastest-withdrawal-gaming-apps",
   "bankroll-management-gaming-guide",
   "uu7game-bonus-guide",
+  "uu7game-welcome-bonus-guide",
 ];
 
 const CATEGORY_SLUGS = ["betting-guides", "statistics-reports", "app-tutorials", "bonuses"];
