@@ -16828,7 +16828,27 @@
             },
             "content": [
               {
-                "text": "These are commonly conflated since both appear in similar areas of the app, but they measure genuinely different things. VIP tier progress is tied to your own account's cumulative deposit/turnover activity — nothing about referring other players affects it. The separate club/agent system, covered in its own dedicated guide, tracks group activity: rewards there scale with how many people you've invited and how much they collectively wager, not your own personal deposit history.",
+                "text": "These are commonly conflated since both appear in similar areas of the app, but they measure genuinely different things. VIP tier progress is tied to your own account's cumulative deposit/turnover activity — nothing about referring other players affects it. The separate club/agent system, covered in our ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME Referral Program Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/bonuses/uu7game-referral-program-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": ", tracks group activity: rewards there scale with how many people you've invited and how much they collectively wager, not your own personal deposit history.",
                 "type": "text"
               }
             ]
@@ -17318,6 +17338,768 @@
       "featuredImageUrl": "https://images.pexels.com/photos/9821386/pexels-photo-9821386.jpeg?cs=srgb&dl=pexels-towfiqu-barbhuiya-3440682-9821386.jpg&fm=jpg",
       "focusKeyword": "uu7game vip program",
       "seoTitle": "UU7GAME VIP Program: Tiers and Rebates Explained"
+    },
+    {
+      "slug": "uu7game-referral-program-guide",
+      "content": {
+        "type": "doc",
+        "content": [
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "UU7GAME's Earn tab runs a \"club\" style referral system — a separate ongoing reward track from the VIP program covered in our ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME VIP Program and Rebates Explained",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/bonuses/uu7game-vip-program-and-rebates-explained",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guide. Where VIP tracks your own personal deposit/turnover activity, the UU7GAME referral program (the club system) tracks activity from players you've invited instead. This guide covers how it actually works: the invitation bonus, the rebate structure, and how to think about whether participating is worth it.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How the Club System Works",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A \"My Team Club\" panel on the Earn tab tracks three things at once: Club Stars, a club member count shown as a fraction (for example, 0/5 slots filled), and a club bet target shown as a running total against a fixed goal (for example, ₹0 of a ₹200,000 target). Together, the member-slot count and the collective bet target indicate this system rewards group activity scaling with how many people you've referred and how much they collectively wager — not your own individual play.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "This structure means a club's progress can move even on a day you personally don't deposit or play at all, as long as referred members are active — a genuinely different mechanic from VIP, which only responds to your own account's activity. Club Stars specifically appear to function as a running tally reflecting overall club standing, distinct from the raw member count and bet target figures shown alongside them, though the interface reviewed for this guide didn't expose a separate conversion rate turning Stars themselves into a specific payout figure.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The Invitation Bonus",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The Earn tab surfaces a shareable invitation code advertised as \"Get ₹200,\" described in-app as \"no limit\" — meaning there's no stated cap on how many people can be referred using it. One-tap sharing to Telegram, WhatsApp, and Instagram is built directly into the tab, rather than requiring a manually copied link.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "\"No limit\" describes the number of referrals the code itself will accept, not necessarily an unlimited total payout without any other condition — checking the specific terms shown at the point of sharing avoids assuming the headline phrase covers every detail of how the reward actually pays out.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Sharing the code is only the first step; the ₹200 figure and any downstream rebates depend on the referred person actually completing steps of their own (typically registration and a first deposit) rather than crediting the moment a link is merely opened. Treat the share action itself as starting the process, not completing it — the club panel's member-slot count updating from 0/5 toward a higher fraction is the practical confirmation that a referral has actually converted, not just been sent, and is a more reliable signal than assuming a share was successful just because it was sent.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Referral Rebates: The Numbers",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Bet rebate: ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "up to 0.3% on qualifying wagers placed by your referred players, tracked against the club's collective bet target.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "First-deposit rebate: ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "2% on a new referral's first deposit, credited to your own rewards balance when they complete it.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Invite rewards: ",
+                        "type": "text",
+                        "marks": [
+                          {
+                            "type": "bold"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "advertised up to ₹6,000 across the full referral structure.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "These figures are distinct from the VIP program's own stated rebates (0.1% and 0.3% at different tiers) — the overlapping 0.3% figure is a coincidence of similar numbers, not the same reward counted twice. Club rebates come specifically from referred players' activity; VIP rebates come specifically from your own.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A worked example: a referred player deposits ₹2,000 for the first time — that triggers a 2% first-deposit rebate, or ₹40, credited to your rewards balance. If that same player then wagers ₹10,000 across eligible games over time, the 0.3% bet rebate on that activity adds roughly ₹30 more. Both figures are small individually, but they accrue per referred player, so a club with several active members compounds faster than the same rebate rate applied to a single account's own play — which is the actual mechanism behind the club bet target scaling toward larger cumulative figures like the ₹200,000 example shown on the panel. Five referred players each contributing a similar amount would move that same collective target roughly five times faster than one player alone, without any single referral needing to be unusually large.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Because the rebate scales with the number of active referred players as well as their individual activity, a club with five members each wagering a modest amount can out-earn a club with one member wagering heavily, or vice versa — there's no single \"correct\" way to build toward the collective target, only the combined total of whatever your referred members actually do. This is also why the member-slot count and the bet target are shown as two separate figures rather than one combined number: filling every slot with inactive accounts moves the member count without moving the bet target at all, so the two together give a fuller picture than either alone.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How Club Rewards Are Tracked",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Rewards from the club system split into a withdrawable balance (with its own Claim/Detail actions) and running Total Rewards / Today's Rewards figures, visible on the Earn tab separately from your main account balance and separately from any VIP-tier rebate figures shown elsewhere. Checking each screen individually — Gullak (first-deposit bonus), VIP progress, and club rewards — rather than assuming one Total Balance figure explains everything is the most reliable way to understand exactly where a specific reward came from.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Club vs. VIP: Two Independent Tracks",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A useful way to keep these straight: VIP asks how much you've personally deposited and wagered; the club system asks how much the people you've invited have deposited and wagered. Both can run simultaneously on the same account, both can sit at zero, and neither one's progress affects the other's threshold or rebate rate. A single account can hold VIP tier progress from personal play and club rewards from referred players' activity at the same time, each tracked through its own screen.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "This distinction also means the two systems reward genuinely different behavior: VIP rewards your own continued engagement with the platform, while the club system rewards successfully bringing in and retaining other active players. A player who never refers anyone can still reach high VIP tiers purely through personal play; a player who refers many people but rarely plays personally can still see meaningful club rewards purely from referred activity. Neither system requires participating in the other to make progress, and a player genuinely uninterested in one can simply ignore that screen without missing out on the other.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Checking Your Club Progress",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The practical habit here mirrors the one worth building for VIP: check the Earn tab periodically rather than only right after sending an invitation. Since club rewards depend on referred players' ongoing activity (not a one-time event), the member-slot fraction and collective bet target are live figures that move as your referred players continue playing, not fixed the moment they first sign up. A referral that shows little initial activity might still contribute meaningfully later, and one that starts strong might slow down — checking periodically gives a more accurate picture than a single early look, the same way a single snapshot of any live figure tends to undersell how much it moves over a longer stretch of normal use.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Is Referring Others Worth It?",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "The honest answer depends on whether you'd naturally be sharing the platform with people who'd genuinely want to use it anyway, versus pressuring acquaintances into signing up purely to unlock a rebate. The former is a reasonable way to earn a passive rebate from people who were going to play regardless of your referral; the latter risks encouraging real-money gaming participation in someone who might not have otherwise chosen to, which runs counter to treating gaming as a deliberate, self-directed choice rather than something to recruit others into for personal benefit.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "If you do refer someone, sharing our ",
+                "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guidelines alongside the invitation is a reasonable practice — someone joining through a referral deserves the same access to bankroll-management basics as anyone finding the platform independently.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "It's also worth being honest with yourself about the actual scale of the incentive: a 2% first-deposit rebate and a 0.3% bet rebate are genuinely modest figures relative to the ₹200 invitation bonus's headline number. The real value in the club system accrues slowly, from ongoing referred-player activity over time, not from the act of referring itself — treating it as a quick way to a large payout misreads how the mechanic is actually structured, and expecting otherwise is a common source of disappointment for new participants.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Common Mistakes With the Club System",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "bulletList",
+            "content": [
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Confusing club rebates with VIP rebates — both use similarly-sized percentages in places, but they're calculated from entirely different activity and shown on separate screens.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Assuming the ₹200 invitation bonus and the ongoing rebates are the same reward — the flat invitation amount and the percentage-based rebates are separate components of the same broader system.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Referring people primarily to fill club member slots, rather than because they'd genuinely want to use the platform — a referral that doesn't lead to real activity contributes nothing to the collective bet target regardless of how many slots show as filled.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "listItem",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": null
+                    },
+                    "content": [
+                      {
+                        "text": "Not checking the Earn tab's Total Rewards / Today's Rewards figures separately from other balances, leading to confusion about which reward came from which system.",
+                        "type": "text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How This Compares to a Typical Referral Program",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A shareable invite code with a flat signup bonus plus an ongoing percentage rebate on referred activity is a fairly standard ",
+                "type": "text"
+              },
+              {
+                "text": "referral marketing",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "https://en.wikipedia.org/wiki/Referral_marketing",
+                      "class": null,
+                      "title": null,
+                      "target": "_blank"
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " structure, used across many platforms and industries beyond real-money gaming specifically. What's worth comparing across platforms is whether the rebate is disclosed as a clear percentage (as UU7GAME's stated 0.3% bet rebate and 2% first-deposit rebate are) versus a vague \"earn rewards\" promise with no attached number, and whether there's a genuine cap or \"no limit\" claim that holds up against the platform's own fine print.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "A club/team structure that shows real-time progress — member slots filled, collective bet target reached — the way UU7GAME's Earn tab does, gives a considerably more checkable picture than a referral program that only shows a final payout with no visibility into how it's being calculated along the way.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "One more comparison point worth checking on any platform's referral program: whether the referred player also receives a benefit from using the code, or whether the entire reward flows only to the referrer. UU7GAME's structure ties the referrer's rebates to the referred player's own deposit and wagering activity, meaning the referred player is simply using the platform normally rather than being asked to accept worse terms than a direct signup would offer — worth confirming on any other platform's program before assuming referral links never carry a hidden cost to the person being referred.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "heading",
+            "attrs": {
+              "level": 2,
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Common Questions",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "How does the UU7GAME referral/club system work?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " It tracks activity from players you've invited, not your own personal play — a \"My Team Club\" panel shows member slots filled (e.g., 0/5) and a collective bet target (e.g., ₹0 of ₹200,000), separate from the VIP program's tracking of your own account.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What is the UU7GAME invitation bonus?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " A shareable code advertised as \"Get ₹200,\" described as \"no limit\" on the number of referrals it accepts, with one-tap sharing built into the Earn tab for Telegram, WhatsApp, and Instagram.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "What rebates does the club system offer?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " A bet rebate up to 0.3% on referred players' qualifying wagers, a 2% first-deposit rebate on a new referral's first deposit, and invite rewards advertised up to ₹6,000 across the full structure.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Is the club system the same as the VIP program?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " No — the club system tracks activity from players you've referred; VIP tracks your own personal deposit/turnover activity. They run independently and are tracked on separate screens, even though both use similarly-sized rebate percentages in places.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "Should I pressure friends to sign up through my referral link?",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "bold"
+                  }
+                ]
+              },
+              {
+                "text": " No — a referral is more reasonable when shared with people who'd genuinely want to use the platform anyway. Encouraging someone to join purely to unlock your own rebate works against treating real-money gaming as a deliberate, self-directed choice.",
+                "type": "text"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "attrs": {
+              "textAlign": null
+            },
+            "content": [
+              {
+                "text": "For the platform's other bonus mechanics, see our ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME Bonus Guide",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/bonuses/uu7game-bonus-guide",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " and our ",
+                "type": "text"
+              },
+              {
+                "text": "UU7GAME VIP Program and Rebates Explained",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/bonuses/uu7game-vip-program-and-rebates-explained",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guide. Whatever you share, our ",
+                "type": "text"
+              },
+              {
+                "text": "Responsible Gaming",
+                "type": "text",
+                "marks": [
+                  {
+                    "type": "link",
+                    "attrs": {
+                      "rel": "noopener noreferrer",
+                      "href": "/responsible-gaming",
+                      "class": null,
+                      "title": null,
+                      "target": null
+                    }
+                  }
+                ]
+              },
+              {
+                "text": " guidelines are worth reading first.",
+                "type": "text"
+              }
+            ]
+          }
+        ]
+      },
+      "featuredImageUrl": "https://images.pexels.com/photos/6564339/pexels-photo-6564339.jpeg?cs=srgb&dl=pexels-timmoor-6564339.jpg&fm=jpg",
+      "focusKeyword": "uu7game referral program",
+      "seoTitle": "UU7GAME Referral Program: Club Rewards Explained"
     }
   ],
   "categories": [

@@ -78,9 +78,11 @@ const content: JSONContent = {
     ),
 
     h2("VIP vs. the Club/Referral System: Two Separate Tracks"),
-    p(
-      "These are commonly conflated since both appear in similar areas of the app, but they measure genuinely different things. VIP tier progress is tied to your own account's cumulative deposit/turnover activity — nothing about referring other players affects it. The separate club/agent system, covered in its own dedicated guide, tracks group activity: rewards there scale with how many people you've invited and how much they collectively wager, not your own personal deposit history.",
-    ),
+    mixedPara([
+      "These are commonly conflated since both appear in similar areas of the app, but they measure genuinely different things. VIP tier progress is tied to your own account's cumulative deposit/turnover activity — nothing about referring other players affects it. The separate club/agent system, covered in our ",
+      link("UU7GAME Referral Program Guide", "/bonuses/uu7game-referral-program-guide"),
+      ", tracks group activity: rewards there scale with how many people you've invited and how much they collectively wager, not your own personal deposit history.",
+    ]),
     p(
       "A single account can hold VIP tier progress from personal play and club rebates from referred players' activity at the same time, each tracked through its own screen — confusing which reward came from which system is a common source of new-player confusion, avoidable by checking the VIP progress card and the club/team panel separately rather than assuming one figure explains both.",
     ),
