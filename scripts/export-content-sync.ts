@@ -32,6 +32,7 @@ const POST_SLUGS = [
   "uu7game-vip-program-and-rebates-explained",
   "uu7game-referral-program-guide",
   "uu7game-bonus-terms-and-wagering-requirements-explained",
+  "uu7game-withdrawal-time-data",
 ];
 
 const CATEGORY_SLUGS = ["betting-guides", "statistics-reports", "app-tutorials", "bonuses"];
