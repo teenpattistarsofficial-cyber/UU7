@@ -12,6 +12,7 @@ import {
   postKeyTakeaways,
   postFaqs,
   postCtas,
+  postStatsTables,
 } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { extractText } from "@/lib/editor/text";
@@ -48,6 +49,7 @@ type PublishBody = {
   keyTakeaways?: string[];
   faqs?: { question: string; answer: string }[];
   cta?: { heading: string; description?: string; buttonText: string; buttonUrl: string };
+  statsTables?: { title: string; columns: string[]; rows: string[][] }[];
   mode?: "create" | "replace";
 };
 
@@ -108,6 +110,7 @@ export async function POST(request: NextRequest) {
     await db.delete(postKeyTakeaways).where(eq(postKeyTakeaways.postId, existing.id));
     await db.delete(postFaqs).where(eq(postFaqs.postId, existing.id));
     await db.delete(postCtas).where(eq(postCtas.postId, existing.id));
+    await db.delete(postStatsTables).where(eq(postStatsTables.postId, existing.id));
     await db.delete(posts).where(eq(posts.id, existing.id));
   }
 
@@ -165,6 +168,11 @@ export async function POST(request: NextRequest) {
       buttonUrl: body.cta.buttonUrl,
       position: 0,
     });
+  }
+  if (body.statsTables?.length) {
+    await db.insert(postStatsTables).values(
+      body.statsTables.map((t, position) => ({ postId: post.id, title: t.title, columns: t.columns, rows: t.rows, position })),
+    );
   }
 
   const checklist = getSeoChecklist({
