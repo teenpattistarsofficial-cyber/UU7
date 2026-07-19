@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { User, Palette, Search, MessageSquare, SlidersHorizontal } from "lucide-react";
+import { User, Palette, Search, MessageSquare, SlidersHorizontal, Code2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TABS = [
@@ -10,6 +10,7 @@ const TABS = [
   { href: "/admin/settings/branding", label: "Branding", icon: Palette },
   { href: "/admin/settings/seo", label: "Global SEO", icon: Search },
   { href: "/admin/settings/contact-channels", label: "Contact Channels", icon: MessageSquare },
+  { href: "/admin/settings/scripts", label: "Custom Scripts", icon: Code2 },
   { href: "/admin/settings/system", label: "System Controls", icon: SlidersHorizontal },
 ];
 

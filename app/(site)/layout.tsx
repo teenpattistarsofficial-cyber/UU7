@@ -6,6 +6,7 @@ import { DEFAULT_LOGO_URL } from "@/lib/site";
 import { SiteHeader } from "@/components/layout/header";
 import { SiteFooter } from "@/components/layout/footer";
 import { AskAiWidget } from "@/components/ask-ai/chat-widget";
+import { InjectedScript } from "@/components/site/custom-scripts";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   // First by position — whatever the admin has ranked highest in
@@ -23,6 +24,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
 
   return (
     <div className="flex min-h-screen flex-col">
+      <InjectedScript html={siteSettingsRow?.headScripts} />
       <SiteHeader logoUrl={logoUrl} />
       <div className="flex-1">{children}</div>
       <SiteFooter logoUrl={logoUrl} />
@@ -31,6 +33,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         enabled={siteSettingsRow?.aiWidgetEnabled ?? true}
         welcomeMessage={siteSettingsRow?.aiWidgetWelcomeMessage}
       />
+      <InjectedScript html={siteSettingsRow?.footerScripts} />
     </div>
   );
 }

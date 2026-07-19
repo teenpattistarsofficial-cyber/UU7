@@ -81,5 +81,15 @@ export const siteSettings = pgTable("site_settings", {
   // masked preview (last 4 chars) + a configured boolean down to the UI,
   // the same way a password field never round-trips its real value.
   openaiApiKey: text("openai_api_key"),
+  // Raw HTML/script content (e.g. GA4's gtag.js snippet), rendered verbatim
+  // near the top of <body> on every public page — see
+  // components/site/custom-scripts.tsx. Deliberately unsanitized: the whole
+  // point is executing whatever's pasted here, so this is admin-gated the
+  // same as every other site-wide setting, not treated as untrusted input.
+  headScripts: text("head_scripts"),
+  // Same as headScripts but rendered at the very end of <body> instead of
+  // the top — for anything meant to load after page content (deferred
+  // widgets, chat scripts, a GTM noscript fallback, etc.).
+  footerScripts: text("footer_scripts"),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

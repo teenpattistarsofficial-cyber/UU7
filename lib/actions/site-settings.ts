@@ -27,6 +27,8 @@ const FIELD_KEYS = [
   "canonicalUrl",
   "maintenanceMessage",
   "aiWidgetWelcomeMessage",
+  "headScripts",
+  "footerScripts",
 ] as const;
 
 // Shared by every action below — each writes to the same singleton row, so

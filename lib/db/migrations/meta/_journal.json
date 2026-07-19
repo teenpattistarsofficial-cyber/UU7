@@ -120,6 +120,20 @@
       "when": 1783696178753,
       "tag": "0016_milky_gorilla_man",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1784464777521,
+      "tag": "0017_tough_black_cat",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1784465417235,
+      "tag": "0018_wise_vector",
+      "breakpoints": true
     }
   ]
 }
