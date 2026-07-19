@@ -1,0 +1,23 @@
+{
+  "name": "uu7-ops-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCP server exposing uu7.io's publish API as tools for Claude Desktop — keyword cannibalization check, cover photo search, post publishing, and a site health check.",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "happy-dom": "^20.10.6",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.22.5",
+    "typescript": "^5"
+  }
+}

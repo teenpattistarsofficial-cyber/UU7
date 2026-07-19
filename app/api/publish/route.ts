@@ -13,11 +13,18 @@ import {
   postFaqs,
   postCtas,
   postStatsTables,
+  media,
+  auditLog,
 } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { extractText } from "@/lib/editor/text";
 import { slugify } from "@/lib/seo/slugify";
 import { getSeoChecklist } from "@/lib/seo/score";
+import { verifyPublishToken } from "@/lib/publish/auth";
+import { checkRateLimit } from "@/lib/ai/rate-limit";
+import { isSafeExternalUrl } from "@/lib/seo/safe-url";
+import { processImageBuffer } from "@/lib/media/process-upload";
+import { syncPostTagsByNames, syncPostCtasByItems } from "@/lib/actions/posts";
 
 export const runtime = "nodejs";
 
@@ -34,6 +41,9 @@ export const runtime = "nodejs";
 // post + seoMeta + optional AEO/GEO blocks + optional CTA, then reports the
 // same SEO checklist the admin editor shows.
 
+const MAX_COVER_IMAGE_BYTES = 15 * 1024 * 1024;
+const COVER_IMAGE_FETCH_TIMEOUT_MS = 10_000;
+
 type PublishBody = {
   title: string;
   slug?: string;
@@ -41,6 +51,7 @@ type PublishBody = {
   authorSlug: string;
   content: JSONContent;
   featuredImageUrl?: string | null;
+  coverImage?: { sourceUrl: string; alt: string; credit?: string };
   focusKeyword: string;
   seoTitle: string;
   metaDescription: string;
@@ -50,6 +61,7 @@ type PublishBody = {
   faqs?: { question: string; answer: string }[];
   cta?: { heading: string; description?: string; buttonText: string; buttonUrl: string };
   statsTables?: { title: string; columns: string[]; rows: string[][] }[];
+  tags?: string[];
   mode?: "create" | "replace";
 };
 
@@ -57,15 +69,46 @@ function unauthorized() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 }
 
+// Fetches an image server-side with a protocol allowlist (SSRF guard), a
+// timeout, and a size cap enforced both via Content-Length (when the server
+// reports one honestly) and the actual downloaded byte count (when it
+// doesn't) — a coverImage.sourceUrl is caller-supplied, unlike the
+// session-authenticated admin upload route's direct file input.
+async function fetchCoverImageBuffer(url: string): Promise<Buffer> {
+  if (!isSafeExternalUrl(url)) {
+    throw new Error("coverImage.sourceUrl must be an http(s) URL");
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), COVER_IMAGE_FETCH_TIMEOUT_MS);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) throw new Error(`Failed to fetch coverImage.sourceUrl: ${res.status}`);
+
+    const contentLength = Number(res.headers.get("content-length") ?? 0);
+    if (contentLength > MAX_COVER_IMAGE_BYTES) {
+      throw new Error(`coverImage.sourceUrl is too large (max ${MAX_COVER_IMAGE_BYTES / 1024 / 1024}MB)`);
+    }
+
+    const arrayBuffer = await res.arrayBuffer();
+    if (arrayBuffer.byteLength > MAX_COVER_IMAGE_BYTES) {
+      throw new Error(`coverImage.sourceUrl is too large (max ${MAX_COVER_IMAGE_BYTES / 1024 / 1024}MB)`);
+    }
+    return Buffer.from(arrayBuffer);
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 export async function POST(request: NextRequest) {
-  const expectedToken = process.env.PUBLISH_API_TOKEN;
-  if (!expectedToken) {
+  if (!process.env.PUBLISH_API_TOKEN) {
     return NextResponse.json({ error: "PUBLISH_API_TOKEN not configured on server" }, { status: 500 });
   }
-  const authHeader = request.headers.get("authorization");
-  const providedToken = authHeader?.startsWith("Bearer ") ? authHeader.slice("Bearer ".length) : null;
-  if (!providedToken || providedToken !== expectedToken) {
+  if (!verifyPublishToken(request)) {
     return unauthorized();
+  }
+  if (!checkRateLimit("publish-api")) {
+    return NextResponse.json({ error: "Rate limit exceeded, try again shortly" }, { status: 429 });
   }
 
   const body = (await request.json().catch(() => null)) as PublishBody | null;
@@ -79,6 +122,16 @@ export async function POST(request: NextRequest) {
       { error: "Missing required field(s): title, categorySlug, authorSlug, content, focusKeyword, seoTitle, metaDescription" },
       { status: 400 },
     );
+  }
+
+  if (body.cta && !isSafeExternalUrl(body.cta.buttonUrl)) {
+    return NextResponse.json({ error: "cta.buttonUrl must be an http(s) URL or a same-site path" }, { status: 400 });
+  }
+  if (body.coverImage && !body.coverImage.alt?.trim()) {
+    return NextResponse.json({ error: "coverImage.alt is required" }, { status: 400 });
+  }
+  if (body.coverImage && !isSafeExternalUrl(body.coverImage.sourceUrl)) {
+    return NextResponse.json({ error: "coverImage.sourceUrl must be an http(s) URL" }, { status: 400 });
   }
 
   const slug = body.slug ? slugify(body.slug) : slugify(title);
@@ -114,6 +167,37 @@ export async function POST(request: NextRequest) {
     await db.delete(posts).where(eq(posts.id, existing.id));
   }
 
+  // Cover image: resolves to a permanent, self-hosted, alt-tagged media row
+  // via the same sharp/WebP pipeline the admin upload route uses, instead of
+  // the plain external-URL passthrough featuredImageUrl always was. Done
+  // before inserting the post row since that row needs the final URL.
+  let featuredImageUrl = body.featuredImageUrl ?? null;
+  let coverMedia: { id: string; url: string; width: number; height: number } | null = null;
+  if (body.coverImage) {
+    let buffer: Buffer;
+    try {
+      buffer = await fetchCoverImageBuffer(body.coverImage.sourceUrl);
+    } catch (err) {
+      return NextResponse.json({ error: err instanceof Error ? err.message : "Failed to fetch coverImage" }, { status: 400 });
+    }
+    const processed = await processImageBuffer(buffer);
+    const [mediaRow] = await db
+      .insert(media)
+      .values({
+        url: processed.url,
+        filename: processed.filename,
+        mimeType: processed.mimeType,
+        width: processed.width,
+        height: processed.height,
+        size: processed.size,
+        alt: body.coverImage.alt.trim(),
+        caption: body.coverImage.credit?.trim() || null,
+      })
+      .returning({ id: media.id, url: media.url, width: media.width, height: media.height });
+    coverMedia = mediaRow;
+    featuredImageUrl = mediaRow.url;
+  }
+
   const text = extractText(content);
   const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
 
@@ -126,7 +210,7 @@ export async function POST(request: NextRequest) {
       status: "published",
       categoryId: category.id,
       authorId: author.id,
-      featuredImageUrl: body.featuredImageUrl ?? null,
+      featuredImageUrl,
       excerpt: metaDescription,
       readingTimeMinutes: Math.ceil(wordCount / 200),
       publishedAt: new Date(),
@@ -160,27 +244,32 @@ export async function POST(request: NextRequest) {
     );
   }
   if (body.cta) {
-    await db.insert(postCtas).values({
-      postId: post.id,
-      heading: body.cta.heading,
-      description: body.cta.description ?? null,
-      buttonText: body.cta.buttonText,
-      buttonUrl: body.cta.buttonUrl,
-      position: 0,
-    });
+    await syncPostCtasByItems(post.id, [body.cta]);
   }
   if (body.statsTables?.length) {
     await db.insert(postStatsTables).values(
       body.statsTables.map((t, position) => ({ postId: post.id, title: t.title, columns: t.columns, rows: t.rows, position })),
     );
   }
+  if (body.tags?.length) {
+    await syncPostTagsByNames(post.id, body.tags);
+  }
+
+  await db.insert(auditLog).values({
+    userId: null,
+    userName: "publish-api",
+    action: mode === "replace" ? "publish.replace" : "publish.create",
+    entityType: "post",
+    entityId: post.id,
+    entityLabel: title,
+  });
 
   const checklist = getSeoChecklist({
     title,
     slug,
     content,
     seo: { seoTitle, metaDescription, focusKeyword },
-    featuredImageUrl: body.featuredImageUrl ?? null,
+    featuredImageUrl,
   });
   const passed = checklist.filter((c) => c.passed).length;
 
@@ -191,6 +280,7 @@ export async function POST(request: NextRequest) {
     wordCount,
     created: !existing,
     replaced: Boolean(existing && mode === "replace"),
+    media: coverMedia,
     seoChecklist: { passed, total: checklist.length, failures: checklist.filter((c) => !c.passed).map((c) => c.label) },
   });
 }

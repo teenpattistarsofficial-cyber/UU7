@@ -25,6 +25,7 @@ import { requireRole } from "@/lib/auth/guards";
 import { slugify } from "@/lib/seo/slugify";
 import { estimateReadingTimeMinutes } from "@/lib/seo/reading-time";
 import { hasNoH1InBody, hasProperHeadingHierarchy } from "@/lib/seo/score";
+import { isSafeExternalUrl } from "@/lib/seo/safe-url";
 import { extractText } from "@/lib/editor/text";
 import { toTiptapDoc } from "@/lib/editor/doc";
 import { invalidatePublicPaths } from "@/lib/cache/invalidate-public-paths";
@@ -131,9 +132,11 @@ async function upsertSeoMeta(entityId: string, formData: FormData) {
 
 // Full-replace strategy: simplest correct approach at the tag volumes a
 // single post has (a handful), avoids diffing join-table rows by hand.
-async function syncPostTags(postId: string, formData: FormData) {
-  const raw = String(formData.get("tags") ?? "[]");
-  const names = [...new Set((JSON.parse(raw) as string[]).map((t) => t.trim()).filter(Boolean))];
+// Exported by name (not just via the FormData wrapper below) so
+// app/api/publish/route.ts — which has no FormData to parse — can reuse the
+// same dedupe/create/link logic instead of reimplementing it.
+export async function syncPostTagsByNames(postId: string, rawNames: string[]) {
+  const names = [...new Set(rawNames.map((t) => t.trim()).filter(Boolean))];
 
   await db.delete(postTags).where(eq(postTags.postId, postId));
   if (names.length === 0) return;
@@ -150,6 +153,11 @@ async function syncPostTags(postId: string, formData: FormData) {
     }
   }
   await db.insert(postTags).values(tagIds.map((tagId) => ({ postId, tagId })));
+}
+
+async function syncPostTags(postId: string, formData: FormData) {
+  const raw = String(formData.get("tags") ?? "[]");
+  await syncPostTagsByNames(postId, JSON.parse(raw) as string[]);
 }
 
 // Full-replace strategy, same as syncPostTags — FAQs are a handful of
@@ -199,20 +207,34 @@ async function syncPostQuickAnswer(postId: string, formData: FormData) {
   }
 }
 
-async function syncPostCtas(postId: string, formData: FormData) {
-  const raw = String(formData.get("ctas") ?? "[]");
-  const items = (JSON.parse(raw) as { heading: string; description: string; buttonText: string; buttonUrl: string }[])
+// Exported so app/api/publish/route.ts can reuse the same trim/validate/
+// insert logic instead of writing its own CTA insert. `buttonUrl` is
+// filtered through isSafeExternalUrl the same way an incomplete CTA
+// (missing heading/buttonText) already gets silently dropped — an unsafe
+// protocol (javascript:, data:, etc.) is treated the same as "incomplete"
+// rather than as a hard error, consistent with this function's existing
+// filter-don't-throw style.
+export async function syncPostCtasByItems(
+  postId: string,
+  rawItems: { heading: string; description?: string | null; buttonText: string; buttonUrl: string }[],
+) {
+  const items = rawItems
     .map((c) => ({
       heading: c.heading.trim(),
-      description: c.description.trim() || null,
+      description: (c.description ?? "").trim() || null,
       buttonText: c.buttonText.trim(),
       buttonUrl: c.buttonUrl.trim(),
     }))
-    .filter((c) => c.heading && c.buttonText && c.buttonUrl);
+    .filter((c) => c.heading && c.buttonText && c.buttonUrl && isSafeExternalUrl(c.buttonUrl));
 
   await db.delete(postCtas).where(eq(postCtas.postId, postId));
   if (items.length === 0) return;
   await db.insert(postCtas).values(items.map((c, position) => ({ postId, ...c, position })));
+}
+
+async function syncPostCtas(postId: string, formData: FormData) {
+  const raw = String(formData.get("ctas") ?? "[]");
+  await syncPostCtasByItems(postId, JSON.parse(raw) as { heading: string; description: string; buttonText: string; buttonUrl: string }[]);
 }
 
 async function syncPostStatsTables(postId: string, formData: FormData) {

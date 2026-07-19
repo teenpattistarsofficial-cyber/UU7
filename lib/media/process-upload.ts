@@ -14,9 +14,7 @@ const UPLOAD_DIR = path.join(process.cwd(), "uploads");
 // transcodes to WebP — the one processing step this module does, per the
 // scope agreed for the Media module's first version (no responsive
 // multi-size variants yet).
-export async function processUpload(file: File) {
-  const buffer = Buffer.from(await file.arrayBuffer());
-
+export async function processImageBuffer(buffer: Buffer) {
   const { data, info } = await sharp(buffer)
     .rotate()
     .resize({ width: 2000, withoutEnlargement: true })
@@ -35,4 +33,8 @@ export async function processUpload(file: File) {
     size: info.size,
     mimeType: "image/webp",
   };
+}
+
+export async function processUpload(file: File) {
+  return processImageBuffer(Buffer.from(await file.arrayBuffer()));
 }
