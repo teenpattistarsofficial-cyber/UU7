@@ -19,6 +19,8 @@ const SOCIAL_LABELS: Record<string, string> = {
   linkedin: "LinkedIn",
   facebook: "Facebook",
   instagram: "Instagram",
+  youtube: "YouTube",
+  telegram: "Telegram",
   website: "Website",
 };
 

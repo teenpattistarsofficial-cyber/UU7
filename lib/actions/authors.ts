@@ -24,9 +24,21 @@ function parseAuthorForm(formData: FormData) {
   const twitter = String(formData.get("twitter") ?? "").trim();
   const linkedin = String(formData.get("linkedin") ?? "").trim();
   const website = String(formData.get("website") ?? "").trim();
+  const facebook = String(formData.get("facebook") ?? "").trim();
+  const instagram = String(formData.get("instagram") ?? "").trim();
+  const youtube = String(formData.get("youtube") ?? "").trim();
+  const telegram = String(formData.get("telegram") ?? "").trim();
   const socialLinks =
-    twitter || linkedin || website
-      ? { ...(twitter && { twitter }), ...(linkedin && { linkedin }), ...(website && { website }) }
+    twitter || linkedin || website || facebook || instagram || youtube || telegram
+      ? {
+          ...(twitter && { twitter }),
+          ...(linkedin && { linkedin }),
+          ...(website && { website }),
+          ...(facebook && { facebook }),
+          ...(instagram && { instagram }),
+          ...(youtube && { youtube }),
+          ...(telegram && { telegram }),
+        }
       : null;
 
   if (!displayName) throw new Error("Display name is required");

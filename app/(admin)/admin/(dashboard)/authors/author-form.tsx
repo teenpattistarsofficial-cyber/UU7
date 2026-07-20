@@ -85,6 +85,22 @@ export function AuthorForm({
           <Label htmlFor="website">Website</Label>
           <Input id="website" name="website" defaultValue={defaultValues?.socialLinks?.website ?? ""} />
         </div>
+        <div className="space-y-2">
+          <Label htmlFor="facebook">Facebook</Label>
+          <Input id="facebook" name="facebook" defaultValue={defaultValues?.socialLinks?.facebook ?? ""} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="instagram">Instagram</Label>
+          <Input id="instagram" name="instagram" defaultValue={defaultValues?.socialLinks?.instagram ?? ""} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="youtube">YouTube</Label>
+          <Input id="youtube" name="youtube" defaultValue={defaultValues?.socialLinks?.youtube ?? ""} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="telegram">Telegram</Label>
+          <Input id="telegram" name="telegram" defaultValue={defaultValues?.socialLinks?.telegram ?? ""} />
+        </div>
       </div>
       <Button type="submit" variant="brand" className="rounded-full px-6">
         Save
