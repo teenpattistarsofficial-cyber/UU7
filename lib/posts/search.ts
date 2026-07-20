@@ -1,7 +1,7 @@
 import "server-only";
 import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { posts, categories } from "@/lib/db/schema";
+import { posts, categories, media } from "@/lib/db/schema";
 import { POST_SUMMARY_COLUMNS, toPostSummary, type PostSummary } from "@/lib/posts/post-summary";
 
 const STOPWORDS = new Set([
@@ -64,6 +64,7 @@ export async function searchPosts(query: string, limit = 24): Promise<PostSummar
     .select(POST_SUMMARY_COLUMNS)
     .from(posts)
     .leftJoin(categories, eq(posts.categoryId, categories.id))
+    .leftJoin(media, eq(media.url, posts.featuredImageUrl))
     // `deletedAt` is separate from `status` — a trashed post keeps its
     // prior status, so it must be excluded explicitly here too.
     .where(and(eq(posts.status, "published"), isNull(posts.deletedAt)));

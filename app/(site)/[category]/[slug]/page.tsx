@@ -20,6 +20,7 @@ import {
   tags,
   postTags,
   comments,
+  media,
 } from "@/lib/db/schema";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { buildFaqSchema, buildArticleSchema, buildBreadcrumbSchema, buildPersonSchema } from "@/lib/seo/jsonld";
@@ -107,6 +108,7 @@ export default async function ArticlePage({
     ctaRows,
     statsTableRows,
     approvedComments,
+    featuredMedia,
   ] = await Promise.all([
     // `deletedAt` is separate from a status field authors/categories don't
     // have — a trashed author just drops the byline (see the `author &&`
@@ -138,6 +140,9 @@ export default async function ArticlePage({
       where: and(eq(comments.postId, post.id), eq(comments.status, "approved")),
       orderBy: (c, { asc }) => asc(c.createdAt),
     }),
+    post.featuredImageUrl
+      ? db.query.media.findFirst({ where: eq(media.url, post.featuredImageUrl) })
+      : Promise.resolve(null),
   ]);
 
   // Manual pins if the editor set any; otherwise the same scoring
@@ -252,7 +257,7 @@ export default async function ArticlePage({
           <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-muted">
             <Image
               src={post.featuredImageUrl}
-              alt=""
+              alt={featuredMedia?.alt || post.title}
               fill
               priority
               sizes="(max-width: 768px) 100vw, 768px"

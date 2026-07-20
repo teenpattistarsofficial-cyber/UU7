@@ -24,7 +24,7 @@ export function PostCard({ post, priority = false }: { post: FeaturedPost; prior
           {post.featuredImageUrl ? (
             <Image
               src={post.featuredImageUrl}
-              alt=""
+              alt={post.featuredImageAlt || post.title}
               fill
               // Next 16 deprecated `priority` — it no longer sets
               // `fetchpriority` on its own, so the boolean has to fan out

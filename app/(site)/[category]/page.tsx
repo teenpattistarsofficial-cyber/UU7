@@ -2,7 +2,7 @@ import { and, desc, eq, isNull } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
-import { categories, posts, seoMeta } from "@/lib/db/schema";
+import { categories, posts, seoMeta, media } from "@/lib/db/schema";
 import { getPublishedPageBySlug } from "@/lib/pages/get-page";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { getCategoryMeta } from "@/lib/site-categories";
@@ -77,9 +77,11 @@ export default async function CategoryOrPageRoute({
       slug: posts.slug,
       excerpt: posts.excerpt,
       featuredImageUrl: posts.featuredImageUrl,
+      featuredImageAlt: media.alt,
       readingTimeMinutes: posts.readingTimeMinutes,
     })
     .from(posts)
+    .leftJoin(media, eq(media.url, posts.featuredImageUrl))
     // `deletedAt` is separate from `status` — a trashed post keeps its
     // prior status, so it must be excluded explicitly here too.
     .where(and(eq(posts.categoryId, category.id), eq(posts.status, "published"), isNull(posts.deletedAt)))
@@ -98,6 +100,7 @@ export default async function CategoryOrPageRoute({
     categorySlug: category.slug,
     categoryName: category.name,
     featuredImageUrl: p.featuredImageUrl,
+    featuredImageAlt: p.featuredImageAlt,
     readingTimeMinutes: p.readingTimeMinutes,
   }));
 

@@ -1,7 +1,7 @@
 import "server-only";
 import { and, eq, inArray, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { posts, categories } from "@/lib/db/schema";
+import { posts, categories, media } from "@/lib/db/schema";
 
 /** The "post preview card" shape shared by every place on the site that
  * shows a grid/list of posts — homepage sections (lib/home/featured-content.ts
@@ -18,6 +18,11 @@ export type PostSummary = {
   categorySlug: string;
   categoryName: string;
   featuredImageUrl: string | null;
+  // Looked up from the media table by URL match (featuredImageUrl is a
+  // plain string, not an FK — see the "Phase 3" comment on posts.featuredImageUrl)
+  // since a post's cover is meaningful content, not decorative, and needs
+  // real alt text rather than the empty string decorative images use.
+  featuredImageAlt: string | null;
   readingTimeMinutes: number | null;
 };
 
@@ -29,6 +34,7 @@ export const POST_SUMMARY_COLUMNS = {
   categorySlug: categories.slug,
   categoryName: categories.name,
   featuredImageUrl: posts.featuredImageUrl,
+  featuredImageAlt: media.alt,
   readingTimeMinutes: posts.readingTimeMinutes,
 } as const;
 
@@ -40,6 +46,7 @@ type PostSummaryRow = {
   categorySlug: string | null;
   categoryName: string | null;
   featuredImageUrl: string | null;
+  featuredImageAlt: string | null;
   readingTimeMinutes: number | null;
 };
 
@@ -52,6 +59,7 @@ export function toPostSummary(r: PostSummaryRow & { categorySlug: string; catego
     categorySlug: r.categorySlug,
     categoryName: r.categoryName,
     featuredImageUrl: r.featuredImageUrl,
+    featuredImageAlt: r.featuredImageAlt,
     readingTimeMinutes: r.readingTimeMinutes,
   };
 }
@@ -69,6 +77,7 @@ export async function getPostSummariesByIds(ids: string[]): Promise<PostSummary[
     .select(POST_SUMMARY_COLUMNS)
     .from(posts)
     .leftJoin(categories, eq(posts.categoryId, categories.id))
+    .leftJoin(media, eq(media.url, posts.featuredImageUrl))
     // Defensive, not just relying on callers to have already filtered
     // trashed posts out of `ids` — a manually pinned related-post id could
     // point at a post that's since been trashed.

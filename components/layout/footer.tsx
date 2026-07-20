@@ -50,7 +50,12 @@ export function SiteFooter({ logoUrl }: { logoUrl: string }) {
             <ul className="mt-4 space-y-3">
               {SITE_CATEGORIES.map((category) => (
                 <li key={category.href}>
-                  <Link href={category.href} className="text-sm text-muted-foreground hover:text-foreground">
+                  {/* prefetch off: the header nav already prefetches every
+                     category link once — the footer repeats the same set,
+                     so prefetching here again is pure duplicate work with
+                     no benefit (confirmed contributing to the homepage's
+                     Total Blocking Time via a run_performance_audit pass). */}
+                  <Link href={category.href} prefetch={false} className="text-sm text-muted-foreground hover:text-foreground">
                     {category.label}
                   </Link>
                 </li>

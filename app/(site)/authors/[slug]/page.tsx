@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Globe, Link2 } from "lucide-react";
 import { db } from "@/lib/db";
-import { authors, posts, categories } from "@/lib/db/schema";
+import { authors, posts, categories, media } from "@/lib/db/schema";
 import { buildPersonSchema } from "@/lib/seo/jsonld";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { SITE_URL } from "@/lib/site";
@@ -76,9 +76,11 @@ export default async function AuthorProfilePage({
         excerpt: posts.excerpt,
         categoryId: posts.categoryId,
         featuredImageUrl: posts.featuredImageUrl,
+        featuredImageAlt: media.alt,
         readingTimeMinutes: posts.readingTimeMinutes,
       })
       .from(posts)
+      .leftJoin(media, eq(media.url, posts.featuredImageUrl))
       // `deletedAt` is separate from `status` — a trashed post keeps its
       // prior status, so it must be excluded explicitly here too.
       .where(and(eq(posts.authorId, author.id), eq(posts.status, "published"), isNull(posts.deletedAt)))
@@ -98,6 +100,7 @@ export default async function AuthorProfilePage({
         categorySlug: category.slug,
         categoryName: category.name,
         featuredImageUrl: p.featuredImageUrl,
+        featuredImageAlt: p.featuredImageAlt,
         readingTimeMinutes: p.readingTimeMinutes,
       };
     })

@@ -1,7 +1,7 @@
 import "server-only";
 import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { posts, categories, postFaqs } from "@/lib/db/schema";
+import { posts, categories, postFaqs, media } from "@/lib/db/schema";
 import { POST_SUMMARY_COLUMNS, toPostSummary, type PostSummary } from "@/lib/posts/post-summary";
 import { SITE_CATEGORIES } from "@/lib/site-categories";
 
@@ -45,6 +45,7 @@ async function loadPublishedPillars(slugs: string[]) {
     .select(POST_SUMMARY_COLUMNS)
     .from(posts)
     .leftJoin(categories, eq(posts.categoryId, categories.id))
+    .leftJoin(media, eq(media.url, posts.featuredImageUrl))
     // `deletedAt` is separate from `status` (a trashed post keeps its prior
     // status) — without this, a soft-deleted post stays visible everywhere
     // this query feeds (Featured Guides, Popular Games, homepage FAQs).
@@ -80,6 +81,7 @@ export async function getLatestPosts(limit = 6): Promise<PostSummary[]> {
     .select(POST_SUMMARY_COLUMNS)
     .from(posts)
     .leftJoin(categories, eq(posts.categoryId, categories.id))
+    .leftJoin(media, eq(media.url, posts.featuredImageUrl))
     .where(and(eq(posts.status, "published"), isNull(posts.deletedAt)))
     .orderBy(desc(posts.publishedAt))
     .limit(limit);
