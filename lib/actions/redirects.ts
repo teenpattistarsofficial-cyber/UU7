@@ -6,16 +6,7 @@ import { db } from "@/lib/db";
 import { redirects } from "@/lib/db/schema";
 import { requireRole } from "@/lib/auth/guards";
 import { invalidateRedirectsCache } from "@/lib/redirects/cache";
-
-const VALID_STATUS_CODES = new Set([301, 302, 307, 308]);
-
-function normalizePath(input: string): string {
-  const trimmed = input.trim();
-  if (!trimmed) return "";
-  // Strip a full origin if one was pasted in — only the path is stored.
-  const withoutOrigin = trimmed.replace(/^https?:\/\/[^/]+/, "");
-  return withoutOrigin.startsWith("/") ? withoutOrigin : `/${withoutOrigin}`;
-}
+import { normalizePath, VALID_STATUS_CODES } from "@/lib/redirects/validation";
 
 export async function createRedirect(formData: FormData) {
   await requireRole("admin");

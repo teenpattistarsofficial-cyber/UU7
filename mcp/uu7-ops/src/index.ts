@@ -6,6 +6,8 @@ import { publishPostSchema, publishPost } from "./tools/publish-post.js";
 import { runSiteHealthCheckSchema, runSiteHealthCheck } from "./tools/health-check.js";
 import { runPerformanceAuditSchema, runPerformanceAudit } from "./tools/performance-audit.js";
 import { getSiteReportSchema, getSiteReport } from "./tools/report.js";
+import { listRedirectsSchema, listRedirects, createRedirectSchema, createRedirect, deleteRedirectSchema, deleteRedirect } from "./tools/redirects.js";
+import { updateImageAltTextSchema, updateImageAltText } from "./tools/media.js";
 
 const server = new McpServer({ name: "uu7-ops", version: "0.1.0" });
 
@@ -138,6 +140,76 @@ server.registerTool(
   async (args) => {
     try {
       return asToolResult(await getSiteReport(args));
+    } catch (err) {
+      return asErrorResult(err);
+    }
+  },
+);
+
+server.registerTool(
+  "list_redirects",
+  {
+    title: "List configured redirects",
+    description: "Returns every configured redirect (id, fromPath, toPath, statusCode). Call before delete_redirect to find a redirect's id.",
+    inputSchema: listRedirectsSchema,
+  },
+  async () => {
+    try {
+      return asToolResult(await listRedirects());
+    } catch (err) {
+      return asErrorResult(err);
+    }
+  },
+);
+
+server.registerTool(
+  "create_redirect",
+  {
+    title: "Create a redirect",
+    description:
+      "Adds a redirect — the direct fix for a broken internal link found by run_site_health_check (one reported " +
+      "with redirectExists: false). Same-site only; an external origin in toPath gets stripped down to a bare path. " +
+      "After adding, re-run run_site_health_check to confirm the link now resolves.",
+    inputSchema: createRedirectSchema,
+  },
+  async (args) => {
+    try {
+      return asToolResult(await createRedirect(args));
+    } catch (err) {
+      return asErrorResult(err);
+    }
+  },
+);
+
+server.registerTool(
+  "delete_redirect",
+  {
+    title: "Delete a redirect",
+    description: "Removes a redirect by id (from list_redirects) — e.g. once the source link that needed it has been fixed directly.",
+    inputSchema: deleteRedirectSchema,
+  },
+  async (args) => {
+    try {
+      return asToolResult(await deleteRedirect(args));
+    } catch (err) {
+      return asErrorResult(err);
+    }
+  },
+);
+
+server.registerTool(
+  "update_image_alt_text",
+  {
+    title: "Update an image's alt text",
+    description:
+      "Sets the alt text for an image by its URL — the direct fix for a run_site_health_check missingAltText or " +
+      "run_performance_audit finding. Only affects genuinely unmanaged/missing alt text; write a real description " +
+      "of what the image shows, not a generic placeholder.",
+    inputSchema: updateImageAltTextSchema,
+  },
+  async (args) => {
+    try {
+      return asToolResult(await updateImageAltText(args));
     } catch (err) {
       return asErrorResult(err);
     }

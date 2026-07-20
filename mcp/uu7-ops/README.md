@@ -1,12 +1,15 @@
 # uu7-ops MCP server
 
-Gives Claude Desktop six tools for operating uu7.io conversationally:
+Gives Claude Desktop ten tools for operating uu7.io conversationally:
 `list_existing_content` (keyword cannibalization + author/category lookup),
 `find_cover_photo` (Pexels stock photo search), `publish_post` (calls the site's
 `/api/publish` API), `run_site_health_check` (crawls the site for broken
 links/images and slow pages), `run_performance_audit` (cache headers, image
-optimization, and real Core Web Vitals via Google PageSpeed Insights), and
-`get_site_report` (traffic, content/SEO health, comments, and activity log).
+optimization, and real Core Web Vitals via Google PageSpeed Insights),
+`get_site_report` (traffic, content/SEO health, comments, and activity log), and
+four direct-fix tools — `list_redirects`/`create_redirect`/`delete_redirect` and
+`update_image_alt_text` — for applying the two most common health-check findings
+(a broken link with no redirect, a missing alt text) without a code deploy.
 
 This is a standalone Node package — it is **not** part of the Next.js app's build and
 is never deployed to the VPS. It runs locally on your machine as a subprocess Claude
@@ -136,3 +139,18 @@ block to point at the live site, and restart Claude Desktop.
   say plainly when it's empty rather than pretending there's no data to show.
   Doesn't crawl the live site itself — pair with `run_site_health_check`/
   `run_performance_audit` for that.
+- **`list_redirects()` / `create_redirect(fromPath, toPath, statusCode?)` /
+  `delete_redirect(id)`** — direct fixes for a broken link `run_site_health_check`
+  reports with `redirectExists: false`. Same validation as the admin UI (same-site
+  only — an external origin in `toPath` gets stripped to a bare path; can't redirect
+  the homepage; duplicate `fromPath` returns `409`). Every create/delete is written
+  to the admin audit log (actor `publish-api`).
+- **`update_image_alt_text(url, alt)`** — direct fix for a `missingAltText` finding
+  from `run_site_health_check`/`run_performance_audit`. Updates just the `alt` column
+  on the matching `media` row by URL; `404` if no row matches. Also audit-logged.
+
+These four are deliberately the only *write* capabilities beyond publishing — data
+fixes only. Anything requiring an actual code change (image compression, component
+behavior, query/schema changes) stays outside this server; that's a Claude Code +
+deploy task, not something a conversational tool call should have authority to do
+unsupervised.
