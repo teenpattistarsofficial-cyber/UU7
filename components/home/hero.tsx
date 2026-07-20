@@ -105,7 +105,7 @@ export function Hero() {
       <div className="absolute inset-0 z-0 flex items-end justify-center">
         <div className="relative h-[75%] sm:h-[80%] md:h-[85%] lg:h-[90%] xl:h-[110%]" style={{ aspectRatio: "1023 / 1537" }}>
           <Image
-            src="/Base image transparent.webp"
+            src="/hero-banner-compressed.webp"
             alt=""
             fill
             loading="eager"
