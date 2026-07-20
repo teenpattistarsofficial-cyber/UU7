@@ -106,7 +106,7 @@ export function Hero() {
         <div className="relative h-[75%] sm:h-[80%] md:h-[85%] lg:h-[90%] xl:h-[110%]" style={{ aspectRatio: "1023 / 1537" }}>
           <Image
             src="/hero-banner-compressed.webp"
-            alt=""
+            alt="Stacked casino chips, playing cards, and red dice with an orange smoke effect"
             fill
             loading="eager"
             fetchPriority="high"

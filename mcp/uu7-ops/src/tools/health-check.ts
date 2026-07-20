@@ -88,7 +88,7 @@ export async function runSiteHealthCheck(args: {
   const slowResponses: { url: string; ms: number }[] = [];
   const internalLinks = new Map<string, string>(); // url -> one page it was found on
   const externalLinks = new Map<string, string>();
-  const images = new Map<string, { alt: string; foundOn: string }>();
+  const images = new Map<string, { alt: string; foundOn: string; managed: boolean }>();
 
   await pool(seedUrls, DEFAULT_CONCURRENCY, async (url) => {
     const outcome = await fetchAndMeasure(url, { wantBody: true });
@@ -112,7 +112,16 @@ export async function runSiteHealthCheck(args: {
         const classified = classifyUrl(img.getAttribute("src") ?? "", url, baseOrigin);
         if (!classified) continue;
         if (!images.has(classified.url)) {
-          images.set(classified.url, { alt: (img.getAttribute("alt") ?? "").trim(), foundOn: url });
+          images.set(classified.url, {
+            alt: (img.getAttribute("alt") ?? "").trim(),
+            foundOn: url,
+            // next/image stamps every <img> it renders with `data-nimg`,
+            // including `fill`-mode decorative backgrounds that correctly
+            // have empty alt by design (sized via CSS, not meaningful
+            // content) — same exclusion as run_performance_audit, so this
+            // doesn't false-positive on images that are already correct.
+            managed: img.hasAttribute("data-nimg"),
+          });
         }
       }
       window.close();
@@ -151,7 +160,7 @@ export async function runSiteHealthCheck(args: {
     }
   });
   const missingAltText = [...images.entries()]
-    .filter(([, info]) => !info.alt)
+    .filter(([, info]) => !info.alt && !info.managed)
     .map(([url, info]) => ({ url, foundOn: info.foundOn }));
 
   const externalLinkIssues: { url: string; foundOn: string; status: number | null }[] = [];
