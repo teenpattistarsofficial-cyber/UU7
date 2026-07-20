@@ -11,7 +11,7 @@ import { JsonLd } from "@/components/article/json-ld";
 import { AuthorAvatar } from "@/components/site/author-avatar";
 import { Breadcrumb } from "@/components/site/breadcrumb";
 import { Badge } from "@/components/ui/badge";
-import { PostCard } from "@/components/home/post-card";
+import { AuthorArticles } from "@/components/site/author-articles";
 
 const SOCIAL_LABELS: Record<string, string> = {
   twitter: "Twitter/X",
@@ -168,11 +168,7 @@ export default async function AuthorProfilePage({
       {cards.length === 0 ? (
         <p className="text-muted-foreground">No published articles yet.</p>
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2">
-          {cards.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
+        <AuthorArticles posts={cards} />
       )}
 
       <JsonLd blocks={[personSchema]} />
