@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
 import type { PostSummary } from "@/lib/posts/post-summary";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { PostCard } from "@/components/home/post-card";
 
 /**
@@ -17,14 +18,30 @@ import { PostCard } from "@/components/home/post-card";
  * lib/posts/search.ts uses) is enough at this scale and keeps results in
  * their original published-date order rather than re-ranking them.
  */
+// Cards rendered before a "Load More" click — cuts down initial DOM size/
+// paint work on categories with a lot of posts (app-tutorials had 15+ at
+// last check). Deliberately a DOM-render limit, not a smaller server fetch:
+// the search box above depends on the full list already being in memory to
+// stay instant/client-side (see this component's own doc comment), so
+// pagination only controls how much of it renders at once, not how much
+// gets fetched.
+const PAGE_SIZE = 9;
+
 export function CategoryGuideSearch({ posts }: { posts: PostSummary[] }) {
   const [query, setQuery] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return posts;
     return posts.filter((p) => p.title.toLowerCase().includes(q) || p.excerpt?.toLowerCase().includes(q));
   }, [query, posts]);
+
+  // Pagination only applies while browsing — an active search shows every
+  // match immediately rather than making the visitor click through pages to
+  // find something they're specifically looking for.
+  const visible = query ? filtered : filtered.slice(0, visibleCount);
+  const hasMore = !query && filtered.length > visibleCount;
 
   return (
     <div>
@@ -57,11 +74,23 @@ export function CategoryGuideSearch({ posts }: { posts: PostSummary[] }) {
       {filtered.length === 0 ? (
         <p className="text-muted-foreground">No guides in this category matched “{query}”.</p>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((post, i) => (
-            <PostCard key={post.id} post={post} priority={i === 0} />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {visible.map((post, i) => (
+              <PostCard key={post.id} post={post} priority={i === 0} />
+            ))}
+          </div>
+          {hasMore && (
+            <div className="mt-8 flex flex-col items-center gap-2">
+              <p className="text-sm text-muted-foreground">
+                Showing {visibleCount} of {filtered.length} guides
+              </p>
+              <Button variant="outline" className="rounded-full px-6" onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}>
+                Load more
+              </Button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
