@@ -15,7 +15,29 @@ const nextConfig: NextConfig = {
   // ERR_DLOPEN_FAILED. Force-including both packages' full directories
   // fixes this regardless of which platform variant ends up resolved.
   outputFileTracingIncludes: {
-    "/**": ["./node_modules/sharp/**/*", "./node_modules/@img/**/*"],
+    // detect-libc/semver added alongside sharp/@img after discovering
+    // next/image's built-in resize/reformat silently no-ops in production
+    // (serves the original file untouched, any width/quality) — these are
+    // sharp's own plain-JS `dependencies` (see node_modules/sharp/package.json),
+    // required internally via requires that aren't statically analyzable by
+    // Next's file tracer. The include glob alone wasn't sufficient either:
+    // the standalone build flattens sharp into a real top-level
+    // node_modules/sharp/ directory with its own (initially empty) nested
+    // node_modules scope, so these also had to become genuine top-level
+    // project dependencies (see package.json) — Node's module resolution
+    // walks up from node_modules/sharp/dist/ to the project's own
+    // node_modules/ root, which only has detect-libc/semver if they're
+    // real direct dependencies, not just traced-and-copied files somewhere
+    // else in the tree. Nobody had hit this before since manual upload
+    // processing (lib/media/process-upload.ts) runs in the full
+    // pnpm-installed tree, before any of this standalone-specific pruning
+    // happens.
+    "/**": [
+      "./node_modules/sharp/**/*",
+      "./node_modules/@img/**/*",
+      "./node_modules/detect-libc/**/*",
+      "./node_modules/semver/**/*",
+    ],
   },
   images: {
     // AVIF first — next/image already re-encodes every image it serves, this
