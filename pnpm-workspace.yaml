@@ -4,3 +4,12 @@ ignoredBuiltDependencies:
 onlyBuiltDependencies:
   - esbuild
   - sharp
+  # sharp's own package is allowlisted above, but the platform-specific
+  # native binary/libvips packages it pulls in as optionalDependencies each
+  # have their own install script that links the binary correctly — without
+  # these also allowlisted, sharp resolves and its plain-JS deps
+  # (detect-libc, semver) load fine, but the actual .node binding fails with
+  # "Could not load the sharp module using the linuxmusl-x64 runtime" the
+  # moment it's used, since its own link step never ran.
+  - "@img/sharp-linuxmusl-x64"
+  - "@img/sharp-libvips-linuxmusl-x64"
