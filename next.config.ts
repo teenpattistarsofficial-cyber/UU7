@@ -14,6 +14,21 @@ const nextConfig: NextConfig = {
   // build looks fine while the actual runtime upload crashes with
   // ERR_DLOPEN_FAILED. Force-including both packages' full directories
   // fixes this regardless of which platform variant ends up resolved.
+  //
+  // Every one of these globs targets `.pnpm/<pkg>@<version>/node_modules/...`,
+  // NOT the top-level `node_modules/<pkg>` path — under pnpm, top-level
+  // `node_modules/sharp`, `node_modules/detect-libc`, `node_modules/semver`
+  // are symlinks into the virtual store, and `node_modules/@img` has no
+  // top-level entry at all (it only exists nested under
+  // `.pnpm/sharp@.../node_modules/@img/`, itself a symlink into
+  // `.pnpm/@img+sharp-<platform>@.../node_modules/@img/...`). An earlier
+  // version of this config used `./node_modules/@img/**/*`, which matched
+  // zero files on every platform, every time — pnpm never populates that
+  // path — so the platform binary + libvips .so silently never made it
+  // into the standalone output, regardless of whatever pnpm/install-script
+  // fix was tried elsewhere. `**` mid-glob spans the version-suffixed
+  // directory names (including the `+` for scoped packages and any
+  // peer-dep hash suffix like `_@types+node@20.19.43`).
   outputFileTracingIncludes: {
     // detect-libc/semver added alongside sharp/@img after discovering
     // next/image's built-in resize/reformat silently no-ops in production
@@ -37,6 +52,10 @@ const nextConfig: NextConfig = {
       "./node_modules/@img/**/*",
       "./node_modules/detect-libc/**/*",
       "./node_modules/semver/**/*",
+      "./node_modules/.pnpm/sharp@**/*",
+      "./node_modules/.pnpm/@img+**/*",
+      "./node_modules/.pnpm/detect-libc@**/*",
+      "./node_modules/.pnpm/semver@**/*",
     ],
   },
   images: {

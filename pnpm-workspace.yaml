@@ -1,6 +1,22 @@
 ignoredBuiltDependencies:
   - unrs-resolver
 
+# sharp's dynamic `require(`@img/sharp-${platform}-${arch}`)` (see
+# next.config.ts's outputFileTracingIncludes comment) isn't statically
+# analyzable, so Next's file tracer can't auto-discover it — but even with
+# force-included file globs, pnpm's default layout never places @img/*
+# anywhere Node's module resolution can actually find from a flattened
+# standalone build: it only lives nested inside
+# `.pnpm/sharp@.../node_modules/@img/` (itself a symlink into
+# `.pnpm/@img+sharp-<platform>@.../`), never at a real top-level
+# `node_modules/@img/`. Hoisting it here makes pnpm also place a real
+# top-level `node_modules/@img/sharp-<platform>` in the source tree, which
+# is the exact path both Next's file-tracer glob (`./node_modules/@img/**/*`
+# in next.config.ts) and Node's own upward module-resolution walk from
+# `.next/standalone/node_modules/sharp/dist/` land on.
+publicHoistPattern:
+  - "@img/*"
+
 onlyBuiltDependencies:
   - esbuild
   - sharp
