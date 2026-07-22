@@ -4,6 +4,45 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ---
 
+## 2026-07-22
+
+### Ops-agent direct-fix tools (redirects, media alt text)
+- Extended the `uu7-ops` MCP server (used from Claude Desktop) with four new tools scoped strictly to bounded data fixes, not code/deploys: `list_redirects`, `create_redirect`, `delete_redirect`, `update_image_alt_text`. Backed by new `app/api/ops/redirects/route.ts` (GET now includes `id`, new POST with 409-on-duplicate handling since drizzle's postgres.js driver wraps the real Postgres error in `err.cause`, not on the Error object directly), `app/api/ops/redirects/[id]/route.ts` (DELETE), and `app/api/ops/media/route.ts` (PATCH alt text by URL). Same bearer-token auth, rate limiting, and audit logging as the existing `/api/publish` route.
+- Extracted `normalizePath`/`VALID_STATUS_CODES` out of `lib/actions/redirects.ts` into a new plain module (`lib/redirects/validation.ts`) so the new API route could reuse them — a `"use server"` file can only export async functions, so the original inline constants had to move.
+
+### Author social links
+- Added Facebook, Instagram, YouTube, and Telegram fields to the author admin form and public author page (previously only Twitter/X and LinkedIn existed).
+
+### Load More pagination
+- Added "Load More" pagination to category pages (bypassed entirely when a search query is active, showing all matches) and a simpler pagination-only version for author pages.
+
+### Custom Scripts admin feature
+- Added a head/footer script-injection admin setting (`headScripts`/`footerScripts` columns, new Settings sub-page) and wired in the real GA4 tracking snippet.
+
+### Hero image alt text + health-check false positive
+- Fixed the hero image's hardcoded empty `alt=""` (health check couldn't fix it via the ops agent since it's hardcoded in `hero.tsx`, not stored in the CMS) and a `missingAltText` false-positive in the health-check tool caused by not excluding Next's own `data-nimg` attribute images.
+- Compressed the hero image (399KB → 188KB via sharp) and renamed the file (`Base image transparent.webp` → `hero-banner-compressed.webp`) rather than replacing in place, since the static-asset `Cache-Control: immutable, max-age=31536000` header meant an in-place replacement would never actually reach visitors.
+- Regenerated `favicon.ico` from the real logo (previously a placeholder black-circle/white-triangle image); guided manual Cloudflare cache purge for this one since it can't be renamed (browsers expect the fixed path) and no Cloudflare API token is configured on production for automated purging.
+
+### Leaked credentials, twice
+- Removed a leaked `PUBLISH_API_TOKEN` from git history's `docs/Publish token` file and rotated it in production.
+- The same file got recreated by the user's own editor workflow mid-session with three live secrets (publish token, Pexels key, PageSpeed key) via a broad `git add -A`. Removed again and permanently blocked via `.gitignore` (`docs/Publish token`, `/docs/scratch*`) plus a dedicated `docs/scratch-notes.md` replacement. Pexels/PageSpeed key rotation deferred by user request.
+
+### The real next/image production bug — three compounding root causes
+A month-plus of persistent LCP/performance issues (the actual motivation for tonight's whole investigation) turned out to be `/_next/image` silently serving every image at full original size/format, ignoring all width/quality params, in production only. Three distinct, compounding bugs, only the third of which was the real fix:
+1. **`outputFileTracingIncludes`'s `@img/**/*` glob never matched anything, ever.** pnpm's layout never places `@img/*` packages at a top-level `node_modules/@img/` path — they live nested under `.pnpm/sharp@.../node_modules/@img/`, itself a symlink into `.pnpm/@img+sharp-<platform>@.../`. Fixed by adding `publicHoistPattern: ["@img/*"]` to `pnpm-workspace.yaml`, which makes pnpm place a real top-level copy where both the tracer glob and Node's own module resolution (walking up from the flattened standalone build's `node_modules/sharp/`) actually land.
+2. **Next.js 16.2.10 bundles its own separate `sharp` dependency** (`^0.34.5` as its own `optionalDependency`), non-overlapping with this project's own `sharp` (`^0.35.3`) — two independent installations, only one of which (ours) worked. Next's internal copy — the one the `/_next/image` route actually uses — crashed at module load (`Cannot read properties of undefined (reading 'output')`, a native-binding/JS-wrapper version mismatch). Fixed by dropping this project's `sharp` to the same `^0.34.5` range so pnpm dedupes to one shared install.
+3. **A stale native binary lingered in pnpm's internal cross-hoist cache** (`node_modules/.pnpm/node_modules/@img/...`) even after the version alignment — a plain `pnpm install` doesn't refresh this location on its own. Required a full `node_modules` wipe + reinstall (harmless in CI/Docker, where every build stage starts from a clean image anyway).
+- Verified end-to-end at each stage by calling Next's own exported `optimizeImage()` directly against the real production hero image inside the standalone build output, rather than trusting `require('sharp')` succeeding in isolation (which passed even while the actual bug was still live — the failure only showed up through next's own internal, separately-resolved copy).
+- Confirmed live in production after deploy: real width-scaled file sizes (24.5KB at `w=384` up to 105KB, capped by the source's native 1023px width) instead of the flat 188KB original at every width.
+
+### Cloudflare Cache Rule for /_next/image
+- `/_next/image` was sending a correct `Cache-Control: public, max-age=31536000` from origin but Cloudflare showed `cf-cache-status: DYNAMIC` on every request — Cloudflare's default caching only applies by file extension, and this is a query-string route, so it was never even attempted. Added an explicit Cache Rule (`URI Path starts with /_next/image` → `Eligible for cache`, respecting origin's `Cache-Control`). Confirmed `HIT` with incrementing `age` on repeat requests immediately after.
+- Net result, confirmed via the ops agent's performance audit re-run: homepage score 80 → 92, LCP 5.3s → 3.3s, TBT 53ms → 6.5ms.
+- Noted but not acted on: `.next/cache/images` isn't a persistent Docker volume, so every redeploy wipes the on-disk image-transform cache, causing a cold-cache penalty on the first request to any given width/quality combo until the next real visitor (or a warm-up script) regenerates it.
+
+---
+
 ## 2026-07-11
 
 ### First production deployment
