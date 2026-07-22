@@ -44,3 +44,10 @@ next-env.d.ts
 
 # user-uploaded media (runtime data, not source)
 /public/uploads
+
+# personal scratch notes — this exact file has twice ended up committed with
+# live API keys in it (both times via a broad `git add -A` picking up an
+# open editor buffer). Never track it, or anything else meant as a scratch
+# pad, regardless of what gets typed into it.
+docs/Publish token
+/docs/scratch*
