@@ -3,16 +3,15 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-/** Brand-orange hero with a single static hero image ("Base image
- * transparent.webp" — chips, cards, dice, rising smoke). This replaced an
- * earlier cursor-tracked reveal effect (a second image cross-faded in via a
- * canvas-generated mask redrawn on every mousemove frame): that mechanic
- * caused noticeable page lag, and a fast, low-jank site matters more here
- * than the interactive flourish. `.webp` was chosen over the `.png` used
- * during that earlier version for the same reason — it's ~80% smaller
- * (400KB vs 2.2MB) with the same real alpha transparency, so the section's
- * own gradient still shows through the image's transparent regions with no
- * color-matching or edge-fade masking needed. `next/image` (not a CSS
+/** Brand-orange hero with a full-bleed photographic background
+ * ("hero-casino-table.webp" — poker chips, red dice, and a card hand on a
+ * dark felt table; sourced from Pexels, free-to-use/no-attribution-required
+ * license, same as the site's post cover images). This replaced an earlier
+ * transparent-cutout graphic (chips/cards floating on a flat gradient,
+ * object-contain) per explicit request to bring back a real full-bleed cover
+ * photo like the original pre-redesign hero — that cutout couldn't do this
+ * on its own since it's a tall portrait asset with mostly-empty margins, not
+ * a frame composed for a wide background fill. `next/image` (not a CSS
  * background) is deliberate too: it gets real responsive `srcset`s and
  * `loading="eager"` + `fetchPriority="high"` treatment for what's the
  * page's LCP element (Next 16 deprecated the old `priority` prop, which no
@@ -61,14 +60,13 @@ import { Button } from "@/components/ui/button";
  * `hidden xl:block`, rather than trying to make one set of position math
  * responsive across every layout.
  *
- * The image is anchored to the BOTTOM of the section (`items-end` below)
- * instead of vertically centered, so the top stays visually clear for the
- * search bar (and, below `xl`, the text stack above it). Its own height is
- * responsive too — smaller below `xl` (75% on phones ramping to 90% on
- * tablet) than the `xl:h-[110%]` used at 1280px and up; this sizing is
- * deliberately left as-is here (not part of this pass's changes). `vignette`
- * is a soft corner-darkening layer over the flat radial gradient for extra
- * depth. An SVG-noise grain layer used to sit here too, blended in with
+ * The photo fills the entire section (`absolute inset-0` + `object-cover`)
+ * behind every layout tier, including mobile, where text now sits directly
+ * over it rather than in the clear gradient-only space above a
+ * bottom-anchored graphic like the previous design had. That's why the
+ * scrim below is a full-section dark gradient, not just a corner vignette —
+ * a busy photo needs real contrast under white text everywhere, not just at
+ * the edges. An SVG-noise grain layer used to sit here too, blended in with
  * `mix-blend-mode: overlay` — removed for performance: `mix-blend-mode`
  * forces the browser to recompute that blend against everything beneath it
  * (the animating headline included) across this entire, very tall section,
@@ -94,27 +92,40 @@ export function Hero() {
           "radial-gradient(circle at top center, #F76103 0%, #E44A02 35%, #C94102 65%, #B73601 100%)",
       }}
     >
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/hero-casino-table.webp"
+          alt="Poker chips, red dice, and a card hand on a dark casino table"
+          fill
+          loading="eager"
+          fetchPriority="high"
+          sizes="100vw"
+          className="object-cover brightness-[0.55]"
+        />
+      </div>
+
+      {/* Full-section dark scrim, not just a corner vignette — text now sits
+         directly over the photo at every breakpoint (see the note above),
+         so contrast has to hold everywhere text can appear, not just the
+         edges. Stronger at the very top/bottom (search bar, headline,
+         paragraph all cluster there) than the vertical center, where the
+         photo's own dark felt background already gives some natural
+         contrast. */}
       <div
         className="pointer-events-none absolute inset-0 z-30"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.32) 100%)",
+            "linear-gradient(to bottom, rgba(20,8,0,0.55) 0%, rgba(20,8,0,0.25) 25%, rgba(20,8,0,0.3) 75%, rgba(20,8,0,0.6) 100%)",
         }}
       />
-
-      <div className="absolute inset-0 z-0 flex items-end justify-center">
-        <div className="relative h-[75%] sm:h-[80%] md:h-[85%] lg:h-[90%] xl:h-[110%]" style={{ aspectRatio: "1023 / 1537" }}>
-          <Image
-            src="/hero-banner-compressed.webp"
-            alt="Stacked casino chips, playing cards, and red dice with an orange smoke effect"
-            fill
-            loading="eager"
-            fetchPriority="high"
-            sizes="(max-width: 640px) 90vw, 700px"
-            className="object-contain"
-          />
-        </div>
-      </div>
+      <div
+        className="pointer-events-none absolute inset-0 z-30"
+        // Plain alpha-composited tint, no blend mode — see the note further
+        // down about mix-blend-mode being removed from this section for
+        // performance (it forces a recompute against everything beneath it,
+        // across this entire tall section, on every paint).
+        style={{ background: "rgba(199,65,2,0.35)" }}
+      />
 
       {/* Below `sm` (phones), a flat `600px` floor instead of the
          full-viewport `max(700px,100dvh)` used from `sm` up — the text+
