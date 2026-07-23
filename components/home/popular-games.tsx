@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Dices, Spade, Video, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, Dices, Rocket, Spade, Video, type LucideIcon } from "lucide-react";
 import type { FeaturedPost } from "@/lib/home/featured-content";
 import { SectionHeading } from "@/components/home/section-heading";
 
@@ -9,11 +9,13 @@ import { SectionHeading } from "@/components/home/section-heading";
 // identical badges scannable at a glance. Slug-keyed rather than
 // title-keyed so a copy edit to the post title doesn't silently break it.
 // Add an entry here (and to POPULAR_GAME_SLUGS in featured-content.ts)
-// once Teen Patti / Aviator pillar guides actually exist.
+// once a Teen Patti pillar guide actually exists — Aviator's already
+// covered as of uu7game-aviator-guide.
 const GAME_ICONS: Record<string, LucideIcon> = {
   "online-rummy-guide-rules-formats-and-strategy": Spade,
   "uu7game-slots-guide": Dices,
   "uu7game-casino-games-guide": Video,
+  "uu7game-aviator-guide": Rocket,
 };
 
 export function PopularGames({ games }: { games: FeaturedPost[] }) {

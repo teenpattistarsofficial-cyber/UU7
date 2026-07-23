@@ -31,6 +31,7 @@ const POPULAR_GAME_SLUGS = [
   "online-rummy-guide-rules-formats-and-strategy",
   "uu7game-slots-guide",
   "uu7game-casino-games-guide",
+  "uu7game-aviator-guide",
 ];
 
 // Re-exported under this homepage-specific name since every home/*
