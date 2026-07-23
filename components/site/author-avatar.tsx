@@ -11,11 +11,17 @@ export function AuthorAvatar({
   displayName,
   avatarUrl,
   size = "size-14",
+  sizes = "56px",
   className,
 }: {
   displayName: string;
   avatarUrl?: string | null;
   size?: string;
+  /** next/image `sizes` attribute — must match this avatar's actual rendered
+   * pixel size (the `size` prop is only a Tailwind class string, not a
+   * number `fill` can read), or the optimizer picks the wrong srcset
+   * candidate. */
+  sizes?: string;
   className?: string;
 }) {
   return (
@@ -27,7 +33,7 @@ export function AuthorAvatar({
       )}
     >
       {avatarUrl ? (
-        <Image src={avatarUrl} alt={displayName} fill unoptimized className="object-cover" />
+        <Image src={avatarUrl} alt={displayName} fill sizes={sizes} className="object-cover" />
       ) : (
         <div className="flex size-full items-center justify-center font-heading font-semibold text-brand">
           {displayName.charAt(0).toUpperCase()}

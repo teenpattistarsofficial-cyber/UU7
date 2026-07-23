@@ -124,7 +124,12 @@ export default async function AuthorProfilePage({
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Authors", href: "/authors" }, { label: author.displayName }]} />
 
       <div className="flex items-center gap-5">
-        <AuthorAvatar displayName={author.displayName} avatarUrl={author.avatarUrl} size="size-20 text-2xl" />
+        <AuthorAvatar
+          displayName={author.displayName}
+          avatarUrl={author.avatarUrl}
+          size="size-20 text-2xl"
+          sizes="80px"
+        />
         <div>
           <p className="mb-1 text-xs font-semibold tracking-[0.2em] text-brand uppercase">Written by</p>
           <h1 className="font-heading text-3xl font-bold tracking-tight">{author.displayName}</h1>

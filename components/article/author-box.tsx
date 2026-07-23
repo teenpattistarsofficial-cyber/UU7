@@ -40,7 +40,12 @@ export function AuthorBox({
 
   return (
     <section className="mt-10 flex gap-4 rounded-2xl border border-border/70 bg-card p-5 sm:p-6">
-      <AuthorAvatar displayName={displayName} avatarUrl={avatarUrl} size="size-14 sm:size-16" />
+      <AuthorAvatar
+        displayName={displayName}
+        avatarUrl={avatarUrl}
+        size="size-14 sm:size-16"
+        sizes="(min-width: 640px) 64px, 56px"
+      />
       <div className="min-w-0">
         <p className="text-xs font-semibold tracking-wide text-brand uppercase">Written by</p>
         <Link href={`/authors/${slug}`} className="font-heading font-semibold hover:text-brand">
