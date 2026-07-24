@@ -30,7 +30,25 @@ import {
 } from "lucide-react";
 import { editorExtensions } from "@/lib/editor/extensions";
 import { toTiptapDoc } from "@/lib/editor/doc";
+import { isExternalUrl } from "@/lib/seo/safe-url";
 import { cn } from "@/lib/utils";
+
+// Every link the editor creates goes through this — external URLs get
+// target/rel set explicitly; internal ones get both explicitly nulled
+// rather than just omitted, since Tiptap's setLink merges attrs onto
+// whatever the mark already had — re-editing a link that used to be
+// external needs an explicit null to actually clear its old target/rel
+// instead of leaving them in place. `nofollow` on external links preserves
+// this site's existing policy (every external citation/backlink has always
+// had it, via the Tiptap extension's own former default — see the note in
+// lib/editor/extensions.ts) rather than silently changing it while fixing
+// the actual bug here, which was internal links inheriting that same
+// nofollow by accident.
+function linkAttrs(url: string) {
+  return isExternalUrl(url)
+    ? { href: url, target: "_blank", rel: "noopener noreferrer nofollow" }
+    : { href: url, target: null, rel: null };
+}
 import { Textarea } from "@/components/ui/textarea";
 import { MediaPicker } from "@/components/admin/media-picker";
 
@@ -82,11 +100,11 @@ export const TiptapEditor = forwardRef<
           let chain = editor.chain().focus();
           if (needsLeadingSpace) chain = chain.insertContent(" ");
           chain
-            .insertContent({ type: "text", text, marks: [{ type: "link", attrs: { href: url } }] })
+            .insertContent({ type: "text", text, marks: [{ type: "link", attrs: linkAttrs(url) }] })
             .insertContent(" ")
             .run();
         } else {
-          editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+          editor.chain().focus().extendMarkRange("link").setLink(linkAttrs(url)).run();
         }
       },
     }),
@@ -186,7 +204,7 @@ function Toolbar({
         editor.chain().focus().extendMarkRange("link").unsetLink().run();
         return;
       }
-      editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+      editor.chain().focus().extendMarkRange("link").setLink(linkAttrs(url)).run();
     },
   };
 

@@ -2,17 +2,23 @@ import { db } from "@/lib/db";
 import { posts, pages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import type { JSONContent } from "@tiptap/core";
+import { isExternalUrl } from "@/lib/seo/safe-url";
 
-// One-off migration: Tiptap's Link extension hardcodes target="_blank" as
-// its own default HTMLAttributes, which silently overrode the `target:
-// null` every link mark in this codebase actually stores (see the fix in
-// lib/editor/extensions.ts) — every link, internal or external, was
-// opening in a new tab regardless of what was authored. This sweeps
-// existing content so the stored data matches what should have been there
-// all along: internal links (href starting with "/") get target: null
-// (same tab), genuinely external links get target: "_blank" explicitly
-// set on the mark itself, since they no longer get it for free from the
-// extension default.
+// One-off migration, re-run twice now. First pass (see git history) fixed
+// Tiptap's Link extension hardcoding target="_blank" as its own default
+// HTMLAttributes (lib/editor/extensions.ts) — but that alone only fixed
+// links already in the DB at the time; it didn't stop the editor from
+// creating new links with no target/rel at all going forward (every link
+// created via the toolbar's Link button or the Internal Linking Assistant
+// — components/editor/tiptap-editor.tsx — never set target/rel on the
+// mark), which happened to render correctly for internal links (schema
+// default = same tab) but silently left external links opening in the
+// same tab too. That gap is now closed at the editor level; this second
+// pass fixes whatever was authored while it was open. Uses the same
+// isExternalUrl() the editor now uses — hostname comparison against
+// SITE_URL, not the old substring check (`href.includes("uu7.io")`), which
+// would have wrongly called a lookalike domain like fake-uu7.io.evil.com
+// "internal".
 //
 // Usage: npx tsx scripts/fix-link-targets.ts        (dry run)
 //        npx tsx scripts/fix-link-targets.ts --apply  (writes)
@@ -21,10 +27,24 @@ function fixLinks(node: JSONContent, stats: { internal: number; external: number
   node.marks?.forEach((mark) => {
     if (mark.type === "link" && typeof mark.attrs?.href === "string") {
       const href = mark.attrs.href as string;
-      const external = /^https?:\/\//i.test(href) && !href.includes("uu7.io");
+      const external = isExternalUrl(href);
       const desiredTarget = external ? "_blank" : null;
-      if (mark.attrs.target !== desiredTarget) {
+      // "nofollow" preserved for external links — every one has carried it
+      // since day one via Tiptap's own former default (see
+      // lib/editor/extensions.ts); only internal links losing it here is
+      // the actual fix, since nofollow-ing your own site's internal links
+      // has never been intentional.
+      const desiredRel = external ? "noopener noreferrer nofollow" : null;
+      // `?? null` normalizes "field never set" (undefined) against "field
+      // explicitly cleared" (null) before comparing — otherwise every mark
+      // missing a `rel` key at all (i.e. everything from before this pass
+      // added the field) would count as "changed" even when target was
+      // already correct, since undefined !== null in JS.
+      const currentTarget = mark.attrs.target ?? null;
+      const currentRel = mark.attrs.rel ?? null;
+      if (currentTarget !== desiredTarget || currentRel !== desiredRel) {
         mark.attrs.target = desiredTarget;
+        mark.attrs.rel = desiredRel;
         stats.changed++;
       }
       external ? stats.external++ : stats.internal++;

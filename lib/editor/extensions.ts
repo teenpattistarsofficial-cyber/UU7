@@ -29,14 +29,19 @@ export const editorExtensions: Extensions = [
       openOnClick: false,
       autolink: true,
       defaultProtocol: "https",
-      // The extension's own default forces target="_blank" on every link
-      // regardless of the mark's own `target` attribute — every internal
-      // link across the site was opening in a new tab because of this, not
-      // because of anything authored. Overriding the default to null here
-      // means a link only opens in a new tab when a mark explicitly sets
-      // target: "_blank" (external citations/backlinks); internal links
-      // with no explicit target correctly stay in the same tab.
-      HTMLAttributes: { target: null },
+      // The extension's own defaults force target="_blank" AND
+      // rel="noopener noreferrer nofollow" on every link regardless of the
+      // mark's own attributes. `target` was already overridden here so a
+      // link only opens in a new tab when a mark explicitly sets target:
+      // "_blank" — but `rel` was missed, so every internal link, including
+      // ones authored after that fix, has silently carried a `nofollow`
+      // that tells search engines not to crawl the site's own internal
+      // link structure. Overriding both to null means a mark gets these
+      // attributes only when it explicitly sets them (see linkAttrs() in
+      // components/editor/tiptap-editor.tsx, which sets
+      // target: "_blank", rel: "noopener noreferrer nofollow" for external
+      // links and leaves both null for internal ones).
+      HTMLAttributes: { target: null, rel: null },
     },
   }),
   Image,
