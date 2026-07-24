@@ -73,6 +73,31 @@ function revalidateCommentedPost(categorySlug: string | null | undefined, postSl
   revalidatePath("/admin/comments");
 }
 
+// Bulk moderation can touch comments spread across many different posts —
+// unlike the single-comment actions above, there's no one post path to
+// pass in, so this looks up every affected comment's owning post/category
+// and invalidates each, deduped (a batch selected from one post's comment
+// list is the common case, but bulk-selecting across the whole queue is
+// possible too).
+async function revalidateCommentedPosts(ids: string[]) {
+  const rows = await db.query.comments.findMany({ where: inArray(comments.id, ids) });
+  const postIds = [...new Set(rows.map((r) => r.postId))];
+  if (postIds.length === 0) return;
+
+  const affectedPosts = await db.query.posts.findMany({ where: inArray(posts.id, postIds) });
+  const categoryIds = [...new Set(affectedPosts.map((p) => p.categoryId).filter((id): id is string => Boolean(id)))];
+  const affectedCategories = categoryIds.length > 0 ? await db.query.categories.findMany({ where: inArray(categories.id, categoryIds) }) : [];
+  const categorySlugById = new Map(affectedCategories.map((c) => [c.id, c.slug]));
+
+  const paths = affectedPosts
+    .map((p) => {
+      const categorySlug = p.categoryId ? categorySlugById.get(p.categoryId) : null;
+      return categorySlug ? `/${categorySlug}/${p.slug}` : null;
+    })
+    .filter((path): path is string => Boolean(path));
+  if (paths.length > 0) invalidatePublicPaths(paths);
+}
+
 export async function approveComment(id: string) {
   await requireRole("editor");
   const found = await commentWithPostInfo(id);
@@ -103,6 +128,7 @@ export async function deleteComment(id: string) {
 export async function bulkDeleteComments(ids: string[]) {
   await requireRole("editor");
   if (ids.length === 0) return;
+  await revalidateCommentedPosts(ids);
   await db.delete(comments).where(inArray(comments.id, ids));
   revalidatePath("/admin/comments");
 }
@@ -110,6 +136,7 @@ export async function bulkDeleteComments(ids: string[]) {
 export async function bulkApproveComments(ids: string[]) {
   await requireRole("editor");
   if (ids.length === 0) return;
+  await revalidateCommentedPosts(ids);
   await db.update(comments).set({ status: "approved" }).where(inArray(comments.id, ids));
   revalidatePath("/admin/comments");
 }
@@ -117,6 +144,7 @@ export async function bulkApproveComments(ids: string[]) {
 export async function bulkRejectComments(ids: string[]) {
   await requireRole("editor");
   if (ids.length === 0) return;
+  await revalidateCommentedPosts(ids);
   await db.update(comments).set({ status: "rejected" }).where(inArray(comments.id, ids));
   revalidatePath("/admin/comments");
 }

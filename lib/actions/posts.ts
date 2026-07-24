@@ -65,7 +65,11 @@ async function getCategorySlug(categoryId: string | null): Promise<string | null
 // list. (Each page also carries its own `export const revalidate` ceiling
 // as a defense-in-depth fallback in case a path is ever missed here.)
 function revalidatePublicPostPaths(categorySlug: string | null, slug: string) {
-  const paths = ["/", "/sitemap.xml"];
+  // `/faq` isn't post-specific — it aggregates every published post's FAQs
+  // (lib/faq.ts) — but any post create/update/delete/status-change can add,
+  // remove, or edit FAQ entries that page reads, so it has to invalidate on
+  // every call here regardless of which single post changed.
+  const paths = ["/", "/sitemap.xml", "/faq"];
   if (categorySlug) paths.push(`/${categorySlug}`, `/${categorySlug}/${slug}`);
   invalidatePublicPaths(paths);
 }

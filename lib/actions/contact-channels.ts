@@ -5,11 +5,25 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { contactChannels, contactChannelKindEnum } from "@/lib/db/schema";
 import { requireRole } from "@/lib/auth/guards";
-import { invalidatePublicPaths } from "@/lib/cache/invalidate-public-paths";
 
 type ContactChannelKind = (typeof contactChannelKindEnum.enumValues)[number];
 
 const VALID_KINDS = new Set(contactChannelKindEnum.enumValues);
+
+// The /contact page reads the full channel list, but app/(site)/layout.tsx
+// (wrapping every public page) separately queries this same table for just
+// the primary — lowest-position — channel, to feed the Ask-AI widget's
+// "talk to a human" link shown sitewide. So any change here has to
+// invalidate both the one page and the whole layout tree, not just
+// "/contact" — otherwise every other page's Ask-AI widget would keep
+// serving a stale link until something unrelated happened to revalidate
+// the layout. No Cloudflare purge here, matching site-settings.ts's own
+// layout-wide invalidation: pages aren't edge-cached yet (only
+// /_next/image is), so there's nothing at Cloudflare's edge to purge.
+function revalidateContactChannels() {
+  revalidatePath("/contact");
+  revalidatePath("/", "layout");
+}
 
 function parseContactChannelForm(formData: FormData) {
   const kind = String(formData.get("kind") ?? "").trim();
@@ -32,7 +46,7 @@ export async function createContactChannel(formData: FormData) {
 
   const [row] = await db.insert(contactChannels).values({ ...values, position: nextPosition }).returning();
   revalidatePath("/admin/settings");
-  invalidatePublicPaths(["/contact"]);
+  revalidateContactChannels();
   return row;
 }
 
@@ -40,7 +54,7 @@ export async function deleteContactChannel(id: string) {
   await requireRole("editor");
   await db.delete(contactChannels).where(eq(contactChannels.id, id));
   revalidatePath("/admin/settings");
-  invalidatePublicPaths(["/contact"]);
+  revalidateContactChannels();
 }
 
 // Simple position-swap reorder (up/down buttons, same UX as the FAQ
@@ -59,5 +73,5 @@ export async function moveContactChannel(id: string, direction: -1 | 1) {
   await db.update(contactChannels).set({ position: current.position }).where(eq(contactChannels.id, target.id));
 
   revalidatePath("/admin/settings");
-  invalidatePublicPaths(["/contact"]);
+  revalidateContactChannels();
 }

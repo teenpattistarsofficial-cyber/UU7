@@ -60,7 +60,7 @@ export async function createAuthor(formData: FormData) {
   const [{ id }] = await db.insert(authors).values(values).returning({ id: authors.id });
   await logActivity({ action: "author.created", entityType: "author", entityId: id, entityLabel: values.displayName });
   revalidatePath("/admin/authors");
-  invalidatePublicPaths(["/authors"]);
+  invalidatePublicPaths(["/authors", "/sitemap.xml"]);
   redirect("/admin/authors");
 }
 
@@ -75,7 +75,7 @@ export async function updateAuthor(id: string, formData: FormData) {
     .where(eq(authors.id, id));
 
   revalidatePath("/admin/authors");
-  const paths = ["/authors", `/authors/${values.slug}`];
+  const paths = ["/authors", `/authors/${values.slug}`, "/sitemap.xml"];
   if (existing && existing.slug !== values.slug) paths.push(`/authors/${existing.slug}`);
   invalidatePublicPaths(paths);
   // Not fanned out to every post by this author — the AuthorBox embedded
@@ -95,7 +95,7 @@ export async function deleteAuthor(id: string) {
   await db.update(authors).set({ deletedAt: new Date() }).where(eq(authors.id, id));
   await logActivity({ action: "author.deleted", entityType: "author", entityId: id, entityLabel: existing.displayName });
   revalidatePath("/admin/authors");
-  invalidatePublicPaths(["/authors", `/authors/${existing.slug}`]);
+  invalidatePublicPaths(["/authors", `/authors/${existing.slug}`, "/sitemap.xml"]);
 }
 
 export async function bulkDeleteAuthors(ids: string[]) {
@@ -104,7 +104,7 @@ export async function bulkDeleteAuthors(ids: string[]) {
   const targets = await db.query.authors.findMany({ where: inArray(authors.id, ids) });
   await db.update(authors).set({ deletedAt: new Date() }).where(inArray(authors.id, ids));
   revalidatePath("/admin/authors");
-  invalidatePublicPaths(["/authors", ...targets.map((a) => `/authors/${a.slug}`)]);
+  invalidatePublicPaths(["/authors", "/sitemap.xml", ...targets.map((a) => `/authors/${a.slug}`)]);
 }
 
 export async function restoreAuthor(id: string) {
@@ -112,7 +112,7 @@ export async function restoreAuthor(id: string) {
   const existing = await db.query.authors.findFirst({ where: eq(authors.id, id) });
   await db.update(authors).set({ deletedAt: null }).where(eq(authors.id, id));
   revalidatePath("/admin/authors");
-  if (existing) invalidatePublicPaths(["/authors", `/authors/${existing.slug}`]);
+  if (existing) invalidatePublicPaths(["/authors", `/authors/${existing.slug}`, "/sitemap.xml"]);
 }
 
 export async function bulkRestoreAuthors(ids: string[]) {
@@ -121,7 +121,7 @@ export async function bulkRestoreAuthors(ids: string[]) {
   const targets = await db.query.authors.findMany({ where: inArray(authors.id, ids) });
   await db.update(authors).set({ deletedAt: null }).where(inArray(authors.id, ids));
   revalidatePath("/admin/authors");
-  invalidatePublicPaths(["/authors", ...targets.map((a) => `/authors/${a.slug}`)]);
+  invalidatePublicPaths(["/authors", "/sitemap.xml", ...targets.map((a) => `/authors/${a.slug}`)]);
 }
 
 // The actual, irreversible `db.delete` — gated at "admin" rather than
@@ -140,7 +140,7 @@ export async function permanentlyDeleteAuthor(id: string) {
       entityId: id,
       entityLabel: existing.displayName,
     });
-    invalidatePublicPaths(["/authors", `/authors/${existing.slug}`]);
+    invalidatePublicPaths(["/authors", `/authors/${existing.slug}`, "/sitemap.xml"]);
   }
   revalidatePath("/admin/authors");
 }
@@ -151,5 +151,5 @@ export async function bulkPermanentlyDeleteAuthors(ids: string[]) {
   const targets = await db.query.authors.findMany({ where: inArray(authors.id, ids) });
   await db.delete(authors).where(inArray(authors.id, ids));
   revalidatePath("/admin/authors");
-  invalidatePublicPaths(["/authors", ...targets.map((a) => `/authors/${a.slug}`)]);
+  invalidatePublicPaths(["/authors", "/sitemap.xml", ...targets.map((a) => `/authors/${a.slug}`)]);
 }

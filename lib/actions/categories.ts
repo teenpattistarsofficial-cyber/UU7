@@ -60,18 +60,16 @@ export async function createCategory(formData: FormData) {
 
   if (!name) throw new Error("Name is required");
 
+  const slug = slugInput ? slugify(slugInput) : slugify(name);
   const [{ id }] = await db
     .insert(categories)
-    .values({
-      name,
-      slug: slugInput ? slugify(slugInput) : slugify(name),
-      description,
-    })
+    .values({ name, slug, description })
     .returning({ id: categories.id });
   await upsertSeoMeta(id, formData);
   await logActivity({ action: "category.created", entityType: "category", entityId: id, entityLabel: name });
 
   revalidatePath("/admin/categories");
+  invalidatePublicPaths([`/${slug}`, "/sitemap.xml"]);
   redirect("/admin/categories");
 }
 
@@ -94,7 +92,7 @@ export async function updateCategory(id: string, formData: FormData) {
   await upsertSeoMeta(id, formData);
 
   revalidatePath("/admin/categories");
-  const paths = ["/", `/${slug}`];
+  const paths = ["/", `/${slug}`, "/sitemap.xml"];
   if (existing && existing.slug !== slug) paths.push(`/${existing.slug}`);
   invalidatePublicPaths(paths);
   redirect("/admin/categories");
@@ -118,7 +116,7 @@ export async function deleteCategory(id: string) {
   await db.update(categories).set({ deletedAt: new Date() }).where(eq(categories.id, id));
   await logActivity({ action: "category.deleted", entityType: "category", entityId: id, entityLabel: existing.name });
   revalidatePath("/admin/categories");
-  invalidatePublicPaths([`/${existing.slug}`]);
+  invalidatePublicPaths([`/${existing.slug}`, "/sitemap.xml"]);
 }
 
 export async function bulkDeleteCategories(ids: string[]) {
@@ -139,7 +137,7 @@ export async function bulkDeleteCategories(ids: string[]) {
     await db.update(categories).set({ deletedAt: new Date() }).where(inArray(categories.id, deletableIds));
     revalidatePath("/admin/categories");
     for (const category of targets) {
-      if (deletableIds.includes(category.id)) invalidatePublicPaths([`/${category.slug}`]);
+      if (deletableIds.includes(category.id)) invalidatePublicPaths([`/${category.slug}`, "/sitemap.xml"]);
     }
   }
 
@@ -155,7 +153,7 @@ export async function restoreCategory(id: string) {
   const existing = await db.query.categories.findFirst({ where: eq(categories.id, id) });
   await db.update(categories).set({ deletedAt: null }).where(eq(categories.id, id));
   revalidatePath("/admin/categories");
-  if (existing) invalidatePublicPaths([`/${existing.slug}`]);
+  if (existing) invalidatePublicPaths([`/${existing.slug}`, "/sitemap.xml"]);
 }
 
 export async function bulkRestoreCategories(ids: string[]) {
@@ -164,7 +162,7 @@ export async function bulkRestoreCategories(ids: string[]) {
   const targets = await db.query.categories.findMany({ where: inArray(categories.id, ids) });
   await db.update(categories).set({ deletedAt: null }).where(inArray(categories.id, ids));
   revalidatePath("/admin/categories");
-  for (const category of targets) invalidatePublicPaths([`/${category.slug}`]);
+  for (const category of targets) invalidatePublicPaths([`/${category.slug}`, "/sitemap.xml"]);
 }
 
 // The actual, irreversible `db.delete` — gated at "admin" rather than
