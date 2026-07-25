@@ -1,7 +1,7 @@
 "use server";
 
 import { eq, and, inArray, isNull } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { unlink } from "node:fs/promises";
 import path from "node:path";
 import { db } from "@/lib/db";
@@ -53,7 +53,16 @@ async function revalidatePagesUsingMedia(url: string) {
     paths.add(`/authors/${author.slug}`);
   }
 
-  if (paths.size > 0) invalidatePublicPaths([...paths]);
+  if (paths.size > 0) {
+    invalidatePublicPaths([...paths]);
+    // Both tags: a post's cover image is read by lib/posts/get-post-page-data.ts
+    // ("posts") and this same media row's alt text also appears on the
+    // category listing's thumbnail via lib/posts/get-category-page-data.ts
+    // ("categories") — busting only one would leave the other page showing
+    // the old alt/caption until its 1hr ISR ceiling catches up.
+    updateTag("posts");
+    updateTag("categories");
+  }
 }
 
 export async function listMedia() {

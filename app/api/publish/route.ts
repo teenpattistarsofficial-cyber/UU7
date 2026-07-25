@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import type { JSONContent } from "@tiptap/core";
+import { revalidateTag } from "next/cache";
 import { db } from "@/lib/db";
 import {
   posts,
@@ -25,6 +26,7 @@ import { checkRateLimit } from "@/lib/ai/rate-limit";
 import { isSafeExternalUrl } from "@/lib/seo/safe-url";
 import { processImageBuffer } from "@/lib/media/process-upload";
 import { syncPostTagsByNames, syncPostCtasByItems } from "@/lib/actions/posts";
+import { invalidatePublicPaths } from "@/lib/cache/invalidate-public-paths";
 
 export const runtime = "nodejs";
 
@@ -263,6 +265,19 @@ export async function POST(request: NextRequest) {
     entityId: post.id,
     entityLabel: title,
   });
+
+  // This route bypasses lib/actions/posts.ts entirely (raw inserts, not
+  // createPost/updatePost), so it never got the revalidation those actions
+  // do — invisible while every public page was force-dynamic, but a real
+  // gap now that they're cached (see lib/home/featured-content.ts and
+  // lib/posts/get-post-page-data.ts). revalidateTag, not updateTag: this
+  // is a Route Handler, and updateTag only works inside Server Actions —
+  // calling it here would throw. `"max"` gives stale-while-revalidate
+  // semantics rather than updateTag's immediate-refresh guarantee, an
+  // acceptable tradeoff for a machine-client endpoint, not a live user
+  // session expecting to see their own edit instantly.
+  invalidatePublicPaths(["/", "/sitemap.xml", "/faq", `/${category.slug}`, `/${category.slug}/${slug}`]);
+  revalidateTag("posts", "max");
 
   const checklist = getSeoChecklist({
     title,

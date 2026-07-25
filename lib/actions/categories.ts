@@ -2,13 +2,24 @@
 
 import { eq, and, inArray, isNull } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
 import { categories, seoMeta, posts } from "@/lib/db/schema";
 import { requireRole } from "@/lib/auth/guards";
 import { slugify } from "@/lib/seo/slugify";
 import { invalidatePublicPaths } from "@/lib/cache/invalidate-public-paths";
 import { logActivity } from "@/lib/actions/audit-log";
+
+// Busts both the "categories" tag (lib/posts/get-category-page-data.ts,
+// lib/home/featured-content.ts's getCategoryOverview) and "posts" — post
+// summary cards (lib/posts/post-summary.ts) embed the category's own
+// name/slug, so a rename can leave stale category labels on the
+// "posts"-tagged homepage sections (Featured Guides/Popular Games/Latest
+// Posts) and individual post pages too, not just this category's own page.
+function revalidateCategoryTags() {
+  updateTag("categories");
+  updateTag("posts");
+}
 
 function parseSeoForm(formData: FormData) {
   return {
@@ -70,6 +81,7 @@ export async function createCategory(formData: FormData) {
 
   revalidatePath("/admin/categories");
   invalidatePublicPaths([`/${slug}`, "/sitemap.xml"]);
+  revalidateCategoryTags();
   redirect("/admin/categories");
 }
 
@@ -95,6 +107,7 @@ export async function updateCategory(id: string, formData: FormData) {
   const paths = ["/", `/${slug}`, "/sitemap.xml"];
   if (existing && existing.slug !== slug) paths.push(`/${existing.slug}`);
   invalidatePublicPaths(paths);
+  revalidateCategoryTags();
   redirect("/admin/categories");
 }
 
@@ -117,6 +130,7 @@ export async function deleteCategory(id: string) {
   await logActivity({ action: "category.deleted", entityType: "category", entityId: id, entityLabel: existing.name });
   revalidatePath("/admin/categories");
   invalidatePublicPaths([`/${existing.slug}`, "/sitemap.xml"]);
+  revalidateCategoryTags();
 }
 
 export async function bulkDeleteCategories(ids: string[]) {
@@ -139,6 +153,7 @@ export async function bulkDeleteCategories(ids: string[]) {
     for (const category of targets) {
       if (deletableIds.includes(category.id)) invalidatePublicPaths([`/${category.slug}`, "/sitemap.xml"]);
     }
+    revalidateCategoryTags();
   }
 
   if (blocked.length > 0) {
@@ -154,6 +169,7 @@ export async function restoreCategory(id: string) {
   await db.update(categories).set({ deletedAt: null }).where(eq(categories.id, id));
   revalidatePath("/admin/categories");
   if (existing) invalidatePublicPaths([`/${existing.slug}`, "/sitemap.xml"]);
+  revalidateCategoryTags();
 }
 
 export async function bulkRestoreCategories(ids: string[]) {
@@ -163,6 +179,7 @@ export async function bulkRestoreCategories(ids: string[]) {
   await db.update(categories).set({ deletedAt: null }).where(inArray(categories.id, ids));
   revalidatePath("/admin/categories");
   for (const category of targets) invalidatePublicPaths([`/${category.slug}`, "/sitemap.xml"]);
+  revalidateCategoryTags();
 }
 
 // The actual, irreversible `db.delete` — gated at "admin" rather than

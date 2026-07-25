@@ -1,9 +1,7 @@
-import { and, desc, eq, isNull } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { db } from "@/lib/db";
-import { categories, posts, seoMeta, media } from "@/lib/db/schema";
 import { getPublishedPageBySlug } from "@/lib/pages/get-page";
+import { getCategoryPageData } from "@/lib/posts/get-category-page-data";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { getCategoryMeta } from "@/lib/site-categories";
 import { CmsPageBody } from "@/components/site/cms-page";
@@ -12,7 +10,22 @@ import { Breadcrumb } from "@/components/site/breadcrumb";
 
 // Safety-net ISR ceiling — lib/actions/posts.ts and lib/actions/categories.ts
 // already revalidate this path on relevant mutations; this is the fallback.
+// Only takes effect because every DB read this route performs now goes
+// through getCategoryPageData()/getPublishedPageBySlug(), both wrapped in
+// unstable_cache — a bare `revalidate` export does nothing for direct,
+// unwrapped DB calls (see the note in lib/home/featured-content.ts).
 export const revalidate = 3600;
+
+// Required for this dynamic-segment route to be ISR-eligible at all —
+// per Next's own docs, a dynamic segment with no generateStaticParams
+// export is dynamically rendered unconditionally, regardless of the
+// `revalidate` export above. Returning an empty array means "prerender
+// nothing at build time" (no DATABASE_URL needed then), while
+// `dynamicParams` defaults to true, so any real slug is rendered — and
+// cached — the first time it's actually visited.
+export async function generateStaticParams() {
+  return [];
+}
 
 export async function generateMetadata({
   params,
@@ -20,20 +33,12 @@ export async function generateMetadata({
   params: Promise<{ category: string }>;
 }): Promise<Metadata> {
   const { category: slug } = await params;
-  // `deletedAt` is separate from a status field categories don't have — a
-  // trashed category must be excluded explicitly so this falls through to
-  // notFound() the same way a trashed page/post already does.
-  const category = await db.query.categories.findFirst({
-    where: and(eq(categories.slug, slug), isNull(categories.deletedAt)),
-  });
-  if (category) {
-    const seo = await db.query.seoMeta.findFirst({
-      where: and(eq(seoMeta.entityType, "category"), eq(seoMeta.entityId, category.id)),
-    });
+  const categoryData = await getCategoryPageData(slug);
+  if (categoryData) {
     return buildMetadata({
-      seo,
-      fallbackTitle: category.name,
-      fallbackDescription: category.description,
+      seo: categoryData.seo,
+      fallbackTitle: categoryData.category.name,
+      fallbackDescription: categoryData.category.description,
       path: `/${slug}`,
     });
   }
@@ -57,35 +62,15 @@ export default async function CategoryOrPageRoute({
   params: Promise<{ category: string }>;
 }) {
   const { category: slug } = await params;
-  // `deletedAt` is separate from a status field categories don't have — a
-  // trashed category must be excluded explicitly so this falls through to
-  // notFound() the same way a trashed page/post already does.
-  const category = await db.query.categories.findFirst({
-    where: and(eq(categories.slug, slug), isNull(categories.deletedAt)),
-  });
+  const categoryData = await getCategoryPageData(slug);
 
-  if (!category) {
+  if (!categoryData) {
     const pageResult = await getPublishedPageBySlug(slug);
     if (!pageResult) notFound();
     return <CmsPageBody title={pageResult.page.title} content={pageResult.page.content} />;
   }
 
-  const categoryPosts = await db
-    .select({
-      id: posts.id,
-      title: posts.title,
-      slug: posts.slug,
-      excerpt: posts.excerpt,
-      featuredImageUrl: posts.featuredImageUrl,
-      featuredImageAlt: media.alt,
-      readingTimeMinutes: posts.readingTimeMinutes,
-    })
-    .from(posts)
-    .leftJoin(media, eq(media.url, posts.featuredImageUrl))
-    // `deletedAt` is separate from `status` — a trashed post keeps its
-    // prior status, so it must be excluded explicitly here too.
-    .where(and(eq(posts.categoryId, category.id), eq(posts.status, "published"), isNull(posts.deletedAt)))
-    .orderBy(desc(posts.publishedAt));
+  const { category, categoryPosts } = categoryData;
 
   // The whole listing is one category, so every card can reuse its
   // name/slug directly rather than joining `categories` back in per row

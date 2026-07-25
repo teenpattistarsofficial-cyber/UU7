@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { eq, inArray } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
 import { comments, posts, categories } from "@/lib/db/schema";
 import { requireRole } from "@/lib/auth/guards";
@@ -69,7 +69,14 @@ async function commentWithPostInfo(id: string) {
 }
 
 function revalidateCommentedPost(categorySlug: string | null | undefined, postSlug: string | null | undefined) {
-  if (categorySlug && postSlug) invalidatePublicPaths([`/${categorySlug}/${postSlug}`]);
+  if (categorySlug && postSlug) {
+    invalidatePublicPaths([`/${categorySlug}/${postSlug}`]);
+    // lib/posts/get-post-page-data.ts's cached bundle includes the post's
+    // approved comments — tagged "posts" like everything else it reads, so
+    // moderating a comment has to bust the same broad tag, not just this
+    // one post's route path.
+    updateTag("posts");
+  }
   revalidatePath("/admin/comments");
 }
 
@@ -95,7 +102,10 @@ async function revalidateCommentedPosts(ids: string[]) {
       return categorySlug ? `/${categorySlug}/${p.slug}` : null;
     })
     .filter((path): path is string => Boolean(path));
-  if (paths.length > 0) invalidatePublicPaths(paths);
+  if (paths.length > 0) {
+    invalidatePublicPaths(paths);
+    updateTag("posts");
+  }
 }
 
 export async function approveComment(id: string) {

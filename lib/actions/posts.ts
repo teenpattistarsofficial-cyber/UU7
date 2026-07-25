@@ -2,7 +2,7 @@
 
 import { eq, and, inArray } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import type { JSONContent } from "@tiptap/core";
 import { db } from "@/lib/db";
 import {
@@ -58,12 +58,19 @@ async function getCategorySlug(categoryId: string | null): Promise<string | null
   return category?.slug ?? null;
 }
 
-// The public site reads posts straight from the DB with no fetch/tag-based
-// caching in play — Next's Full Route Cache is still eligible to freeze
-// these pages, so a publish/edit/delete needs to explicitly invalidate
-// every public path that could show stale content, not just the /admin
-// list. (Each page also carries its own `export const revalidate` ceiling
-// as a defense-in-depth fallback in case a path is ever missed here.)
+// The public site reads posts via unstable_cache-wrapped queries tagged
+// "posts" (lib/home/featured-content.ts, lib/posts/get-category-page-data.ts,
+// lib/posts/get-post-page-data.ts) — a publish/edit/delete needs to bust
+// that tag AND invalidate the actual route paths, not just the /admin list.
+// revalidatePath alone clears Next's Router/Full Route Cache for a path,
+// but a re-render of that path would still read stale data back out of the
+// separate unstable_cache data-cache layer without also busting its tag.
+// updateTag (not revalidateTag) since every caller of this function is a
+// Server Action — it expires the tag immediately rather than serving one
+// more stale response first, which matters here: an editor publishing a
+// post expects to see it live right away, not after one stale reload.
+// (Each page also carries its own `export const revalidate` ceiling as a
+// defense-in-depth fallback in case a path/tag is ever missed here.)
 function revalidatePublicPostPaths(categorySlug: string | null, slug: string) {
   // `/faq` isn't post-specific — it aggregates every published post's FAQs
   // (lib/faq.ts) — but any post create/update/delete/status-change can add,
@@ -72,6 +79,7 @@ function revalidatePublicPostPaths(categorySlug: string | null, slug: string) {
   const paths = ["/", "/sitemap.xml", "/faq"];
   if (categorySlug) paths.push(`/${categorySlug}`, `/${categorySlug}/${slug}`);
   invalidatePublicPaths(paths);
+  updateTag("posts");
 }
 
 function parsePostForm(formData: FormData) {

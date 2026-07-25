@@ -1,32 +1,11 @@
-import { eq, and, isNull } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Clock } from "lucide-react";
-import { db } from "@/lib/db";
-import {
-  posts,
-  authors,
-  categories,
-  seoMeta,
-  postFaqs,
-  postAiSummary,
-  postKeyTakeaways,
-  postRelated,
-  postQuickAnswer,
-  postCtas,
-  postStatsTables,
-  tags,
-  postTags,
-  comments,
-  media,
-} from "@/lib/db/schema";
+import { getPostPageData } from "@/lib/posts/get-post-page-data";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { buildFaqSchema, buildArticleSchema, buildBreadcrumbSchema, buildPersonSchema } from "@/lib/seo/jsonld";
-import { getPublishedPostCandidates } from "@/lib/seo/related-candidates";
-import { scoreRelatedPosts } from "@/lib/seo/related";
-import { getPostSummariesByIds } from "@/lib/posts/post-summary";
 import { getCategoryMeta } from "@/lib/site-categories";
 import { renderContentHtml } from "@/lib/editor/render";
 import { toTiptapDoc } from "@/lib/editor/doc";
@@ -51,6 +30,17 @@ import { JsonLd } from "@/components/article/json-ld";
 // exact path on publish/edit/delete; this is the fallback if one is missed.
 export const revalidate = 3600;
 
+// Required for this dynamic-segment route to be ISR-eligible at all —
+// per Next's own docs, a dynamic segment with no generateStaticParams
+// export is dynamically rendered unconditionally, regardless of the
+// `revalidate` export above. Returning an empty array means "prerender
+// nothing at build time" (no DATABASE_URL needed then), while
+// `dynamicParams` defaults to true, so any real post is rendered — and
+// cached — the first time it's actually visited.
+export async function generateStaticParams() {
+  return [];
+}
+
 // Full AEO/GEO article template (Phase 5): Quick Answer, AI Summary, ToC,
 // body content, Stats Tables, CTAs, FAQ, Author box, Related Posts, Source
 // Citations, and the combined JSON-LD graph. Everything except the manually
@@ -64,20 +54,16 @@ export async function generateMetadata({
   params: Promise<{ category: string; slug: string }>;
 }): Promise<Metadata> {
   const { category, slug } = await params;
-  const post = await db.query.posts.findFirst({ where: eq(posts.slug, slug) });
-  if (!post || post.status !== "published" || post.deletedAt) {
+  const data = await getPostPageData(slug);
+  if (!data) {
     return { title: "Not found", robots: { index: false, follow: true } };
   }
 
-  const seo = await db.query.seoMeta.findFirst({
-    where: and(eq(seoMeta.entityType, "post"), eq(seoMeta.entityId, post.id)),
-  });
-
   return buildMetadata({
-    seo,
-    fallbackTitle: post.title,
-    fallbackDescription: post.excerpt,
-    fallbackImage: post.featuredImageUrl,
+    seo: data.seo,
+    fallbackTitle: data.post.title,
+    fallbackDescription: data.post.excerpt,
+    fallbackImage: data.post.featuredImageUrl,
     path: `/${category}/${slug}`,
   });
 }
@@ -88,80 +74,28 @@ export default async function ArticlePage({
   params: Promise<{ category: string; slug: string }>;
 }) {
   const { category: categorySlug, slug } = await params;
-  const post = await db.query.posts.findFirst({ where: eq(posts.slug, slug) });
+  const data = await getPostPageData(slug);
   // `deletedAt` is a separate soft-delete flag from `status` (see the schema
   // comment on posts.deletedAt) — a trashed post keeps whatever `status` it
-  // had before being trashed, so checking `status !== "published"` alone
-  // isn't enough to keep a trashed-but-still-"published" post off its own
-  // URL.
-  if (!post || post.status !== "published" || post.deletedAt) notFound();
-
-  const [
+  // had before being trashed, so getPostPageData's own
+  // `status !== "published" || deletedAt` check (mirrored here as "data is
+  // null") is what actually keeps a trashed-but-still-"published" post off
+  // its own URL.
+  if (!data) notFound();
+  const {
+    post,
     author,
     category,
     faqRows,
     aiSummaryRow,
     keyTakeawayRows,
-    relatedPins,
-    currentTagRows,
     quickAnswerRow,
     ctaRows,
     statsTableRows,
     approvedComments,
     featuredMedia,
-  ] = await Promise.all([
-    // `deletedAt` is separate from a status field authors/categories don't
-    // have — a trashed author just drops the byline (see the `author &&`
-    // guards below) and a trashed category just drops the badge/breadcrumb
-    // entry (see the `category ? ... : null` below), the same graceful
-    // fallback already used when a post simply has no author/category set.
-    post.authorId
-      ? db.query.authors.findFirst({ where: and(eq(authors.id, post.authorId), isNull(authors.deletedAt)) })
-      : Promise.resolve(null),
-    post.categoryId
-      ? db.query.categories.findFirst({ where: and(eq(categories.id, post.categoryId), isNull(categories.deletedAt)) })
-      : Promise.resolve(null),
-    db.query.postFaqs.findMany({ where: eq(postFaqs.postId, post.id), orderBy: (f, { asc }) => asc(f.position) }),
-    db.query.postAiSummary.findFirst({ where: eq(postAiSummary.postId, post.id) }),
-    db.query.postKeyTakeaways.findMany({
-      where: eq(postKeyTakeaways.postId, post.id),
-      orderBy: (k, { asc }) => asc(k.position),
-    }),
-    db
-      .select({ relatedPostId: postRelated.relatedPostId })
-      .from(postRelated)
-      .where(eq(postRelated.postId, post.id))
-      .orderBy(postRelated.position),
-    db.select({ name: tags.name }).from(postTags).innerJoin(tags, eq(postTags.tagId, tags.id)).where(eq(postTags.postId, post.id)),
-    db.query.postQuickAnswer.findFirst({ where: eq(postQuickAnswer.postId, post.id) }),
-    db.query.postCtas.findMany({ where: eq(postCtas.postId, post.id), orderBy: (c, { asc }) => asc(c.position) }),
-    db.query.postStatsTables.findMany({ where: eq(postStatsTables.postId, post.id), orderBy: (t, { asc }) => asc(t.position) }),
-    db.query.comments.findMany({
-      where: and(eq(comments.postId, post.id), eq(comments.status, "approved")),
-      orderBy: (c, { asc }) => asc(c.createdAt),
-    }),
-    post.featuredImageUrl
-      ? db.query.media.findFirst({ where: eq(media.url, post.featuredImageUrl) })
-      : Promise.resolve(null),
-  ]);
-
-  // Manual pins if the editor set any; otherwise the same scoring
-  // heuristic the Internal Linking Assistant uses, computed live off the
-  // published set rather than a precomputed table. Only the ids are taken
-  // from this pass — full card data (image/excerpt/reading time) for the
-  // final short list comes from a second, cheap query below, so the
-  // candidate-scoring query itself doesn't need to carry that payload for
-  // every published post on the site.
-  const candidates = await getPublishedPostCandidates(post.id);
-  const relatedPostIds =
-    relatedPins.length > 0
-      ? relatedPins.map((pin) => pin.relatedPostId).filter((id) => candidates.some((c) => c.id === id))
-      : scoreRelatedPosts(
-          { id: post.id, title: post.title, categoryId: post.categoryId, tagNames: currentTagRows.map((t) => t.name) },
-          candidates,
-          4,
-        ).map((c) => c.id);
-  const relatedPosts = await getPostSummariesByIds(relatedPostIds);
+    relatedPosts,
+  } = data;
 
   const faqs = faqRows.map((f) => ({ question: f.question, answer: f.answer }));
   const postDoc = toTiptapDoc(post.content);

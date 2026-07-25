@@ -8,12 +8,15 @@ import { AboutSection } from "@/components/home/about-section";
 import { HomepageFaqs } from "@/components/home/homepage-faqs";
 import { SiteCta } from "@/components/home/site-cta";
 
-// This route has no params, so without `force-dynamic` Next would try to
-// statically prerender it (including at `next build` time, requiring a
-// live DATABASE_URL in the Docker build). lib/actions/posts.ts already
-// revalidates "/" on every post publish/edit/delete for immediacy — this
-// just ensures every other request reflects the DB directly too.
-export const dynamic = "force-dynamic";
+// Safety-net ISR ceiling — lib/actions/posts.ts and categories.ts already
+// revalidate "/" on every relevant mutation for immediacy; this is the
+// fallback if one is missed. Only takes effect because every function this
+// page calls (lib/home/featured-content.ts) is wrapped in unstable_cache —
+// a bare `revalidate` export does nothing for direct, unwrapped DB calls
+// (see that file's own comment). Previously `force-dynamic`, which this
+// route needed back when its data came from unwrapped queries directly;
+// no longer necessary now that they're all cached.
+export const revalidate = 3600;
 
 export default async function HomePage() {
   const [featuredGuides, popularGames, categoryOverview, latestPosts, homepageFaqs] = await Promise.all([

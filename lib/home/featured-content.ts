@@ -1,9 +1,24 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { posts, categories, postFaqs, media } from "@/lib/db/schema";
 import { POST_SUMMARY_COLUMNS, toPostSummary, type PostSummary } from "@/lib/posts/post-summary";
 import { SITE_CATEGORIES } from "@/lib/site-categories";
+
+// Every exported function below is wrapped in unstable_cache — this app
+// reads exclusively via direct drizzle/postgres.js queries, never `fetch`,
+// and in this Next.js version's (non-Cache-Components) model, `export const
+// revalidate` on a page only governs `fetch`-based caching; it does nothing
+// for direct DB calls. Confirmed empirically: a bare page with `revalidate
+// = 3600` and one uncached `db.query` call still served
+// `Cache-Control: no-store` on every request. unstable_cache is the
+// documented mechanism for caching non-fetch data sources under this model.
+// Tagged "posts"/"categories" (broad, not per-slug) so a single edit
+// anywhere in that collection safely invalidates everything derived from
+// it — coarser than strictly necessary, but correctness (never stale) matters
+// more than cache-hit-ratio precision for this first rollout. The matching
+// `revalidateTag` calls live in lib/actions/posts.ts and categories.ts.
 
 // Curated pillar posts for the homepage's Featured Guides / Popular Games
 // sections — a plain hardcoded list of slugs rather than a `featured` DB
@@ -63,32 +78,44 @@ async function loadPublishedPillars(slugs: string[]) {
     );
 }
 
-export async function getFeaturedGuides(): Promise<PostSummary[]> {
-  const rows = await loadPublishedPillars(FEATURED_PILLAR_SLUGS);
-  return rows.map(toPostSummary);
-}
+export const getFeaturedGuides = unstable_cache(
+  async (): Promise<PostSummary[]> => {
+    const rows = await loadPublishedPillars(FEATURED_PILLAR_SLUGS);
+    return rows.map(toPostSummary);
+  },
+  ["featured-guides"],
+  { tags: ["posts"], revalidate: 3600 },
+);
 
-export async function getPopularGames(): Promise<PostSummary[]> {
-  const rows = await loadPublishedPillars(POPULAR_GAME_SLUGS);
-  return rows.map(toPostSummary);
-}
+export const getPopularGames = unstable_cache(
+  async (): Promise<PostSummary[]> => {
+    const rows = await loadPublishedPillars(POPULAR_GAME_SLUGS);
+    return rows.map(toPostSummary);
+  },
+  ["popular-games"],
+  { tags: ["posts"], revalidate: 3600 },
+);
 
 /** Most-recently-published posts site-wide, regardless of pillar-curation
  * status — unlike the two functions above, this isn't limited to the
  * hand-picked slug lists, so it's what actually reflects "we just shipped
  * this" on the homepage. */
-export async function getLatestPosts(limit = 6): Promise<PostSummary[]> {
-  const rows = await db
-    .select(POST_SUMMARY_COLUMNS)
-    .from(posts)
-    .leftJoin(categories, eq(posts.categoryId, categories.id))
-    .leftJoin(media, eq(media.url, posts.featuredImageUrl))
-    .where(and(eq(posts.status, "published"), isNull(posts.deletedAt)))
-    .orderBy(desc(posts.publishedAt))
-    .limit(limit);
+export const getLatestPosts = unstable_cache(
+  async (limit = 6): Promise<PostSummary[]> => {
+    const rows = await db
+      .select(POST_SUMMARY_COLUMNS)
+      .from(posts)
+      .leftJoin(categories, eq(posts.categoryId, categories.id))
+      .leftJoin(media, eq(media.url, posts.featuredImageUrl))
+      .where(and(eq(posts.status, "published"), isNull(posts.deletedAt)))
+      .orderBy(desc(posts.publishedAt))
+      .limit(limit);
 
-  return rows.filter((r): r is typeof r & { categorySlug: string; categoryName: string } => Boolean(r.categorySlug)).map(toPostSummary);
-}
+    return rows.filter((r): r is typeof r & { categorySlug: string; categoryName: string } => Boolean(r.categorySlug)).map(toPostSummary);
+  },
+  ["latest-posts"],
+  { tags: ["posts"], revalidate: 3600 },
+);
 
 /** Real published-post counts per top-level category, for the homepage's
  * traffic-independent "Browse by Category" section — unlike Featured
@@ -96,36 +123,44 @@ export async function getLatestPosts(limit = 6): Promise<PostSummary[]> {
  * stale the same way: it just reflects whatever's actually published
  * against `SITE_CATEGORIES` (lib/site-categories.ts), the same shared list
  * the header nav uses. */
-export async function getCategoryOverview() {
-  const rows = await db
-    .select({ categoryId: posts.categoryId, count: sql<number>`count(*)::int` })
-    .from(posts)
-    .where(and(eq(posts.status, "published"), isNull(posts.deletedAt)))
-    .groupBy(posts.categoryId);
+export const getCategoryOverview = unstable_cache(
+  async () => {
+    const rows = await db
+      .select({ categoryId: posts.categoryId, count: sql<number>`count(*)::int` })
+      .from(posts)
+      .where(and(eq(posts.status, "published"), isNull(posts.deletedAt)))
+      .groupBy(posts.categoryId);
 
-  const allCategories = await db.select({ id: categories.id, slug: categories.slug }).from(categories).where(isNull(categories.deletedAt));
-  const slugById = new Map(allCategories.map((c) => [c.id, c.slug]));
-  const countBySlug = new Map<string, number>();
-  for (const row of rows) {
-    const slug = row.categoryId ? slugById.get(row.categoryId) : undefined;
-    if (slug) countBySlug.set(slug, row.count);
-  }
+    const allCategories = await db.select({ id: categories.id, slug: categories.slug }).from(categories).where(isNull(categories.deletedAt));
+    const slugById = new Map(allCategories.map((c) => [c.id, c.slug]));
+    const countBySlug = new Map<string, number>();
+    for (const row of rows) {
+      const slug = row.categoryId ? slugById.get(row.categoryId) : undefined;
+      if (slug) countBySlug.set(slug, row.count);
+    }
 
-  return SITE_CATEGORIES.map((c) => ({ ...c, count: countBySlug.get(c.slug) ?? 0 }));
-}
+    return SITE_CATEGORIES.map((c) => ({ ...c, count: countBySlug.get(c.slug) ?? 0 }));
+  },
+  ["category-overview"],
+  { tags: ["posts", "categories"], revalidate: 3600 },
+);
 
 /** Pulls FAQ entries straight from whichever featured pillars are actually
  * published (reuses post_faqs — no new table), so this fills out
  * automatically as more pillars ship, same as the sections above. */
-export async function getHomepageFaqs(limit = 6): Promise<{ question: string; answer: string }[]> {
-  const rows = await loadPublishedPillars(FEATURED_PILLAR_SLUGS);
-  if (rows.length === 0) return [];
+export const getHomepageFaqs = unstable_cache(
+  async (limit = 6): Promise<{ question: string; answer: string }[]> => {
+    const rows = await loadPublishedPillars(FEATURED_PILLAR_SLUGS);
+    if (rows.length === 0) return [];
 
-  const faqRows = await db
-    .select({ question: postFaqs.question, answer: postFaqs.answer })
-    .from(postFaqs)
-    .where(inArray(postFaqs.postId, rows.map((r) => r.id)))
-    .limit(limit);
+    const faqRows = await db
+      .select({ question: postFaqs.question, answer: postFaqs.answer })
+      .from(postFaqs)
+      .where(inArray(postFaqs.postId, rows.map((r) => r.id)))
+      .limit(limit);
 
-  return faqRows;
-}
+    return faqRows;
+  },
+  ["homepage-faqs"],
+  { tags: ["posts"], revalidate: 3600 },
+);

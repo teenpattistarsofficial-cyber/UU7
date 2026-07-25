@@ -2,7 +2,7 @@
 
 import { eq, and, inArray } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
 import { pages, pageTemplateEnum, postStatusEnum, seoMeta } from "@/lib/db/schema";
 import { requireRole } from "@/lib/auth/guards";
@@ -58,9 +58,14 @@ async function upsertSeoMeta(entityId: string, formData: FormData) {
 // Pages render either at their own literal route (about/contact/
 // responsible-gaming/editorial-policy) or, for any other slug, through the
 // [category] route's page fallback — revalidating both "/${slug}" and
-// "/sitemap.xml" covers either case with one call.
+// "/sitemap.xml" covers either case with one call. updateTag("pages") busts
+// lib/pages/get-page.ts's getPublishedPageBySlug, unstable_cache-wrapped
+// and read by the [category] fallback branch — a bare revalidatePath alone
+// would clear the route cache but the re-render would read the same stale
+// data straight back out of that separate cache layer.
 function revalidatePublicPagePaths(slug: string) {
   invalidatePublicPaths([`/${slug}`, "/sitemap.xml"]);
+  updateTag("pages");
 }
 
 export async function createPage(formData: FormData) {
