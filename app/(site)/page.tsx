@@ -8,15 +8,27 @@ import { AboutSection } from "@/components/home/about-section";
 import { HomepageFaqs } from "@/components/home/homepage-faqs";
 import { SiteCta } from "@/components/home/site-cta";
 
-// Safety-net ISR ceiling — lib/actions/posts.ts and categories.ts already
-// revalidate "/" on every relevant mutation for immediacy; this is the
-// fallback if one is missed. Only takes effect because every function this
-// page calls (lib/home/featured-content.ts) is wrapped in unstable_cache —
-// a bare `revalidate` export does nothing for direct, unwrapped DB calls
-// (see that file's own comment). Previously `force-dynamic`, which this
-// route needed back when its data came from unwrapped queries directly;
-// no longer necessary now that they're all cached.
-export const revalidate = 3600;
+// Back to force-dynamic — briefly tried switching this to a plain
+// `revalidate = 3600` now that every function below is unstable_cache-
+// wrapped, matching [category]/page.tsx and [category]/[slug]/page.tsx.
+// Those two get away with it because their dynamic segment lets
+// `generateStaticParams() { return [] }` tell Next "render zero paths at
+// build time, cache real ones on first visit" — the escape hatch that
+// avoids needing a live DATABASE_URL during the Docker build (see this
+// Dockerfile's own comment on the builder stage). The homepage has no
+// dynamic segment for that trick to attach to, so a bare `revalidate`
+// export makes Next attempt to fully prerender "/" at build time instead
+// — confirmed by an actual production build failure ("Error: DATABASE_URL
+// is not set" during `next build`), not just a theoretical concern.
+// Reverting to force-dynamic keeps this route safe for that build, same
+// as before tonight's change. It still gets a real speed win from the
+// unstable_cache wrapping in lib/home/featured-content.ts, though — those
+// functions' own results are cached and reused across requests
+// independently of whether this route itself is, so every request here
+// still avoids a live DB round trip most of the time; it just can't be
+// served straight from Cloudflare's edge without a page render at all,
+// the way the category/post pages now can.
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const [featuredGuides, popularGames, categoryOverview, latestPosts, homepageFaqs] = await Promise.all([
