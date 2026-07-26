@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import type { SITE_CATEGORIES } from "@/lib/site-categories";
+import { getCategoryMeta } from "@/lib/site-categories";
 import { SectionHeading } from "@/components/home/section-heading";
 
-type CategoryOverview = (typeof SITE_CATEGORIES)[number] & { count: number };
+// Deliberately just the plain, serializable fields getCategoryOverview
+// actually returns now (lib/home/featured-content.ts) — no `icon` here.
+// unstable_cache's return value goes through a serialization boundary
+// that silently mangles a real component reference into a dead object;
+// the icon is looked up fresh via getCategoryMeta below instead, which
+// never touches the cache.
+type CategoryOverview = { slug: string; label: string; href: string; count: number };
 
 // Unlike Featured Guides / Popular Games above it on the homepage, this
 // section needs no curated slug list and can't go stale the same way — it
@@ -24,7 +30,7 @@ export function BrowseCategories({ categories }: { categories: CategoryOverview[
          reached the next section. */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {categories.map((category) => {
-          const Icon = category.icon;
+          const Icon = getCategoryMeta(category.slug).icon;
           return (
             <Link
               key={category.slug}
@@ -32,7 +38,7 @@ export function BrowseCategories({ categories }: { categories: CategoryOverview[
               className="group flex items-center gap-3 rounded-xl border border-border/70 bg-card p-3 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_24px_-12px_rgba(0,0,0,0.12)]"
             >
               <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
-                <Icon className="size-4.5" />
+                {Icon && <Icon className="size-4.5" />}
               </span>
               <span className="flex min-w-0 flex-1 flex-col">
                 <span className="truncate text-sm font-semibold leading-snug">{category.label}</span>

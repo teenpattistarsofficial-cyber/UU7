@@ -139,7 +139,16 @@ export const getCategoryOverview = unstable_cache(
       if (slug) countBySlug.set(slug, row.count);
     }
 
-    return SITE_CATEGORIES.map((c) => ({ ...c, count: countBySlug.get(c.slug) ?? 0 }));
+    // Deliberately NOT `{ ...c, count }` — SITE_CATEGORIES entries carry a
+    // real Lucide icon component reference (a function), and unstable_cache
+    // persists its return value through a serialization boundary that
+    // silently mangles function references into a dead, non-callable
+    // object. Rendering that as <Icon /> threw "Element type is invalid:
+    // ...but got: object" in production — confirmed live, not theoretical.
+    // Only plain, JSON-safe fields cross this cache boundary; callers look
+    // the icon back up from SITE_CATEGORIES/getCategoryMeta by slug at
+    // render time instead (components/home/browse-categories.tsx).
+    return SITE_CATEGORIES.map((c) => ({ slug: c.slug, label: c.label, href: c.href, count: countBySlug.get(c.slug) ?? 0 }));
   },
   ["category-overview"],
   { tags: ["posts", "categories"], revalidate: 3600 },
