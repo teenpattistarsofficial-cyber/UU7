@@ -26,6 +26,23 @@ import { SourceCitations } from "@/components/article/source-citations";
 import { CommentsSection } from "@/components/article/comments-section";
 import { JsonLd } from "@/components/article/json-ld";
 
+// `featuredImageUrl`/`avatarUrl` are free-text fields (uploaded, pasted, or
+// written by an external content source like the raw-content publish API),
+// not validated as well-formed URLs at write time — `new URL()` throws a
+// TypeError on anything malformed, which would otherwise take down the
+// entire page for one bad stored value. Falls back to omitting the image
+// from JSON-LD rather than crashing, matching this codebase's existing
+// philosophy elsewhere (e.g. a trashed author's post renders without a
+// byline instead of breaking).
+function toAbsoluteUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  try {
+    return new URL(url, SITE_URL).toString();
+  } catch {
+    return null;
+  }
+}
+
 // Safety-net ISR ceiling — lib/actions/posts.ts already revalidates this
 // exact path on publish/edit/delete; this is the fallback if one is missed.
 export const revalidate = 3600;
@@ -120,7 +137,7 @@ export default async function ArticlePage({
     headline: post.title,
     description: post.excerpt,
     url: articleUrl,
-    imageUrl: post.featuredImageUrl ? new URL(post.featuredImageUrl, SITE_URL).toString() : null,
+    imageUrl: toAbsoluteUrl(post.featuredImageUrl),
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
     authorName: author?.displayName,
@@ -132,7 +149,7 @@ export default async function ArticlePage({
         url: authorUrl!,
         jobTitle: author.roleTitle,
         description: author.bio,
-        imageUrl: author.avatarUrl ? new URL(author.avatarUrl, SITE_URL).toString() : null,
+        imageUrl: toAbsoluteUrl(author.avatarUrl),
         sameAs: Object.values(author.socialLinks ?? {}),
       })
     : null;
