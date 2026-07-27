@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -96,6 +96,17 @@ export default async function ArticlePage({
     featuredMedia,
     relatedPosts,
   } = data;
+
+  // getPostPageData looks up the post by slug alone, ignoring the URL's own
+  // category segment entirely — so a link to the wrong category (a typo, a
+  // stale link, or an AI-authored link guessing a bad prefix like `/blog/`)
+  // still resolves to a real post instead of 404ing. Canonicalize onto the
+  // post's real category URL rather than silently rendering under whichever
+  // segment was requested. Uncategorized posts (`category === null`) have no
+  // "correct" segment to redirect to, so they're left rendering as before.
+  if (category && category.slug !== categorySlug) {
+    permanentRedirect(`/${category.slug}/${slug}`);
+  }
 
   const faqs = faqRows.map((f) => ({ question: f.question, answer: f.answer }));
   const postDoc = toTiptapDoc(post.content);
