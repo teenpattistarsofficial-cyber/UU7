@@ -1,9 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { isNull } from "drizzle-orm";
 import { Users } from "lucide-react";
-import { db } from "@/lib/db";
-import { authors } from "@/lib/db/schema";
+import { getPublishedAuthors } from "@/lib/authors";
 import { AuthorAvatar } from "@/components/site/author-avatar";
 import { Breadcrumb } from "@/components/site/breadcrumb";
 
@@ -11,17 +9,15 @@ export const metadata: Metadata = { title: "Authors" };
 
 // This route has no params, so without `force-dynamic` Next would try to
 // statically prerender it (including at `next build` time, requiring a
-// live DATABASE_URL in the Docker build). lib/actions/authors.ts already
-// revalidates this path on mutations for immediacy.
+// live DATABASE_URL in the Docker build). The actual page content is
+// still cached via getPublishedAuthors' unstable_cache wrapper below —
+// this export only controls Next's own route-level render, not the data
+// fetch — and lib/actions/authors.ts busts that cache tag + purges the
+// Cloudflare edge copy on every mutation for immediacy.
 export const dynamic = "force-dynamic";
 
 export default async function AuthorsDirectoryPage() {
-  // `deletedAt` is separate from a status field authors don't have — a
-  // trashed author must be excluded explicitly.
-  const rows = await db.query.authors.findMany({
-    where: isNull(authors.deletedAt),
-    orderBy: (a, { asc }) => asc(a.displayName),
-  });
+  const rows = await getPublishedAuthors();
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">

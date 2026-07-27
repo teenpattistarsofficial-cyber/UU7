@@ -2,7 +2,7 @@
 
 import { eq, inArray } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
 import { authors } from "@/lib/db/schema";
 import { requireRole } from "@/lib/auth/guards";
@@ -61,6 +61,7 @@ export async function createAuthor(formData: FormData) {
   await logActivity({ action: "author.created", entityType: "author", entityId: id, entityLabel: values.displayName });
   revalidatePath("/admin/authors");
   invalidatePublicPaths(["/authors", "/sitemap.xml"]);
+  updateTag("authors");
   redirect("/admin/authors");
 }
 
@@ -78,6 +79,7 @@ export async function updateAuthor(id: string, formData: FormData) {
   const paths = ["/authors", `/authors/${values.slug}`, "/sitemap.xml"];
   if (existing && existing.slug !== values.slug) paths.push(`/authors/${existing.slug}`);
   invalidatePublicPaths(paths);
+  updateTag("authors");
   // Not fanned out to every post by this author — the AuthorBox embedded
   // there will pick up the change on its own hourly ISR ceiling instead.
   redirect("/admin/authors");
@@ -96,6 +98,7 @@ export async function deleteAuthor(id: string) {
   await logActivity({ action: "author.deleted", entityType: "author", entityId: id, entityLabel: existing.displayName });
   revalidatePath("/admin/authors");
   invalidatePublicPaths(["/authors", `/authors/${existing.slug}`, "/sitemap.xml"]);
+  updateTag("authors");
 }
 
 export async function bulkDeleteAuthors(ids: string[]) {
@@ -105,6 +108,7 @@ export async function bulkDeleteAuthors(ids: string[]) {
   await db.update(authors).set({ deletedAt: new Date() }).where(inArray(authors.id, ids));
   revalidatePath("/admin/authors");
   invalidatePublicPaths(["/authors", "/sitemap.xml", ...targets.map((a) => `/authors/${a.slug}`)]);
+  updateTag("authors");
 }
 
 export async function restoreAuthor(id: string) {
@@ -113,6 +117,7 @@ export async function restoreAuthor(id: string) {
   await db.update(authors).set({ deletedAt: null }).where(eq(authors.id, id));
   revalidatePath("/admin/authors");
   if (existing) invalidatePublicPaths(["/authors", `/authors/${existing.slug}`, "/sitemap.xml"]);
+  updateTag("authors");
 }
 
 export async function bulkRestoreAuthors(ids: string[]) {
@@ -122,6 +127,7 @@ export async function bulkRestoreAuthors(ids: string[]) {
   await db.update(authors).set({ deletedAt: null }).where(inArray(authors.id, ids));
   revalidatePath("/admin/authors");
   invalidatePublicPaths(["/authors", "/sitemap.xml", ...targets.map((a) => `/authors/${a.slug}`)]);
+  updateTag("authors");
 }
 
 // The actual, irreversible `db.delete` — gated at "admin" rather than
@@ -141,6 +147,7 @@ export async function permanentlyDeleteAuthor(id: string) {
       entityLabel: existing.displayName,
     });
     invalidatePublicPaths(["/authors", `/authors/${existing.slug}`, "/sitemap.xml"]);
+    updateTag("authors");
   }
   revalidatePath("/admin/authors");
 }
@@ -152,4 +159,5 @@ export async function bulkPermanentlyDeleteAuthors(ids: string[]) {
   await db.delete(authors).where(inArray(authors.id, ids));
   revalidatePath("/admin/authors");
   invalidatePublicPaths(["/authors", "/sitemap.xml", ...targets.map((a) => `/authors/${a.slug}`)]);
+  updateTag("authors");
 }

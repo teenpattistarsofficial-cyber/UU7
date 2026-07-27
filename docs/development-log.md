@@ -4,6 +4,16 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ---
 
+## 2026-07-27
+
+### Root-caused the persistent `cf-cache-status: BYPASS` on 7 public pages
+- Repeated performance audits (`run_performance_audit`/`run_site_health_check` via the `uu7-ops` MCP server) kept showing `/`, `/about-uu7`, `/contact`, `/authors`, `/editorial-policy`, `/faq`, and `/responsible-gaming` serving `Cache-Control: private, no-cache, no-store` with `cf-cache-status: BYPASS`, and mobile LCP swinging between "needs improvement" and "poor" (3.1s–5.6s) run to run. Traced it to `export const dynamic = "force-dynamic"` on all 7 — a real Next.js behavior, not a Cloudflare misconfiguration. Cloudflare was correctly honoring the header Next.js itself sends for force-dynamic responses.
+- Confirmed these pages can't use the same `revalidate = 3600` + `generateStaticParams() { return [] }` ISR pattern as `[category]/page.tsx`/`[category]/[slug]/page.tsx` — that escape hatch only exists for routes with a dynamic `[param]` segment. These 7 have none, so a bare `revalidate` export would make `next build` attempt a full static prerender at build time — which fails, since the Dockerfile deliberately withholds `DATABASE_URL` at build time (this was already tried and reverted once, see 0ff2918).
+- Decision: leave `force-dynamic` and the Docker build invariant untouched. Instead cache these 7 paths at Cloudflare's edge (Cache Rule, same approach already used for `/_next/image`) and rely on the existing `purgeCloudflareUrls`/`invalidatePublicPaths` purge-on-publish plumbing (`lib/cloudflare/purge.ts`, `lib/cache/invalidate-public-paths.ts`) to keep it fresh — that infra already existed and is already wired into `pages.ts`, `posts.ts`, `categories.ts`, `comments.ts`, `media.ts`, `authors.ts`, and `app/api/publish/route.ts`.
+- The one real gap found: `/authors` and `/faq` were the only two of these pages still running **direct, unwrapped Drizzle queries** on every request (every sibling page already goes through an `unstable_cache`-wrapped data function). Added `lib/authors.ts` (`getPublishedAuthors`, tag `"authors"`) and wrapped `lib/faq.ts`'s `getAllFaqsByCategory` in `unstable_cache` (tag `"posts"`, reusing the tag `lib/actions/posts.ts` already busts on every post mutation — no new invalidation wiring needed there). Added `updateTag("authors")` to all 8 mutation functions in `lib/actions/authors.ts` to bust the new data-cache tag alongside the existing `invalidatePublicPaths` calls.
+- Verified `DATABASE_URL="" npx next build` still succeeds post-change and every touched route still renders `ƒ` (dynamic) — the build invariant holds.
+- Still needed (manual, not code): a Cloudflare Cache Rule for these 7 paths (Eligible for cache, 1hr edge TTL, respect browser TTL) and setting real `CLOUDFLARE_API_TOKEN`/`CLOUDFLARE_ZONE_ID` values in `.env.production` — both already documented/scaffolded but not yet live in production.
+
 ## 2026-07-22
 
 ### Ops-agent direct-fix tools (redirects, media alt text)

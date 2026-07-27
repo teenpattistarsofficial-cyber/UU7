@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { posts, categories, postFaqs } from "@/lib/db/schema";
@@ -21,45 +22,56 @@ export type FaqGroup = {
  * unlike the homepage's `getHomepageFaqs` (lib/home/featured-content.ts),
  * which only pulls from a small hand-curated pillar-post list for internal
  * linking. This is the full set, for the standalone /faq page. Groups
- * with zero FAQs are simply absent rather than rendered empty. */
-export async function getAllFaqsByCategory(): Promise<FaqGroup[]> {
-  const rows = await db
-    .select({
-      question: postFaqs.question,
-      answer: postFaqs.answer,
-      postTitle: posts.title,
-      postSlug: posts.slug,
-      categorySlug: categories.slug,
-      categoryName: categories.name,
-    })
-    .from(postFaqs)
-    .innerJoin(posts, eq(postFaqs.postId, posts.id))
-    .leftJoin(categories, eq(posts.categoryId, categories.id))
-    // `deletedAt` is separate from `status` — a trashed post keeps its
-    // prior status, so this must be checked explicitly or a trashed post's
-    // FAQs keep showing up here.
-    .where(and(eq(posts.status, "published"), isNull(posts.deletedAt)))
-    .orderBy(postFaqs.position);
+ * with zero FAQs are simply absent rather than rendered empty.
+ *
+ * Wrapped in unstable_cache — this was previously a direct, unwrapped
+ * Drizzle call on every /faq request, unlike every other post-derived
+ * page here. Tagged "posts" (not a new "faq" tag) since it's entirely
+ * derived from published posts' FAQ entries, and lib/actions/posts.ts's
+ * revalidatePublicPostPaths already busts that tag on every post
+ * create/update/delete — no extra invalidation wiring needed. */
+export const getAllFaqsByCategory = unstable_cache(
+  async (): Promise<FaqGroup[]> => {
+    const rows = await db
+      .select({
+        question: postFaqs.question,
+        answer: postFaqs.answer,
+        postTitle: posts.title,
+        postSlug: posts.slug,
+        categorySlug: categories.slug,
+        categoryName: categories.name,
+      })
+      .from(postFaqs)
+      .innerJoin(posts, eq(postFaqs.postId, posts.id))
+      .leftJoin(categories, eq(posts.categoryId, categories.id))
+      // `deletedAt` is separate from `status` — a trashed post keeps its
+      // prior status, so this must be checked explicitly or a trashed post's
+      // FAQs keep showing up here.
+      .where(and(eq(posts.status, "published"), isNull(posts.deletedAt)))
+      .orderBy(postFaqs.position);
 
-  const groups = new Map<string, FaqGroup>();
-  for (const row of rows) {
-    if (!row.categorySlug || !row.categoryName) continue; // same "no valid public URL" rule as elsewhere
-    const meta = getCategoryMeta(row.categorySlug, row.categoryName);
-    const existing = groups.get(row.categorySlug);
-    const entry: FaqEntry = {
-      question: row.question,
-      answer: row.answer,
-      sourceTitle: row.postTitle,
-      sourceUrl: `/${row.categorySlug}/${row.postSlug}`,
-    };
-    if (existing) {
-      existing.faqs.push(entry);
-    } else {
-      groups.set(row.categorySlug, { categorySlug: row.categorySlug, categoryLabel: meta.label, faqs: [entry] });
+    const groups = new Map<string, FaqGroup>();
+    for (const row of rows) {
+      if (!row.categorySlug || !row.categoryName) continue; // same "no valid public URL" rule as elsewhere
+      const meta = getCategoryMeta(row.categorySlug, row.categoryName);
+      const existing = groups.get(row.categorySlug);
+      const entry: FaqEntry = {
+        question: row.question,
+        answer: row.answer,
+        sourceTitle: row.postTitle,
+        sourceUrl: `/${row.categorySlug}/${row.postSlug}`,
+      };
+      if (existing) {
+        existing.faqs.push(entry);
+      } else {
+        groups.set(row.categorySlug, { categorySlug: row.categorySlug, categoryLabel: meta.label, faqs: [entry] });
+      }
     }
-  }
 
-  // Stable order matching the site's own category nav rather than
-  // whatever order categories happened to come back from the DB in.
-  return [...groups.values()].sort((a, b) => a.categoryLabel.localeCompare(b.categoryLabel));
-}
+    // Stable order matching the site's own category nav rather than
+    // whatever order categories happened to come back from the DB in.
+    return [...groups.values()].sort((a, b) => a.categoryLabel.localeCompare(b.categoryLabel));
+  },
+  ["all-faqs-by-category"],
+  { tags: ["posts"], revalidate: 3600 },
+);
