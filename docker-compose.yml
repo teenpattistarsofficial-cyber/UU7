@@ -88,6 +88,15 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    # Shared with `app` — one-off scripts run via this service (e.g.
+    # scripts/fix-hotlinked-images.ts) write to ./uploads expecting the same
+    # persistent volume `app` serves from. Without this mount, those writes
+    # land in the throwaway container's own ephemeral layer and vanish on
+    # `--rm`, while any DB row inserted alongside them (e.g. a new `media`
+    # row) persists — silently pointing at a file that was never actually
+    # saved anywhere the running app can read.
+    volumes:
+      - uploads:/app/uploads
 
 volumes:
   postgres_data:
