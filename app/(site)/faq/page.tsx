@@ -2,9 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowRight, CircleHelp } from "lucide-react";
 import { getAllFaqsByCategory } from "@/lib/faq";
-import { getCategoryMeta } from "@/lib/site-categories";
 import { Breadcrumb } from "@/components/site/breadcrumb";
-import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@/components/ui/accordion";
+import { FaqSearch } from "@/components/site/faq-search";
 
 export const metadata: Metadata = {
   title: "Frequently Asked Questions",
@@ -46,36 +45,7 @@ export default async function FaqPage() {
       {groups.length === 0 ? (
         <p className="text-muted-foreground">No published FAQs yet — check back soon.</p>
       ) : (
-        <div className="space-y-10">
-          {groups.map((group) => {
-            const Icon = getCategoryMeta(group.categorySlug, group.categoryLabel).icon;
-            return (
-              <section key={group.categorySlug}>
-                <h2 className="mb-4 flex items-center gap-2 font-heading text-lg font-bold">
-                  {Icon && <Icon className="size-4 text-brand" />}
-                  {group.categoryLabel}
-                </h2>
-                <Accordion>
-                  {group.faqs.map((faq, i) => (
-                    <AccordionItem key={i} value={i}>
-                      <AccordionTrigger number={i + 1}>{faq.question}</AccordionTrigger>
-                      <AccordionPanel number={i + 1}>
-                        <p className="text-muted-foreground">{faq.answer}</p>
-                        <Link
-                          href={faq.sourceUrl}
-                          className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline"
-                        >
-                          From: {faq.sourceTitle}
-                          <ArrowRight className="size-3.5" />
-                        </Link>
-                      </AccordionPanel>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </section>
-            );
-          })}
-        </div>
+        <FaqSearch groups={groups} />
       )}
 
       <div className="mt-12 rounded-2xl border border-brand/25 bg-gradient-to-br from-brand/10 via-brand/[0.04] to-transparent p-6 text-center sm:p-8">
