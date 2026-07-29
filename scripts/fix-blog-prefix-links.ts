@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { posts, pages } from "@/lib/db/schema";
+import { posts, pages, postCtas } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import type { JSONContent } from "@tiptap/core";
 
@@ -18,6 +18,23 @@ import type { JSONContent } from "@tiptap/core";
 
 const BLOG_PREFIX = /^\/blog\/([^/?#]+)(.*)$/;
 
+// Shared by both the Tiptap tree-walker below (post/page body content) and
+// the flat postCtas.buttonUrl field — same bad-prefix shape, just stored
+// differently. Returns the corrected href, or null if `href` doesn't match
+// the bad prefix (nothing to do) or its target slug doesn't resolve to a
+// real published post (added to `unresolved` instead of guessed at).
+function rewriteBlogUrl(href: string, slugToUrl: Map<string, string>, unresolved: Set<string>): string | null {
+  const match = href.match(BLOG_PREFIX);
+  if (!match) return null;
+  const [, targetSlug, rest] = match;
+  const realUrl = slugToUrl.get(targetSlug);
+  if (!realUrl) {
+    unresolved.add(href);
+    return null;
+  }
+  return realUrl + rest;
+}
+
 function rewriteBlogLinks(
   node: JSONContent,
   slugToUrl: Map<string, string>,
@@ -26,17 +43,10 @@ function rewriteBlogLinks(
 ): void {
   node.marks?.forEach((mark) => {
     if (mark.type === "link" && typeof mark.attrs?.href === "string") {
-      const href = mark.attrs.href as string;
-      const match = href.match(BLOG_PREFIX);
-      if (match) {
-        const [, targetSlug, rest] = match;
-        const realUrl = slugToUrl.get(targetSlug);
-        if (realUrl) {
-          mark.attrs.href = realUrl + rest;
-          stats.changed++;
-        } else {
-          unresolved.add(href);
-        }
+      const rewritten = rewriteBlogUrl(mark.attrs.href as string, slugToUrl, unresolved);
+      if (rewritten) {
+        mark.attrs.href = rewritten;
+        stats.changed++;
       }
     }
   });
@@ -85,6 +95,20 @@ async function main() {
     if (JSON.stringify(content) !== before) {
       console.log(`Page "${page.title}" (${page.slug}): links updated`);
       if (APPLY) await db.update(pages).set({ content }).where(eq(pages.id, page.id));
+    }
+  }
+
+  // post_ctas.buttonUrl is a separate table from posts.content — it's
+  // never covered by the walk above, but it renders as a real crawlable
+  // <a href> (components/article/cta-block.tsx), so a bad /blog/ link
+  // here is just as broken and just as invisible to that walk.
+  const allCtas = await db.query.postCtas.findMany();
+  for (const cta of allCtas) {
+    const rewritten = rewriteBlogUrl(cta.buttonUrl, slugToUrl, unresolved);
+    if (rewritten) {
+      console.log(`CTA "${cta.heading}" (post ${cta.postId}): link updated`);
+      stats.changed++;
+      if (APPLY) await db.update(postCtas).set({ buttonUrl: rewritten }).where(eq(postCtas.id, cta.id));
     }
   }
 

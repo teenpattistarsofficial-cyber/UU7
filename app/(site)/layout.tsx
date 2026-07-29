@@ -24,7 +24,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
 
   return (
     <div className="flex min-h-screen flex-col">
-      <InjectedScript html={siteSettingsRow?.headScripts} />
+      <InjectedScript html={siteSettingsRow?.headScripts} location="head" />
       <SiteHeader logoUrl={logoUrl} />
       <div className="flex-1">{children}</div>
       <SiteFooter logoUrl={logoUrl} />
@@ -33,7 +33,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         enabled={siteSettingsRow?.aiWidgetEnabled ?? true}
         welcomeMessage={siteSettingsRow?.aiWidgetWelcomeMessage}
       />
-      <InjectedScript html={siteSettingsRow?.footerScripts} />
+      <InjectedScript html={siteSettingsRow?.footerScripts} location="footer" />
     </div>
   );
 }

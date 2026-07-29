@@ -1,4 +1,5 @@
 import { extractText } from "@/lib/editor/text";
+import { collectLinkHrefs } from "@/lib/editor/links";
 import { slugify } from "@/lib/seo/slugify";
 import type { JSONContent } from "@tiptap/core";
 
@@ -190,21 +191,6 @@ function siteHost(): string {
   } catch {
     return "";
   }
-}
-
-function collectLinkHrefs(doc: JSONContent | null | undefined): string[] {
-  const hrefs: string[] = [];
-  if (!doc) return hrefs;
-  function walk(node: JSONContent) {
-    node.marks?.forEach((mark) => {
-      if (mark.type === "link" && typeof mark.attrs?.href === "string") {
-        hrefs.push(mark.attrs.href);
-      }
-    });
-    node.content?.forEach(walk);
-  }
-  walk(doc);
-  return hrefs;
 }
 
 function countLinksByAudience(doc: JSONContent | null | undefined): { internal: number; external: number } {

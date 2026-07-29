@@ -5,6 +5,7 @@ import { revalidateTag } from "next/cache";
 import { db } from "@/lib/db";
 import {
   posts,
+  pages,
   categories,
   authors,
   seoMeta,
@@ -24,6 +25,7 @@ import { getSeoChecklist } from "@/lib/seo/score";
 import { verifyPublishToken } from "@/lib/publish/auth";
 import { checkRateLimit } from "@/lib/ai/rate-limit";
 import { isSafeExternalUrl } from "@/lib/seo/safe-url";
+import { isInvalidInternalLink, findInvalidInternalLinks } from "@/lib/seo/validate-internal-links";
 import { processImageBuffer } from "@/lib/media/process-upload";
 import { syncPostTagsByNames, syncPostCtasByItems } from "@/lib/actions/posts";
 import { invalidatePublicPaths } from "@/lib/cache/invalidate-public-paths";
@@ -134,6 +136,31 @@ export async function POST(request: NextRequest) {
   }
   if (body.coverImage && !isSafeExternalUrl(body.coverImage.sourceUrl)) {
     return NextResponse.json({ error: "coverImage.sourceUrl must be an http(s) URL" }, { status: 400 });
+  }
+
+  // Guards against exactly the class of bug that produced 19 broken
+  // /blog/<slug> links in an earlier publish batch: an internal-looking
+  // link whose first path segment isn't a real category/page/route. Built
+  // from the live DB rather than the static SITE_CATEGORIES list, since
+  // that list is deliberately incomplete (editor-created categories/pages
+  // aren't in it) — validating against it directly would reject valid links.
+  const [allCategories, allPages] = await Promise.all([
+    db.query.categories.findMany({ columns: { slug: true } }),
+    db.query.pages.findMany({ columns: { slug: true } }),
+  ]);
+  const validLinkPrefixes = new Set([...allCategories.map((c) => c.slug), ...allPages.map((p) => p.slug), "authors", "faq"]);
+  const badContentLinks = findInvalidInternalLinks(content, validLinkPrefixes);
+  if (badContentLinks.length > 0) {
+    return NextResponse.json(
+      { error: "content contains internal links with no matching category/page", badLinks: badContentLinks },
+      { status: 400 },
+    );
+  }
+  if (body.cta && isInvalidInternalLink(body.cta.buttonUrl, validLinkPrefixes)) {
+    return NextResponse.json(
+      { error: "cta.buttonUrl has no matching category/page", badLinks: [body.cta.buttonUrl] },
+      { status: 400 },
+    );
   }
 
   const slug = body.slug ? slugify(body.slug) : slugify(title);
