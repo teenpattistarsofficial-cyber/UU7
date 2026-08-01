@@ -139,24 +139,43 @@ export async function POST(request: NextRequest) {
   }
 
   // Guards against exactly the class of bug that produced 19 broken
-  // /blog/<slug> links in an earlier publish batch: an internal-looking
-  // link whose first path segment isn't a real category/page/route. Built
-  // from the live DB rather than the static SITE_CATEGORIES list, since
-  // that list is deliberately incomplete (editor-created categories/pages
-  // aren't in it) — validating against it directly would reject valid links.
-  const [allCategories, allPages] = await Promise.all([
-    db.query.categories.findMany({ columns: { slug: true } }),
+  // /blog/<slug> links in an earlier publish batch, plus a second one found
+  // later — links to a real category with a slug that was never actually
+  // published (e.g. a "further reading" section referencing a companion
+  // guide that doesn't exist). Built from the live DB rather than the
+  // static SITE_CATEGORIES list, since that list is deliberately incomplete
+  // (editor-created categories/pages aren't in it) — validating against it
+  // directly would reject valid links. Same "published, non-deleted,
+  // categorized" rule the [category]/[slug] redirect guard and
+  // scripts/fix-blog-prefix-links.ts already use for what counts as a real,
+  // linkable post.
+  const [allCategories, allPages, allPublishedPosts, allAuthors] = await Promise.all([
+    db.query.categories.findMany({ columns: { id: true, slug: true } }),
     db.query.pages.findMany({ columns: { slug: true } }),
+    db.query.posts.findMany({ columns: { slug: true, categoryId: true, status: true, deletedAt: true } }),
+    db.query.authors.findMany({ columns: { slug: true, deletedAt: true } }),
   ]);
+  const categorySlugById = new Map(allCategories.map((c) => [c.id, c.slug]));
   const validLinkPrefixes = new Set([...allCategories.map((c) => c.slug), ...allPages.map((p) => p.slug), "authors", "faq"]);
-  const badContentLinks = findInvalidInternalLinks(content, validLinkPrefixes);
+  const validLinkPaths = new Set<string>();
+  for (const p of allPublishedPosts) {
+    if (p.status !== "published" || p.deletedAt || !p.categoryId) continue;
+    const categorySlug = categorySlugById.get(p.categoryId);
+    if (categorySlug) validLinkPaths.add(`/${categorySlug}/${p.slug}`);
+  }
+  for (const a of allAuthors) {
+    if (a.deletedAt) continue;
+    validLinkPaths.add(`/authors/${a.slug}`);
+  }
+  const linkValidationContext = { validPrefixes: validLinkPrefixes, validFullPaths: validLinkPaths };
+  const badContentLinks = findInvalidInternalLinks(content, linkValidationContext);
   if (badContentLinks.length > 0) {
     return NextResponse.json(
-      { error: "content contains internal links with no matching category/page", badLinks: badContentLinks },
+      { error: "content contains internal links with no matching category/page/post", badLinks: badContentLinks },
       { status: 400 },
     );
   }
-  if (body.cta && isInvalidInternalLink(body.cta.buttonUrl, validLinkPrefixes)) {
+  if (body.cta && isInvalidInternalLink(body.cta.buttonUrl, linkValidationContext)) {
     return NextResponse.json(
       { error: "cta.buttonUrl has no matching category/page", badLinks: [body.cta.buttonUrl] },
       { status: 400 },

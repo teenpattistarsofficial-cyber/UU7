@@ -4,6 +4,13 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ---
 
+## 2026-07-30
+
+### Strengthened publish-time link validation to catch dead forward-references, not just wrong categories
+- A health-check crawl found 4 broken links inside a newly-published hub article (`/game-guides/what-is-live-casino-how-live-dealer-games-work`), pointing to companion guides (live baccarat/blackjack/roulette/poker) under an otherwise-valid category prefix. Confirmed via `list_existing_content` that none of the 4 target slugs exist anywhere — not drafts, not published — so this wasn't a publishing-sequence issue, just a dead reference. Same underlying pattern as the earlier `/blog/` bug (the publish pipeline generating confident-looking internal links without confirming the target exists), just manifesting as "right category, wrong slug" instead of "wrong category" — which the existing publish-time guard (prefix-only) couldn't catch.
+- Extended `lib/seo/validate-internal-links.ts`: `isInvalidInternalLink`/`findInvalidInternalLinks` now take a `LinkValidationContext` (`validPrefixes` for single-segment paths, `validFullPaths` for real two-segment canonical paths) instead of just a prefix set. A two-segment link (`/<category>/<slug>`, `/authors/<slug>`) is now checked against the actual set of real, published post/author URLs, not just whether the category prefix exists.
+- `app/api/publish/route.ts` now also queries all posts/authors (same "published, non-deleted, categorized" rule the redirect guard and `fix-blog-prefix-links.ts` already use) to build `validFullPaths` alongside the existing category/page prefix query.
+
 ## 2026-07-29
 
 ### FAQ page search
