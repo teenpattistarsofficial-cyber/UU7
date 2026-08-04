@@ -45,8 +45,11 @@ export function AboutSection() {
             ))}
           </ul>
 
+          {/* prefetch off: the header nav's "About" link already prefetches
+             this once — duplicate work otherwise. */}
           <Link
             href="/about-uu7"
+            prefetch={false}
             className="inline-flex items-center gap-1.5 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-brand-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_20px_-8px_rgba(0,0,0,0.3)] transition-transform hover:-translate-y-0.5 hover:bg-brand/90"
           >
             Learn more about us
@@ -59,8 +62,11 @@ export function AboutSection() {
           <ul className="space-y-1">
             {SITE_CATEGORIES.map((category) => (
               <li key={category.href}>
+                {/* prefetch off: same duplicate-of-header-nav reasoning as
+                   browse-categories.tsx and footer.tsx's category links. */}
                 <Link
                   href={category.href}
+                  prefetch={false}
                   className="group flex items-center gap-3 border-b border-border/60 py-3.5 last:border-b-0"
                 >
                   <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand">

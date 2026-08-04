@@ -68,7 +68,15 @@ export function SiteFooter({ logoUrl }: { logoUrl: string }) {
             <ul className="mt-4 space-y-3">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground">
+                  {/* /about-uu7 specifically: same duplicate-prefetch reasoning
+                     as the category links above — the header nav's "About"
+                     entry already prefetches it once. FAQ/Contact/Authors
+                     aren't in the header nav, so they keep default prefetch. */}
+                  <Link
+                    href={link.href}
+                    prefetch={link.href === "/about-uu7" ? false : undefined}
+                    className="text-sm text-muted-foreground hover:text-foreground"
+                  >
                     {link.label}
                   </Link>
                 </li>

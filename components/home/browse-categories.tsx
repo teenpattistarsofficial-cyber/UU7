@@ -32,9 +32,15 @@ export function BrowseCategories({ categories }: { categories: CategoryOverview[
         {categories.map((category) => {
           const Icon = getCategoryMeta(category.slug).icon;
           return (
+            // prefetch off: the header nav already prefetches every category
+            // link once — this section repeats the same set on the homepage,
+            // so prefetching here again is pure duplicate work competing with
+            // the hero image for the same origin's capacity (see footer.tsx's
+            // matching fix for the same set of links).
             <Link
               key={category.slug}
               href={category.href}
+              prefetch={false}
               className="group flex items-center gap-3 rounded-xl border border-border/70 bg-card p-3 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_24px_-12px_rgba(0,0,0,0.12)]"
             >
               <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">

@@ -13,8 +13,12 @@ export function FeaturedGuides({ posts }: { posts: FeaturedPost[] }) {
         description="Our deepest, most-researched guides — start here if you're new to a game."
       />
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post, i) => (
-          <PostCard key={post.id} post={post} priority={i === 0} />
+        {/* No `priority` here — this section renders below the full-viewport
+           Hero (components/home/hero.tsx), so its first card is never the
+           actual LCP candidate. Marking it eager/high-priority anyway just
+           stole fetch priority from the real hero image. */}
+        {posts.map((post) => (
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
     </section>
