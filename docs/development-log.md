@@ -4,6 +4,19 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ---
 
+## 2026-08-08
+
+### Bulk actions for Users, and closing the gap on Media Library's existing ones
+- `/admin/users` had zero bulk actions (single-row role change/delete only), unlike every other admin list page. Added `bulkSetUserRole`/`bulkDeleteUsers` to `lib/actions/users.ts` and per-row/select-all checkboxes + a bulk action bar (role dropdown, delete, clear) to `users-table.tsx`.
+- Kept the same "never zero admins" invariant the single-row actions already enforce (`setUserRole`/`deleteUser` reject touching your own account) — the bulk versions reject the *entire* action if the caller's own id is anywhere in the selection, rather than silently dropping just that one id and proceeding with the rest (a "select all" checkbox could otherwise sweep in the acting admin's own row without them noticing). The UI backs this up by disabling the checkbox on the caller's own row entirely, matching how that row already hides its delete button/role select — the server-side check is the real guard, the UI is just making the case unreachable in the first place.
+- Media Library already had bulk delete (per-thumbnail checkboxes + a "Delete (N)" bar), just easy to miss — no way to select more than one at a time without clicking each thumbnail individually, and no confirmation before an irreversible multi-file delete (every other destructive bulk action in the admin, including the new Users one, confirms first). Added a "Select all on page" checkbox (scoped to the current page, not every filtered result across pages — selecting something the admin hasn't actually looked at yet felt like the wrong default) and wired the existing bulk delete through the shared `ConfirmDialog` component.
+- Verified both end-to-end with Playwright against local dev (not just typecheck/build): created two test users, bulk-changed their role, bulk-deleted them, confirmed the self-row stayed unselectable throughout; separately confirmed Media's select-all and delete-confirmation dialog render correctly and that clicking Cancel leaves all files untouched.
+
+### Per-image Download and Copy URL actions in Media Library
+- Added two icon buttons to each thumbnail's action row (between the existing Edit and Delete): "Copy image URL" and "Download". Both per-item only — no bulk-download, which would need server-side zip generation, a meaningfully bigger feature than what was actually asked for.
+- Copy resolves the stored site-relative path (`/uploads/xxx.webp`) against `window.location.origin` at click-time rather than a hardcoded `SITE_URL` constant, so the copied URL is correct in local dev and production alike without an env-specific branch. Download is a plain `<a href download>` (no JS-driven blob/anchor trick needed — same-origin, so the `download` attribute reliably forces a save rather than a navigation) with the `download` attribute set to the original filename.
+- Verified with Playwright: clipboard actually contains the resolved absolute URL after clicking, the confirmation toast shows, and the download link's `href`/`download` attributes are correct.
+
 ## 2026-08-05
 
 ### Confirmed the lazyOnload fix live and closed out the homepage LCP investigation

@@ -12,7 +12,7 @@ import { FormSelect } from "@/components/admin/form-select";
 import { ControlCard } from "@/components/admin/control-card";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 import { AuthorAvatar } from "@/components/site/author-avatar";
-import { createUser, setUserRole, deleteUser } from "@/lib/actions/users";
+import { createUser, setUserRole, deleteUser, bulkSetUserRole, bulkDeleteUsers } from "@/lib/actions/users";
 
 export type UserRow = {
   id: string;
@@ -45,6 +45,56 @@ export function UsersTable({ rows: initialRows, currentUserId }: { rows: UserRow
   const [rolePending, setRolePending] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<UserRow | null>(null);
   const [deleting, startDeleting] = useTransition();
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [bulkPending, startBulkTransition] = useTransition();
+
+  // A row can't select itself into a bulk action — same invariant the
+  // per-row UI already enforces by hiding the delete button/role select for
+  // `isSelf` (see the table below), just applied to the checkbox instead.
+  const selectableRows = rows.filter((r) => r.id !== currentUserId);
+  const allSelectableSelected = selectableRows.length > 0 && selectableRows.every((r) => selected.has(r.id));
+
+  function toggleOne(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
+  function toggleAll() {
+    setSelected(allSelectableSelected ? new Set() : new Set(selectableRows.map((r) => r.id)));
+  }
+
+  function handleBulkRoleChange(newRole: string) {
+    const ids = [...selected];
+    startBulkTransition(async () => {
+      try {
+        await bulkSetUserRole(ids, newRole as UserRow["role"]);
+        setRows((prev) => prev.map((r) => (selected.has(r.id) ? { ...r, role: newRole as UserRow["role"] } : r)));
+        toast.success(`Updated role for ${ids.length} user${ids.length === 1 ? "" : "s"}`);
+        setSelected(new Set());
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Failed to update roles");
+      }
+    });
+  }
+
+  function handleBulkDelete() {
+    const ids = [...selected];
+    startBulkTransition(async () => {
+      try {
+        await bulkDeleteUsers(ids);
+        setRows((prev) => prev.filter((r) => !selected.has(r.id)));
+        toast.success(`Deleted ${ids.length} user${ids.length === 1 ? "" : "s"}`);
+        setSelected(new Set());
+        setBulkDeleteOpen(false);
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "Failed to delete users");
+      }
+    });
+  }
 
   function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -152,10 +202,49 @@ export function UsersTable({ rows: initialRows, currentUserId }: { rows: UserRow
         onConfirm={handleDelete}
       />
 
+      <ConfirmDialog
+        open={bulkDeleteOpen}
+        onOpenChange={setBulkDeleteOpen}
+        title={`Delete ${selected.size} user${selected.size === 1 ? "" : "s"}?`}
+        description="This will permanently delete these accounts. This cannot be undone."
+        confirmLabel="Delete"
+        pending={bulkPending}
+        onConfirm={handleBulkDelete}
+      />
+
+      {selected.size > 0 && (
+        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-muted/40 px-4 py-3">
+          <span className="text-sm font-medium">{selected.size} selected</span>
+          <FormSelect
+            value=""
+            onValueChange={handleBulkRoleChange}
+            options={ROLE_OPTIONS}
+            placeholder="Set role…"
+            triggerClassName="h-8 w-36 bg-background text-sm"
+          />
+          <Button variant="destructive" size="sm" disabled={bulkPending} onClick={() => setBulkDeleteOpen(true)}>
+            Delete ({selected.size})
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => setSelected(new Set())}>
+            Clear
+          </Button>
+        </div>
+      )}
+
       <div className="overflow-hidden rounded-xl border border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.08)]">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
+              <TableHead className="w-10 px-4">
+                <input
+                  type="checkbox"
+                  checked={allSelectableSelected}
+                  onChange={toggleAll}
+                  disabled={selectableRows.length === 0}
+                  className="size-4 rounded border-input accent-primary"
+                  aria-label="Select all users"
+                />
+              </TableHead>
               <TableHead className="h-11 px-4">User</TableHead>
               <TableHead className="px-4">Role</TableHead>
               <TableHead className="w-16 px-4" />
@@ -166,6 +255,16 @@ export function UsersTable({ rows: initialRows, currentUserId }: { rows: UserRow
               const isSelf = u.id === currentUserId;
               return (
                 <TableRow key={u.id}>
+                  <TableCell className="px-4 py-3">
+                    <input
+                      type="checkbox"
+                      checked={selected.has(u.id)}
+                      onChange={() => toggleOne(u.id)}
+                      disabled={isSelf}
+                      className="size-4 rounded border-input accent-primary disabled:opacity-30"
+                      aria-label={`Select ${u.name}`}
+                    />
+                  </TableCell>
                   <TableCell className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <AuthorAvatar displayName={u.name} avatarUrl={u.image} size="size-9" />
@@ -208,7 +307,7 @@ export function UsersTable({ rows: initialRows, currentUserId }: { rows: UserRow
             })}
             {rows.length === 0 && (
               <TableRow className="hover:bg-transparent">
-                <TableCell colSpan={3} className="px-4 py-10 text-center text-muted-foreground">
+                <TableCell colSpan={4} className="px-4 py-10 text-center text-muted-foreground">
                   No users yet.
                 </TableCell>
               </TableRow>

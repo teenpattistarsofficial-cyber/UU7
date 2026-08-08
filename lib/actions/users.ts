@@ -1,6 +1,6 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { hashPassword } from "better-auth/crypto";
 import { db } from "@/lib/db";
@@ -71,5 +71,40 @@ export async function deleteUser(userId: string) {
 
   await db.delete(user).where(eq(user.id, userId));
   await logActivity({ action: "user.deleted", entityType: "user", entityId: userId, entityLabel: target.name });
+  revalidatePath("/admin/users");
+}
+
+// Bulk counterparts to setUserRole/deleteUser above — same "never zero admins"
+// invariant, enforced the same way: rejecting the whole action outright if
+// the caller's own id is anywhere in the selection, rather than silently
+// dropping it and proceeding with the rest (a selection built from a
+// "select all" checkbox could otherwise demote/delete the acting admin
+// without them noticing). The UI additionally disables the checkbox on the
+// caller's own row so this case shouldn't normally be reachable at all —
+// this is the server-side backstop, not the only guard.
+export async function bulkSetUserRole(userIds: string[], role: Role) {
+  const session = await requireRole("admin");
+  if (!["admin", "editor", "author"].includes(role)) throw new Error("Invalid role.");
+  if (userIds.length === 0) return;
+  if (userIds.includes(session.user.id)) throw new Error("You can't change your own role.");
+
+  const targets = await db.query.user.findMany({ where: inArray(user.id, userIds) });
+  await db.update(user).set({ role, updatedAt: new Date() }).where(inArray(user.id, userIds));
+  for (const target of targets) {
+    await logActivity({ action: "user.role_changed", entityType: "user", entityId: target.id, entityLabel: `${target.name} → ${role}` });
+  }
+  revalidatePath("/admin/users");
+}
+
+export async function bulkDeleteUsers(userIds: string[]) {
+  const session = await requireRole("admin");
+  if (userIds.length === 0) return;
+  if (userIds.includes(session.user.id)) throw new Error("You can't delete your own account.");
+
+  const targets = await db.query.user.findMany({ where: inArray(user.id, userIds) });
+  await db.delete(user).where(inArray(user.id, userIds));
+  for (const target of targets) {
+    await logActivity({ action: "user.deleted", entityType: "user", entityId: target.id, entityLabel: target.name });
+  }
   revalidatePath("/admin/users");
 }

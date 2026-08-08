@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { UploadCloud, Trash2, Pencil, ChevronLeft, ChevronRight } from "lucide-react";
+import { UploadCloud, Trash2, Pencil, ChevronLeft, ChevronRight, Download, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateMedia, deleteMedia, bulkDeleteMedia } from "@/lib/actions/media";
@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { ADMIN_PAGE_SIZE, PER_PAGE_OPTIONS } from "@/components/admin/pagination";
 import { FormSelect } from "@/components/admin/form-select";
 import { EditMediaDialog } from "@/components/admin/edit-media-dialog";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 
 export type MediaRow = {
   id: string;
@@ -33,6 +34,7 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
   const [editing, setEditing] = useState<MediaRow | null>(null);
   const [uploading, setUploading] = useState(false);
   const [pending, startTransition] = useTransition();
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(ADMIN_PAGE_SIZE);
 
@@ -78,6 +80,21 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
     });
   }
 
+  // Scoped to the current page (`visible`), not every filtered result — a
+  // "select all" spanning pages the user hasn't looked at yet is an easy way
+  // to bulk-delete something they never actually saw.
+  const allVisibleSelected = visible.length > 0 && visible.every((item) => selected.has(item.id));
+  function toggleAllVisible() {
+    setSelected((prev) => {
+      if (allVisibleSelected) {
+        const next = new Set(prev);
+        visible.forEach((item) => next.delete(item.id));
+        return next;
+      }
+      return new Set([...prev, ...visible.map((item) => item.id)]);
+    });
+  }
+
   function handleBulkDelete() {
     const ids = [...selected];
     startTransition(async () => {
@@ -85,6 +102,7 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
         await bulkDeleteMedia(ids);
         setRows((prev) => prev.filter((r) => !selected.has(r.id)));
         setSelected(new Set());
+        setBulkDeleteOpen(false);
         toast.success(`Deleted ${ids.length} image(s)`);
       } catch (err) {
         toast.error(err instanceof Error ? err.message : "Failed to delete");
@@ -114,6 +132,19 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
     }
   }
 
+  async function handleCopyUrl(url: string) {
+    // `item.url` is stored as a site-relative path (e.g. "/uploads/xxx.webp")
+    // — resolving against window.location.origin at click-time gives the
+    // correct absolute URL in every environment (local dev, production)
+    // without needing a hardcoded SITE_URL constant in a client component.
+    try {
+      await navigator.clipboard.writeText(new URL(url, window.location.origin).toString());
+      toast.success("Image URL copied");
+    } catch {
+      toast.error("Failed to copy URL — your browser may be blocking clipboard access");
+    }
+  }
+
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -136,12 +167,38 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
           }}
           className="max-w-xs"
         />
+        {visible.length > 0 && (
+          <label className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <input
+              type="checkbox"
+              checked={allVisibleSelected}
+              onChange={toggleAllVisible}
+              className="size-4 rounded border-input accent-primary"
+            />
+            Select all on page
+          </label>
+        )}
         {selected.size > 0 && (
-          <Button variant="destructive" size="sm" disabled={pending} onClick={handleBulkDelete}>
-            Delete ({selected.size})
-          </Button>
+          <>
+            <Button variant="destructive" size="sm" disabled={pending} onClick={() => setBulkDeleteOpen(true)}>
+              Delete ({selected.size})
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => setSelected(new Set())}>
+              Clear
+            </Button>
+          </>
         )}
       </div>
+
+      <ConfirmDialog
+        open={bulkDeleteOpen}
+        onOpenChange={setBulkDeleteOpen}
+        title={`Delete ${selected.size} image${selected.size === 1 ? "" : "s"}?`}
+        description="This will permanently delete these files. This cannot be undone."
+        confirmLabel="Delete"
+        pending={pending}
+        onConfirm={handleBulkDelete}
+      />
 
       {filtered.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border py-16 text-center text-muted-foreground">
@@ -173,6 +230,22 @@ export function MediaGrid({ initialRows }: { initialRows: MediaRow[] }) {
                   >
                     <Pencil className="size-3.5" />
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyUrl(item.url)}
+                    className="flex size-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    title="Copy image URL"
+                  >
+                    <Link2 className="size-3.5" />
+                  </button>
+                  <a
+                    href={item.url}
+                    download={item.filename}
+                    className="flex size-6 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    title="Download"
+                  >
+                    <Download className="size-3.5" />
+                  </a>
                   <button
                     type="button"
                     onClick={() => handleSingleDelete(item.id)}
