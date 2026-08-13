@@ -7,6 +7,7 @@ import { siteSettings } from "@/lib/db/schema";
 import { requireRole } from "@/lib/auth/guards";
 import { invalidateRedirectsCache } from "@/lib/redirects/cache";
 import { invalidateMaintenanceCache } from "@/lib/maintenance-cache";
+import { purgeEverything } from "@/lib/cloudflare/purge";
 
 // Every field this singleton row can hold — Branding and Global SEO are two
 // separate forms/Save buttons in the admin (see components/admin/branding-settings.tsx
@@ -46,6 +47,20 @@ async function applySettingsUpdate(updates: Record<string, unknown>) {
   // just one path.
   revalidatePath("/", "layout");
   revalidatePath("/admin", "layout");
+  // revalidatePath only clears Next's own server-side cache — it can't
+  // reach through to Cloudflare's edge in front of it. Without this, toggling
+  // e.g. the Ask-AI widget or maintenance mode off updates the DB and Next's
+  // cache immediately, but every edge node keeps serving whatever HTML it
+  // had already cached (with the old toggle's markup baked in) until that
+  // page's Cache Rule TTL naturally expires — a real incident, not a
+  // hypothetical one (an admin toggled the widget off and it stayed visible
+  // on the live site). Purging the whole zone, not a fixed path list: this
+  // is called from settings that render into the shared site-wide layout
+  // (header/footer/widget/maintenance banner/injected scripts), so the
+  // affected surface is every public page, not just "/". Not awaited, same
+  // reasoning as instrumentation.ts's own use of this function — a slow
+  // Cloudflare call must never block the admin's save action.
+  void purgeEverything();
 }
 
 export async function updateSiteSettings(formData: FormData) {
