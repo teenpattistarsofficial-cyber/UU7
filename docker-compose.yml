@@ -23,12 +23,20 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-uu7}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB:-uu7}
-    ports:
-      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     # Intentionally not published to the host — only the `app` service on
-    # this compose network can reach it.
+    # this compose network can reach it. The `ports:` mapping this comment
+    # describes had drifted out of sync with the code (it was still
+    # publishing 127.0.0.1:5432) until a host reboot exposed the gap: a
+    # separate native PostgreSQL install on this VPS (aaPanel's own,
+    # /www/server/pgsql/, likely shared with other sites on the same
+    # server) started at boot and won the race for that port before Docker
+    # did, permanently blocking this container from binding it ever again.
+    # Nothing here actually needs the host-level publish — app/migrate both
+    # reach this over the internal Docker network via the `postgres`
+    # hostname — so removing it entirely closes the conflict for good
+    # rather than just winning this one race.
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-uu7}"]
       interval: 10s
