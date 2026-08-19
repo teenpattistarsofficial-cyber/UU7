@@ -4,6 +4,14 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ---
 
+## 2026-08-19
+
+### Post page: reordered bottom-of-article sections
+- Reordered the tail of `app/(site)/[category]/[slug]/page.tsx`. Previous order: Related Posts → Source Citations → Comments. New order: Source Citations → Comments → Related Posts.
+- Rationale: Source Citations belong with the article body; Comments are the reader engagement layer directly after the article ends; Related Posts is the discovery/exit prompt and now sits last, which is the natural place for "where to go next" content.
+
+---
+
 ## 2026-08-13
 
 ### Production outage: postgres host-port conflict with a native service after a VPS reboot

@@ -277,9 +277,9 @@ export default async function ArticlePage({
             socialLinks={author.socialLinks}
           />
         )}
-        <RelatedPosts posts={relatedPosts} />
         <SourceCitations citations={citations} />
         <CommentsSection postId={post.id} comments={approvedComments} />
+        <RelatedPosts posts={relatedPosts} />
         <JsonLd blocks={[articleSchema, breadcrumbSchema, personSchema, buildFaqSchema(faqs)]} />
       </div>
     </article>
