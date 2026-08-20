@@ -6,6 +6,23 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ## 2026-08-19
 
+### SEO & infrastructure: duplicate URL canonicalization + India keyword content
+
+**Duplicate URL fix (Cloudflare):**
+- All four URL variants (`http://`, `https://www.`, `http://www.`, `https://`) were serving `200 OK`, letting Google index 4 copies of every page. Root cause: nginx's HTTPS block was never activated post-certbot (still commented out), so Cloudflare terminates TLS at the edge and the origin only speaks HTTP — adding nginx-level HTTPS redirects would cause infinite redirect loops via `$scheme`.
+- Fixed at the Cloudflare layer instead: enabled "Always Use HTTPS" (SSL/TLS → Edge Certificates) and created a Page Rule `www.uu7.io/* → https://uu7.io/$1 (301)`. Verified all four variants redirect correctly via `curl`.
+
+**India keyword content — Day 1 (5 posts, all 15/15 SEO):**
+- `/betting-guides/cricket-betting-india-guide` — focus keyword: `cricket betting india`
+- `/betting-guides/ipl-betting-tips` — focus keyword: `ipl betting tips`
+- `/betting-guides/how-to-bet-on-cricket-online` — focus keyword: `how to bet on cricket`
+- `/betting-guides/best-cricket-betting-app-india` — focus keyword: `best cricket betting app india`
+- `/statistics-reports/tds-on-online-gaming-winnings-india` — focus keyword: `tds on online gaming winnings`
+- Added 301 redirect `/betting-guides/cricket-betting-guide-india` → `/betting-guides/cricket-betting-india-guide` (slug was corrected to place keyword consecutively).
+
+**India keyword content — orphaned post fixed to 15/15:**
+- `/betting-guides/cricket-betting-guide-india` — focus keyword changed to `cricket betting guide india` (4-word phrase matches slug exactly), SEO title shortened to 55 chars, `coverImage` set via structured field (Ajay Parab, Pexels #36741130). Redirect to cricket-betting-india-guide deleted first. Post now scores 15/15 and is live at its original URL.
+
 ### Post page: reordered bottom-of-article sections
 - Reordered the tail of `app/(site)/[category]/[slug]/page.tsx`. Previous order: Related Posts → Source Citations → Comments. New order: Source Citations → Comments → Related Posts.
 - Rationale: Source Citations belong with the article body; Comments are the reader engagement layer directly after the article ends; Related Posts is the discovery/exit prompt and now sits last, which is the natural place for "where to go next" content.
