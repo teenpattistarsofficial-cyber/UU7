@@ -4,6 +4,32 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ---
 
+## 2026-08-21
+
+### India keyword content — Day 3 (5 posts, all 15/15 SEO)
+
+- `/betting-guides/uu7game-vs-winzo` — focus keyword: `uu7game vs winzo`
+- `/betting-guides/uu7game-vs-mpl` — focus keyword: `uu7game vs mpl`
+- `/statistics-reports/online-gaming-legal-in-karnataka` — focus keyword: `online gaming legal in karnataka`
+- `/statistics-reports/online-gaming-legal-in-maharashtra` — focus keyword: `online gaming legal in maharashtra`
+- `/betting-guides/best-real-money-gaming-app-india-2026` — focus keyword: `best real money gaming app india`
+- Comparison posts link to UPI deposit/withdrawal guides from Day 2; legal posts link to GST/ITR guides and Indian Kanoon (external).
+
+---
+
+## 2026-08-20
+
+### India keyword content — Day 2 (5 posts, all 15/15 SEO)
+
+- `/statistics-reports/gst-on-online-gaming-india` — focus keyword: `gst on online gaming india`
+- `/statistics-reports/itr-for-gaming-income` — focus keyword: `itr for gaming income`
+- `/betting-guides/upi-deposit-gaming` — focus keyword: `upi deposit gaming`
+- `/betting-guides/upi-withdrawal-gaming` — focus keyword: `upi withdrawal gaming`
+- `/betting-guides/phonepe-gpay-gaming-deposits` — focus keyword: `phonepe gpay gaming`
+- UPI deposit and withdrawal posts cross-link each other; GST and ITR posts link to the existing TDS guide.
+
+---
+
 ## 2026-08-19
 
 ### SEO & infrastructure: duplicate URL canonicalization + India keyword content
