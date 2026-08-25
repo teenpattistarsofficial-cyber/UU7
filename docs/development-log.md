@@ -4,6 +4,32 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ---
 
+## 2026-08-25 (Day 6)
+
+### India keyword content — Day 6 (5 posts, all 15/15 SEO)
+
+- `/statistics-reports/dream11-ban-india` — focus keyword: `dream11 ban india`
+- `/game-guides/andar-bahar-online-india` — focus keyword: `andar bahar online india`
+- `/statistics-reports/is-poker-legal-in-india` — focus keyword: `is poker legal in india`
+- `/betting-guides/best-online-casino-india` — focus keyword: `best online casino india`
+- `/statistics-reports/online-gaming-ban-west-bengal` — focus keyword: `online gaming ban west bengal`
+- Dream11 post covers 200M+ user platform suspension, free-to-play pivot, and SC challenge. West Bengal post distinguishes single-layer PROGA ban from dual-prohibition states (Telangana, AP). Best online casino post covers offshore selection criteria, UPI payments, and tax obligations.
+
+---
+
+## 2026-08-25 (Day 5)
+
+### India keyword content — Day 5 (5 posts, all 15/15 SEO)
+
+- `/game-guides/teen-patti-real-money-india` — focus keyword: `teen patti real money india`
+- `/statistics-reports/online-rummy-legal-india` — focus keyword: `online rummy legal india`
+- `/statistics-reports/is-online-betting-legal-in-india` — focus keyword: `is online betting legal in india`
+- `/statistics-reports/online-gaming-legal-in-goa` — focus keyword: `online gaming legal in goa`
+- `/statistics-reports/online-gaming-legal-in-kerala` — focus keyword: `online gaming legal in kerala`
+- Covers India's most-searched gaming/betting intent queries. Kerala post documents the 2023 HC ruling (struck down state ban) then PROGA override in May 2026. Goa post distinguishes physical casino legality (still open) from online ban. All posts link to PROGA and India ban 2026 guides published Day 4.
+
+---
+
 ## 2026-08-23
 
 ### India keyword content — Day 4 (5 posts, all 15/15 SEO)
