@@ -4,6 +4,19 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ---
 
+## 2026-08-23
+
+### India keyword content — Day 4 (5 posts, all 15/15 SEO)
+
+- `/statistics-reports/india-online-gaming-ban-2026` — focus keyword: `india online gaming ban 2026`
+- `/statistics-reports/proga-online-gaming-act-india` — focus keyword: `proga online gaming act india`
+- `/statistics-reports/online-gaming-ban-telangana` — focus keyword: `online gaming ban telangana`
+- `/statistics-reports/online-gaming-ban-andhra-pradesh` — focus keyword: `online gaming ban andhra pradesh`
+- `/game-guides/aviator-game-india-guide` — focus keyword: `aviator game india`
+- Day 4 legal posts updated to reflect PROGA (Promotion and Regulation of Online Gaming Act 2025), signed Aug 2025, in force May 1 2026 — national ban on all real-money online gaming, no skill-game exception. Karnataka and Maharashtra posts from Day 3 also updated (mode:replace) for PROGA accuracy.
+
+---
+
 ## 2026-08-21
 
 ### India keyword content — Day 3 (5 posts, all 15/15 SEO)
