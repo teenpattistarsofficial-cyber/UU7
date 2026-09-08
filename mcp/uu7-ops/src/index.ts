@@ -8,6 +8,7 @@ import { runPerformanceAuditSchema, runPerformanceAudit } from "./tools/performa
 import { getSiteReportSchema, getSiteReport } from "./tools/report.js";
 import { listRedirectsSchema, listRedirects, createRedirectSchema, createRedirect, deleteRedirectSchema, deleteRedirect } from "./tools/redirects.js";
 import { updateImageAltTextSchema, updateImageAltText } from "./tools/media.js";
+import { getPostContentSchema, getPostContent } from "./tools/get-post-content.js";
 
 const server = new McpServer({ name: "uu7-ops", version: "0.1.0" });
 
@@ -210,6 +211,25 @@ server.registerTool(
   async (args) => {
     try {
       return asToolResult(await updateImageAltText(args));
+    } catch (err) {
+      return asErrorResult(err);
+    }
+  },
+);
+
+server.registerTool(
+  "get_post_content",
+  {
+    title: "Get a post's full content",
+    description:
+      "Fetches the complete content of a post by slug: Tiptap JSON body, SEO fields, quick answer, AI summary, " +
+      "key takeaways, FAQs, CTAs, and stats tables. Call this before patching a post via publish_post " +
+      "(mode:replace) so you can read the current state, make targeted edits, and send the full updated payload.",
+    inputSchema: getPostContentSchema,
+  },
+  async (args) => {
+    try {
+      return asToolResult(await getPostContent(args));
     } catch (err) {
       return asErrorResult(err);
     }
