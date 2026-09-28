@@ -3,7 +3,32 @@ import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import { TableKit } from "@tiptap/extension-table";
 import Youtube from "@tiptap/extension-youtube";
-import type { Extensions } from "@tiptap/core";
+import { Node, type Extensions } from "@tiptap/core";
+
+// Inline CTA button node authored by the publish API. No admin-editor
+// toolbar button exists for it; this extension exists solely so
+// generateHTML (server-side renderer) doesn't throw on the unknown node type.
+const CtaButtonNode = Node.create({
+  name: "ctaButton",
+  group: "block",
+  atom: true,
+  addAttributes() {
+    return {
+      text: { default: "Play Now" },
+      href: { default: "#" },
+    };
+  },
+  parseHTML() {
+    return [{ tag: 'div[data-type="cta-button"]' }];
+  },
+  renderHTML({ node }) {
+    return [
+      "div",
+      { "data-type": "cta-button" },
+      ["a", { href: node.attrs.href as string, target: "_blank", rel: "noopener noreferrer" }, node.attrs.text as string],
+    ];
+  },
+});
 
 // Schema-defining extensions only — shared between the client editor and
 // the server-side HTML renderer (lib/editor/render.ts) so both sides parse
@@ -48,4 +73,5 @@ export const editorExtensions: Extensions = [
   TextAlign.configure({ types: ["heading", "paragraph"] }),
   TableKit.configure({ table: { resizable: false } }),
   Youtube.configure({ nocookie: true, width: 640, height: 360 }),
+  CtaButtonNode,
 ];
