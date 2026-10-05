@@ -4,6 +4,22 @@ A running log of work completed on this project, grouped by date. Newest entries
 
 ---
 
+## 2026-10-05
+
+### Social media icons added to footer and right-side floating sidebar; updated social set
+
+- Added social links to `components/layout/footer.tsx` — "Follow StarsUU7" bar between nav grid and copyright
+- Each footer icon: 36×36 rounded-lg, `border-white/10`, platform color glow + scale on hover
+- Added `components/layout/social-sidebar.tsx` — fixed right-edge floating strip, vertically centered, all screen sizes
+- Sidebar: `bg-zinc-900/90` dark base (ensures visibility on both orange hero and white content backgrounds), neon ring + glow on hover, tooltip on desktop
+- Wired `SocialSidebar` into `app/(site)/layout.tsx`
+- **Updated social set** (removed YouTube, Instagram; added Pinterest): Facebook, X, Pinterest, Telegram, WhatsApp
+  - Facebook → https://www.facebook.com/starsuu7indiagames/
+  - X → https://x.com/starsuu7game
+  - Pinterest → https://in.pinterest.com/starsuu7india/ (red #E60023 brand color)
+
+---
+
 ## 2026-08-25 (Day 6)
 
 ### India keyword content — Day 6 (5 posts, all 15/15 SEO)
