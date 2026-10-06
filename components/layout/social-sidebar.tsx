@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 const SOCIAL_LINKS = [
   {
     href: "https://www.facebook.com/starsuu7indiagames/",
@@ -57,8 +61,21 @@ const SOCIAL_LINKS = [
 ];
 
 export function SocialSidebar() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const check = () => setVisible(window.scrollY > window.innerHeight * 0.75);
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    return () => window.removeEventListener("scroll", check);
+  }, []);
+
   return (
-    <div className="fixed right-2 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center lg:right-5">
+    <div
+      className={`fixed right-2 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center lg:right-5 transition-all duration-500 ${
+        visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6 pointer-events-none"
+      }`}
+    >
       {/* Top line */}
       <div className="h-8 w-px bg-gradient-to-b from-transparent to-white/20 lg:h-14" />
 
