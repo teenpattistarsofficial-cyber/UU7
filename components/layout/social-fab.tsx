@@ -90,7 +90,7 @@ export function SocialFab({ logoUrl }: { logoUrl: string }) {
 
       {/* FAB trigger */}
       <div
-        className="fixed bottom-6 right-3 z-[80] transition-opacity duration-200 lg:hidden"
+        className="fixed bottom-24 right-3 z-[80] transition-opacity duration-200 lg:hidden"
         style={{ opacity: open ? 0 : 1, pointerEvents: open ? "none" : "auto" }}
       >
         <button
