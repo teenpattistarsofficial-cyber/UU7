@@ -6,6 +6,7 @@ import { DEFAULT_LOGO_URL } from "@/lib/site";
 import { SiteHeader } from "@/components/layout/header";
 import { SiteFooter } from "@/components/layout/footer";
 import { SocialSidebar } from "@/components/layout/social-sidebar";
+import { SocialFab } from "@/components/layout/social-fab";
 import { AskAiWidget } from "@/components/ask-ai/chat-widget";
 import { InjectedScript } from "@/components/site/custom-scripts";
 
@@ -30,6 +31,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <div className="flex-1">{children}</div>
       <SiteFooter logoUrl={logoUrl} />
       <SocialSidebar />
+      <SocialFab logoUrl={logoUrl} />
       <AskAiWidget
         contactChannel={contactChannel}
         enabled={siteSettingsRow?.aiWidgetEnabled ?? true}
