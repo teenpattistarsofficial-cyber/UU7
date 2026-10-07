@@ -119,7 +119,7 @@ export function SocialFab({ logoUrl }: { logoUrl: string }) {
         aria-label="Connect with us"
         aria-modal="true"
         aria-hidden={!open}
-        {...(!open ? { inert: "" } : {})}
+        {...(!open ? { inert: true } : {})}
         className={`fixed inset-x-0 bottom-0 z-[79] transition-transform duration-300 ease-out lg:hidden ${
           open ? "translate-y-0" : "translate-y-full"
         }`}
